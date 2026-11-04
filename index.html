@@ -37,22 +37,7 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Barra de scroll personalizada para los carruseles horizontales */
-        .carrusel-scroll::-webkit-scrollbar {
-            height: 8px;
-        }
-        .carrusel-scroll::-webkit-scrollbar-track {
-            background: #18181b;
-            border-radius: 4px;
-        }
-        .carrusel-scroll::-webkit-scrollbar-thumb {
-            background: #eab308;
-            border-radius: 4px;
-        }
-        .carrusel-scroll::-webkit-scrollbar-thumb:hover {
-            background: #facc15;
-        }
-        
+        /* Ocultar barra de scroll para siempre en los carruseles */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -203,17 +188,10 @@
             </button>
         </div>
         
-        <!-- 2. Envoltorio Carrusel Secundario ("Cargar más") -->
+        <!-- 2. Envoltorio Secundario ("Cargar más" - SIN CARRUSEL) -->
         <div class="relative w-full group mt-12" id="wrapper-secundario" style="display: none;">
-            <button id="prev-mas" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            
+            <!-- Ya no hay botones de carrusel aquí -->
             <div id="contenedor-carrusel-mas" class="flex flex-wrap justify-center gap-8 w-full pb-4"></div>
-
-            <button id="next-mas" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
-            </button>
         </div>
         
         <!-- Botones de Acción Global -->
@@ -252,12 +230,14 @@
             return val === true || String(val).trim().toUpperCase() === 'TRUE';
         }
 
-        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL ---
+        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL (Sólo para Principal) ---
         function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(contenedorId);
             const prevBtn = document.getElementById(prevBtnId);
             const nextBtn = document.getElementById(nextBtnId);
             
+            if(!slider) return;
+
             let isDown = false;
             let startX;
             let scrollLeft;
@@ -354,16 +334,16 @@
             if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
             if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
+            // Inicializar interacción sólo en el carrusel principal
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
-            inicializarCarruselInteractivos('contenedor-carrusel-mas', 'prev-mas', 'next-mas');
 
             cargarGaleriasDesdeSheet();
             
             const btnCargarMas = document.getElementById('btn-cargar-mas');
             const btnOcultarMas = document.getElementById('btn-ocultar-mas');
             
-            if(btnCargarMas) btnCargarMas.addEventListener('click', mostrarSeccionCarrusel);
-            if(btnOcultarMas) btnOcultarMas.addEventListener('click', ocultarSeccionCarrusel);
+            if(btnCargarMas) btnCargarMas.addEventListener('click', mostrarSeccionMas);
+            if(btnOcultarMas) btnOcultarMas.addEventListener('click', ocultarSeccionMas);
         });
 
         // --- Carga y Gestión de Galerías ---
@@ -372,7 +352,6 @@
                 const respuesta = await fetch(APPS_SCRIPT_URL);
                 const todasLasGalerias = await respuesta.json();
                 
-                // Actualizar ambos menús (Categorías principales y Más deportes)
                 actualizarMenusDinamicos(todasLasGalerias);
                 
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
@@ -393,7 +372,7 @@
                     nextMain.classList.add('hidden');
                     galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
                 } else {
-                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer';
+                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start cursor-pointer';
                     prevMain.classList.remove('hidden');
                     nextMain.classList.remove('hidden');
                     galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
@@ -409,34 +388,25 @@
             }
         }
 
-        function mostrarSeccionCarrusel() {
+        function mostrarSeccionMas() {
             document.getElementById('btn-cargar-mas').style.display = 'none';
             document.getElementById('btn-ocultar-mas').style.display = 'inline-flex';
             
             const wrapperSec = document.getElementById('wrapper-secundario');
             const contSec = document.getElementById('contenedor-carrusel-mas');
-            const prevMas = document.getElementById('prev-mas');
-            const nextMas = document.getElementById('next-mas');
             
             wrapperSec.style.display = 'block';
             contSec.innerHTML = '';
             
-            if (galeriasCarruselData.length <= 4) {
-                contSec.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
-                prevMas.classList.add('hidden');
-                nextMas.classList.add('hidden');
-            } else {
-                contSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer';
-                prevMas.classList.remove('hidden');
-                nextMas.classList.remove('hidden');
-            }
+            // SIEMPRE será un flex-wrap normal, sin carrusel.
+            contSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full pb-4';
             
             galeriasCarruselData.forEach(evento => {
                 contSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
             });
         }
 
-        function ocultarSeccionCarrusel() {
+        function ocultarSeccionMas() {
             const wrapperSec = document.getElementById('wrapper-secundario');
             wrapperSec.style.display = 'none';
             document.getElementById('contenedor-carrusel-mas').innerHTML = ''; 
@@ -447,17 +417,15 @@
             document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // --- LÓGICA DE MENÚS DINÁMICOS (Categorías principales y Más deportes) ---
+        // --- LÓGICA DE MENÚS DINÁMICOS ---
         function actualizarMenusDinamicos(datos) {
             const categoriasPrincipalesUnicas = new Set();
             const masDeportesUnicos = new Set();
             
             datos.forEach(evento => {
-                // 1. Extraer categorías principales (Columna J)
                 const catStr = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : '';
                 if (catStr !== '') {
                     const catLower = catStr.toLowerCase();
-                    // Ignoramos las especiales que van fuera o tienen submenú propio
                     if (catLower !== 'más deportes' && catLower !== 'mas deportes' && 
                         catLower !== 'sin balón' && catLower !== 'sin balon' && 
                         catLower !== 'cultura') {
@@ -465,13 +433,11 @@
                     }
                 }
                 
-                // 2. Extraer "Más Deportes" (Columna L) si el check está marcado
                 if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) {
                     masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
                 }
             });
 
-            // Actualizar Categorías Principales
             const desktopCatContainer = document.getElementById('desktop-dynamic-cats');
             const mobileCatContainer = document.getElementById('mobile-dynamic-cats');
 
@@ -479,7 +445,6 @@
                 if (categoriasPrincipalesUnicas.size > 0) {
                     let htmlCatDesktop = '';
                     let htmlCatMobile = '';
-                    // Convertimos a array y ordenamos alfabéticamente
                     Array.from(categoriasPrincipalesUnicas).sort().forEach(cat => {
                         htmlCatDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${cat}</a>`;
                         htmlCatMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${cat}</a>`;
@@ -492,7 +457,6 @@
                 }
             }
 
-            // Actualizar Más Deportes
             const desktopMasMenu = document.getElementById('desktop-mas-deportes-menu');
             const mobileMasMenu = document.getElementById('mobile-mas-deportes-menu');
 
