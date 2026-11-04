@@ -37,7 +37,22 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Ocultar barra de scroll para siempre en los carruseles */
+        /* Barra de scroll personalizada para los carruseles horizontales */
+        .carrusel-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-track {
+            background: #18181b;
+            border-radius: 4px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb {
+            background: #eab308;
+            border-radius: 4px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb:hover {
+            background: #facc15;
+        }
+        
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -69,15 +84,11 @@
                         </button>
                         
                         <div id="desktop-cat-menu" class="hidden absolute top-full left-0 mt-2 w-56 bg-brand-base border border-zinc-800 rounded-md shadow-xl py-2 z-50">
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Fútbol</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Fútbol femenino</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Baloncesto</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">BSR</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Ciclismo</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Carrera</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Rugby</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Esgrima</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Atletismo</a>
+                            
+                            <!-- Contenedor dinámico de Categorías principales -->
+                            <div id="desktop-dynamic-cats" class="py-1">
+                                <span class="block px-4 py-2 text-sm text-gray-500">Cargando...</span>
+                            </div>
                             
                             <div class="border-t border-zinc-700 my-1"></div>
                             
@@ -121,15 +132,12 @@
                         <svg id="mobile-cat-icon" class="w-5 h-5 transform transition-transform pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     <div id="mobile-cat-menu" class="hidden pl-6 pr-3 py-2 space-y-2 bg-zinc-900/50 rounded-md mt-1">
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Fútbol</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Fútbol femenino</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Baloncesto</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">BSR</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Ciclismo</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Carrera</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Rugby</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Esgrima</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Atletismo</a>
+                        
+                        <!-- Contenedor dinámico de Categorías principales Móvil -->
+                        <div id="mobile-dynamic-cats" class="space-y-1">
+                            <span class="block text-sm text-gray-500 py-1">Cargando...</span>
+                        </div>
+
                         <div class="border-t border-zinc-700/50 my-1"></div>
                         <div>
                             <button id="mobile-mas-deportes-btn" class="w-full flex justify-between items-center text-sm font-medium text-gray-400 hover:text-brand-accent py-1 focus:outline-none">
@@ -167,7 +175,6 @@
             <p class="mt-4 text-xl sm:text-2xl text-gray-300 max-w-2xl drop-shadow font-light italic">
                 "El instante pasa, la emoción se queda"
             </p>
-            <!-- Botón Ver Últimos Eventos eliminado -->
         </div>
     </section>
 
@@ -183,7 +190,6 @@
 
         <!-- 1. Envoltorio Carrusel Principal -->
         <div class="relative w-full group">
-            <!-- Botones de flechas Principal - Reducidos de tamaño -->
             <button id="prev-main" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
                 <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
             </button>
@@ -199,7 +205,6 @@
         
         <!-- 2. Envoltorio Carrusel Secundario ("Cargar más") -->
         <div class="relative w-full group mt-12" id="wrapper-secundario" style="display: none;">
-            <!-- Botones de flechas Secundario - Reducidos de tamaño -->
             <button id="prev-mas" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
                 <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
             </button>
@@ -258,11 +263,9 @@
             let scrollLeft;
             let hasDragged = false;
 
-            // Evitar múltiples escuchadores
             if(slider.dataset.init === 'true') return;
             slider.dataset.init = 'true';
 
-            // Arrastre ratón/táctil
             slider.addEventListener('mousedown', (e) => {
                 isDown = true;
                 hasDragged = false;
@@ -285,14 +288,13 @@
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - slider.offsetLeft;
-                const walk = (x - startX) * 2; // Multiplicador de velocidad de arrastre
+                const walk = (x - startX) * 2; 
                 if (Math.abs(walk) > 10) {
-                    hasDragged = true; // Identifica que es un arrastre, no un clic
+                    hasDragged = true; 
                 }
                 slider.scrollLeft = scrollLeft - walk;
             });
 
-            // Intercepta el clic si se ha arrastrado para evitar abrir la tarjeta por error
             slider.addEventListener('click', (e) => {
                 if (hasDragged) {
                     e.preventDefault();
@@ -300,18 +302,15 @@
                 }
             }, true);
 
-            // Botones Laterales
             if(prevBtn) {
                 prevBtn.addEventListener('click', () => {
                     const tarjeta = slider.querySelector('article');
-                    // Desplazarse exactamente 1 tarjeta hacia la izquierda (+ 32px del hueco)
                     if (tarjeta) slider.scrollBy({ left: -(tarjeta.offsetWidth + 32), behavior: 'smooth' });
                 });
             }
             if(nextBtn) {
                 nextBtn.addEventListener('click', () => {
                     const tarjeta = slider.querySelector('article');
-                    // Desplazarse exactamente 1 tarjeta hacia la derecha (+ 32px del hueco)
                     if (tarjeta) slider.scrollBy({ left: tarjeta.offsetWidth + 32, behavior: 'smooth' });
                 });
             }
@@ -355,11 +354,9 @@
             if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
             if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
-            // Iniciar interacción de los dos carruseles
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
             inicializarCarruselInteractivos('contenedor-carrusel-mas', 'prev-mas', 'next-mas');
 
-            // Cargar datos Google Sheets
             cargarGaleriasDesdeSheet();
             
             const btnCargarMas = document.getElementById('btn-cargar-mas');
@@ -369,13 +366,14 @@
             if(btnOcultarMas) btnOcultarMas.addEventListener('click', ocultarSeccionCarrusel);
         });
 
-        // --- Lógica de Google Sheets ---
+        // --- Carga y Gestión de Galerías ---
         async function cargarGaleriasDesdeSheet() {
             try {
                 const respuesta = await fetch(APPS_SCRIPT_URL);
                 const todasLasGalerias = await respuesta.json();
                 
-                actualizarSubmenuMasDeportes(todasLasGalerias);
+                // Actualizar ambos menús (Categorías principales y Más deportes)
+                actualizarMenusDinamicos(todasLasGalerias);
                 
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
                 galeriasCarruselData = todasLasGalerias.filter(g => checkIsTrue(g.Más_galerias));
@@ -390,23 +388,15 @@
                     contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
                     contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
                 } else if (galeriasPrincipales.length <= 4) {
-                    // Si son 4 o menos, se ocultan botones y centramos las tarjetas
                     contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
                     prevMain.classList.add('hidden');
                     nextMain.classList.add('hidden');
-
-                    galeriasPrincipales.forEach(evento => {
-                        contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
-                    });
+                    galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
                 } else {
-                    // Si son MÁS de 4, forzamos CARRUSEL, activamos drag y mostramos botones laterales
-                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start cursor-pointer';
+                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer';
                     prevMain.classList.remove('hidden');
                     nextMain.classList.remove('hidden');
-
-                    galeriasPrincipales.forEach(evento => {
-                        contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
-                    });
+                    galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
                 }
                 
                 if (galeriasCarruselData.length > 0) {
@@ -419,7 +409,6 @@
             }
         }
 
-        // --- Ocultar / Mostrar más galerías ---
         function mostrarSeccionCarrusel() {
             document.getElementById('btn-cargar-mas').style.display = 'none';
             document.getElementById('btn-ocultar-mas').style.display = 'inline-flex';
@@ -437,7 +426,7 @@
                 prevMas.classList.add('hidden');
                 nextMas.classList.add('hidden');
             } else {
-                contSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start cursor-pointer';
+                contSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer';
                 prevMas.classList.remove('hidden');
                 nextMas.classList.remove('hidden');
             }
@@ -458,26 +447,67 @@
             document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function actualizarSubmenuMasDeportes(datos) {
+        // --- LÓGICA DE MENÚS DINÁMICOS (Categorías principales y Más deportes) ---
+        function actualizarMenusDinamicos(datos) {
+            const categoriasPrincipalesUnicas = new Set();
             const masDeportesUnicos = new Set();
+            
             datos.forEach(evento => {
+                // 1. Extraer categorías principales (Columna J)
+                const catStr = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : '';
+                if (catStr !== '') {
+                    const catLower = catStr.toLowerCase();
+                    // Ignoramos las especiales que van fuera o tienen submenú propio
+                    if (catLower !== 'más deportes' && catLower !== 'mas deportes' && 
+                        catLower !== 'sin balón' && catLower !== 'sin balon' && 
+                        catLower !== 'cultura') {
+                        categoriasPrincipalesUnicas.add(catStr);
+                    }
+                }
+                
+                // 2. Extraer "Más Deportes" (Columna L) si el check está marcado
                 if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) {
                     masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
                 }
             });
 
+            // Actualizar Categorías Principales
+            const desktopCatContainer = document.getElementById('desktop-dynamic-cats');
+            const mobileCatContainer = document.getElementById('mobile-dynamic-cats');
+
+            if (desktopCatContainer && mobileCatContainer) {
+                if (categoriasPrincipalesUnicas.size > 0) {
+                    let htmlCatDesktop = '';
+                    let htmlCatMobile = '';
+                    // Convertimos a array y ordenamos alfabéticamente
+                    Array.from(categoriasPrincipalesUnicas).sort().forEach(cat => {
+                        htmlCatDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${cat}</a>`;
+                        htmlCatMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${cat}</a>`;
+                    });
+                    desktopCatContainer.innerHTML = htmlCatDesktop;
+                    mobileCatContainer.innerHTML = htmlCatMobile;
+                } else {
+                    desktopCatContainer.innerHTML = '<span class="block px-4 py-2 text-sm text-gray-500">Sin categorías</span>';
+                    mobileCatContainer.innerHTML = '<span class="block text-sm text-gray-500 py-1">Sin categorías</span>';
+                }
+            }
+
+            // Actualizar Más Deportes
             const desktopMasMenu = document.getElementById('desktop-mas-deportes-menu');
             const mobileMasMenu = document.getElementById('mobile-mas-deportes-menu');
 
             if (masDeportesUnicos.size > 0) {
-                let htmlDesktop = '';
-                let htmlMobile = '';
-                masDeportesUnicos.forEach(deporte => {
-                    htmlDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${deporte}</a>`;
-                    htmlMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${deporte}</a>`;
+                let htmlMasDesktop = '';
+                let htmlMasMobile = '';
+                Array.from(masDeportesUnicos).sort().forEach(deporte => {
+                    htmlMasDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${deporte}</a>`;
+                    htmlMasMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${deporte}</a>`;
                 });
-                desktopMasMenu.innerHTML = htmlDesktop;
-                mobileMasMenu.innerHTML = htmlMobile;
+                desktopMasMenu.innerHTML = htmlMasDesktop;
+                mobileMasMenu.innerHTML = htmlMasMobile;
+            } else {
+                desktopMasMenu.innerHTML = '<span class="block px-4 py-2 text-sm text-gray-500">Próximamente</span>';
+                mobileMasMenu.innerHTML = '<span class="block text-sm text-gray-500 py-1">Próximamente</span>';
             }
         }
 
