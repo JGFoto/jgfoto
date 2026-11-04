@@ -167,11 +167,7 @@
             <p class="mt-4 text-xl sm:text-2xl text-gray-300 max-w-2xl drop-shadow font-light italic">
                 "El instante pasa, la emoción se queda"
             </p>
-            <div class="mt-12 flex gap-4">
-                <button class="bg-brand-accent hover:bg-brand-highlight text-black font-extrabold py-3 px-8 rounded-full shadow-[0_0_15px_rgba(234,179,8,0.5)] transition transform hover:-translate-y-1">
-                    Ver últimos eventos
-                </button>
-            </div>
+            <!-- Botón Ver Últimos Eventos eliminado -->
         </div>
     </section>
 
@@ -187,31 +183,31 @@
 
         <!-- 1. Envoltorio Carrusel Principal -->
         <div class="relative w-full group">
-            <!-- Botones de flechas Principal -->
-            <button id="prev-main" class="hidden absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+            <!-- Botones de flechas Principal - Reducidos de tamaño -->
+            <button id="prev-main" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
             </button>
             
             <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full pb-4">
                 <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
             </div>
 
-            <button id="next-main" class="hidden absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+            <button id="next-main" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
             </button>
         </div>
         
         <!-- 2. Envoltorio Carrusel Secundario ("Cargar más") -->
         <div class="relative w-full group mt-12" id="wrapper-secundario" style="display: none;">
-            <!-- Botones de flechas Secundario -->
-            <button id="prev-mas" class="hidden absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+            <!-- Botones de flechas Secundario - Reducidos de tamaño -->
+            <button id="prev-mas" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
             </button>
             
             <div id="contenedor-carrusel-mas" class="flex flex-wrap justify-center gap-8 w-full pb-4"></div>
 
-            <button id="next-mas" class="hidden absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+            <button id="next-mas" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
             </button>
         </div>
         
@@ -323,7 +319,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Eventos del menú general (Omitidos por brevedad visual, funcionan igual)
+            // Eventos del menú general
             const btnMobileMenu = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const iconPathMenu = document.getElementById('menu-icon');
@@ -359,7 +355,7 @@
             if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
             if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
-            // Iniciar interacción de los dos carruseles (el ratón y los botones ya quedarán listos)
+            // Iniciar interacción de los dos carruseles
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
             inicializarCarruselInteractivos('contenedor-carrusel-mas', 'prev-mas', 'next-mas');
 
@@ -487,7 +483,6 @@
 
         // Generador de Tarjetas
         function generarTarjetaHTML(evento) {
-            // Evaluamos la categoría principal de la Columna J
             const catHeaderOriginal = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : 'General';
             
             let catColorClass = "bg-black/80 text-white";
@@ -495,7 +490,6 @@
             let iconColor = "text-brand-accent";
             let categoriaMostrar = catHeaderOriginal;
 
-            // Filtros de color
             if(catHeaderOriginal.toLowerCase() === 'sin balón' || catHeaderOriginal.toLowerCase() === 'sin balon') {
                 catColorClass = "bg-brand-accent text-black";
                 borderColor = "border-2 border-brand-accent/30 hover:border-brand-accent";
@@ -505,13 +499,11 @@
                 iconColor = "text-brand-highlight";
             }
 
-            // Lógica exacta de la Columna J y L.
-            // "si en esa columna [J] es la categoria mas deporte entonces tiene que cogerlo de la columna L"
             const esMasDeportesColJ = catHeaderOriginal.toLowerCase() === 'más deportes' || catHeaderOriginal.toLowerCase() === 'mas deportes';
             if (esMasDeportesColJ) {
                 categoriaMostrar = evento.Categoria_Mas_Deportes && evento.Categoria_Mas_Deportes.trim() !== '' 
                     ? evento.Categoria_Mas_Deportes.trim() 
-                    : 'Más deportes'; // Fallback por si la columna L está vacía
+                    : 'Más deportes';
             }
 
             const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
