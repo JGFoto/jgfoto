@@ -178,14 +178,14 @@
     <!-- SECCIÓN PRINCIPAL DE GALERÍAS -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full overflow-hidden">
         
-        <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
+        <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4" id="titulo-galerias">
             <div>
                 <h2 class="text-3xl font-bold text-white tracking-tight">Últimas Galerías</h2>
                 <p class="text-gray-400 mt-2">Explora los reportajes más recientes</p>
             </div>
         </div>
 
-        <!-- 1. Contenedor inicial (MÁXIMO 4 GALERÍAS, SIEMPRE CENTRADAS) -->
+        <!-- 1. Contenedor inicial -->
         <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full">
             <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
         </div>
@@ -193,11 +193,16 @@
         <!-- 2. Contenedor para "Cargar más" -->
         <div id="contenedor-carrusel-mas" style="display: none;"></div>
         
-        <!-- Botón Cargar Más -->
-        <div class="mt-12 text-center w-full" id="contenedor-cargar-mas" style="display: none;">
-            <button id="btn-cargar-mas" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
+        <!-- Botones de Acción -->
+        <div class="mt-12 flex justify-center gap-4 w-full">
+            <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                 Cargar más galerías
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            
+            <button id="btn-ocultar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
+                Ocultar galerías
+                <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
             </button>
         </div>
     </main>
@@ -284,7 +289,10 @@
             cargarGaleriasDesdeSheet();
             
             const btnCargarMas = document.getElementById('btn-cargar-mas');
+            const btnOcultarMas = document.getElementById('btn-ocultar-mas');
+            
             if(btnCargarMas) btnCargarMas.addEventListener('click', mostrarSeccionCarrusel);
+            if(btnOcultarMas) btnOcultarMas.addEventListener('click', ocultarSeccionCarrusel);
         });
 
         // --- Carga y Gestión de Galerías ---
@@ -293,21 +301,29 @@
                 const respuesta = await fetch(APPS_SCRIPT_URL);
                 const todasLasGalerias = await respuesta.json();
                 
-                document.getElementById('contenedor-galerias').innerHTML = ''; 
-                
-                // Actualizar menú "Más Deportes"
                 actualizarSubmenuMasDeportes(todasLasGalerias);
                 
-                // 1. Filtrar exactamente un MÁXIMO de 4 para la cabecera
-                const galeriasPrincipales = todasLasGalerias.filter(g => g.Ultimas_galerias === true).slice(0, 4);
+                // 1. Galerías Principales (columna M)
+                const galeriasPrincipales = todasLasGalerias.filter(g => g.Ultimas_galerias === true);
                 
-                // 2. Guardar las que van en "Cargar más" (Carrusel / Columna N)
-                galeriasCarruselData = todasLasGalerias.filter(g => g.Carrusel_ultimas_galerias === true);
+                // 2. Más galerías (columna N - renombrada a Más_galerias)
+                galeriasCarruselData = todasLasGalerias.filter(g => g.Más_galerias === true);
                 
                 const contPrincipal = document.getElementById('contenedor-galerias');
+                contPrincipal.innerHTML = ''; 
+
                 if (galeriasPrincipales.length === 0) {
+                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full';
                     contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
+                } else if (galeriasPrincipales.length <= 4) {
+                    // Si son 4 o menos, mostramos centrado
+                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full';
+                    galeriasPrincipales.forEach(evento => {
+                        contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
+                    });
                 } else {
+                    // Si son MÁS de 4, forzamos CARRUSEL
+                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start';
                     galeriasPrincipales.forEach(evento => {
                         contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
                     });
@@ -315,7 +331,7 @@
                 
                 // Controlar aparición del botón
                 if (galeriasCarruselData.length > 0) {
-                    document.getElementById('contenedor-cargar-mas').style.display = 'block';
+                    document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 }
                 
             } catch (error) {
@@ -324,27 +340,39 @@
             }
         }
 
-        // --- Lógica del botón "Cargar más" ---
+        // --- Lógica del botón "Cargar más / Ocultar" ---
         function mostrarSeccionCarrusel() {
-            // Ocultamos el botón
-            document.getElementById('contenedor-cargar-mas').style.display = 'none';
+            document.getElementById('btn-cargar-mas').style.display = 'none';
+            document.getElementById('btn-ocultar-mas').style.display = 'inline-flex';
             
             const contenedorSec = document.getElementById('contenedor-carrusel-mas');
             contenedorSec.innerHTML = '';
             
             if (galeriasCarruselData.length <= 4) {
-                // Si son 4 o menos, mostramos FLEX normal (estáticas, envueltas y centradas)
+                // Si son 4 o menos, mostramos centrado
                 contenedorSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full';
             } else {
-                // Si son MÁS de 4, forzamos FLEX sin envolver (carrusel) justificado a la izquierda
+                // Si son MÁS de 4, forzamos CARRUSEL
                 contenedorSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 mt-8 w-full justify-start';
             }
             
-            contenedorSec.style.display = 'flex'; // Necesario para anular el display: none
+            contenedorSec.style.display = 'flex';
             
             galeriasCarruselData.forEach(evento => {
                 contenedorSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
             });
+        }
+
+        function ocultarSeccionCarrusel() {
+            const contenedorSec = document.getElementById('contenedor-carrusel-mas');
+            contenedorSec.style.display = 'none';
+            contenedorSec.innerHTML = ''; 
+            
+            document.getElementById('btn-ocultar-mas').style.display = 'none';
+            document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
+            
+            // Hace un scroll suave hacia el título de las galerías
+            document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function actualizarSubmenuMasDeportes(datos) {
@@ -391,8 +419,6 @@
             const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
             const categoriaMostrar = evento.Es_Mas_Deportes && evento.Categoria_Mas_Deportes ? evento.Categoria_Mas_Deportes : (evento.Categoria_Header || 'General');
 
-            // Esta clase unificada garantiza que las tarjetas tengan un tamaño idéntico en cualquier situación.
-            // Al usar flex-shrink-0, si se agrupan en flex-wrap se centran. Si es un carrusel (flex-nowrap), provocan scroll.
             const claseAnchoFijo = "w-full sm:w-[300px] lg:w-[280px] xl:w-[280px] flex-shrink-0 snap-start";
 
             return `
