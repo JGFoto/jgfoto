@@ -37,13 +37,20 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Ocultar barra de scroll en el carrusel pero permitir scroll táctil/ratón */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
+        /* Barra de scroll personalizada para los carruseles horizontales */
+        .carrusel-scroll::-webkit-scrollbar {
+            height: 8px; /* Altura de la barra horizontal */
         }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        .carrusel-scroll::-webkit-scrollbar-track {
+            background: #18181b; /* Fondo oscuro */
+            border-radius: 4px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb {
+            background: #eab308; /* Amarillo de tu marca */
+            border-radius: 4px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb:hover {
+            background: #facc15; /* Amarillo más claro al pasar el ratón */
         }
     </style>
 </head>
@@ -186,7 +193,7 @@
         </div>
 
         <!-- 1. Contenedor inicial -->
-        <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full">
+        <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full pb-4">
             <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
         </div>
         
@@ -224,6 +231,11 @@
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
         
         let galeriasCarruselData = [];
+
+        // Función auxiliar para leer los checks de Sheets a prueba de errores
+        function checkIsTrue(val) {
+            return val === true || String(val).trim().toUpperCase() === 'TRUE';
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             
@@ -303,27 +315,27 @@
                 
                 actualizarSubmenuMasDeportes(todasLasGalerias);
                 
-                // 1. Galerías Principales (columna M)
-                const galeriasPrincipales = todasLasGalerias.filter(g => g.Ultimas_galerias === true);
+                // 1. Galerías Principales (columna M) usando la verificación segura
+                const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
                 
-                // 2. Más galerías (columna N - renombrada a Más_galerias)
-                galeriasCarruselData = todasLasGalerias.filter(g => g.Más_galerias === true);
+                // 2. Más galerías (columna N) usando la verificación segura
+                galeriasCarruselData = todasLasGalerias.filter(g => checkIsTrue(g.Más_galerias));
                 
                 const contPrincipal = document.getElementById('contenedor-galerias');
                 contPrincipal.innerHTML = ''; 
 
                 if (galeriasPrincipales.length === 0) {
-                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full';
+                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
                     contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
                 } else if (galeriasPrincipales.length <= 4) {
                     // Si son 4 o menos, mostramos centrado
-                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full';
+                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
                     galeriasPrincipales.forEach(evento => {
                         contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
                     });
                 } else {
-                    // Si son MÁS de 4, forzamos CARRUSEL
-                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start';
+                    // Si son MÁS de 4, forzamos CARRUSEL con scrollbar activa
+                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll pb-4 w-full justify-start';
                     galeriasPrincipales.forEach(evento => {
                         contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
                     });
@@ -350,10 +362,10 @@
             
             if (galeriasCarruselData.length <= 4) {
                 // Si son 4 o menos, mostramos centrado
-                contenedorSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full';
+                contenedorSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full pb-4';
             } else {
-                // Si son MÁS de 4, forzamos CARRUSEL
-                contenedorSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 mt-8 w-full justify-start';
+                // Si son MÁS de 4, forzamos CARRUSEL con scrollbar activa
+                contenedorSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll pb-4 mt-8 w-full justify-start';
             }
             
             contenedorSec.style.display = 'flex';
@@ -371,14 +383,13 @@
             document.getElementById('btn-ocultar-mas').style.display = 'none';
             document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
             
-            // Hace un scroll suave hacia el título de las galerías
             document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function actualizarSubmenuMasDeportes(datos) {
             const masDeportesUnicos = new Set();
             datos.forEach(evento => {
-                if (evento.Es_Mas_Deportes === true && evento.Categoria_Mas_Deportes) {
+                if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) {
                     masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
                 }
             });
@@ -417,7 +428,7 @@
 
             const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
             const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
-            const categoriaMostrar = evento.Es_Mas_Deportes && evento.Categoria_Mas_Deportes ? evento.Categoria_Mas_Deportes : (evento.Categoria_Header || 'General');
+            const categoriaMostrar = checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes ? evento.Categoria_Mas_Deportes : (evento.Categoria_Header || 'General');
 
             const claseAnchoFijo = "w-full sm:w-[300px] lg:w-[280px] xl:w-[280px] flex-shrink-0 snap-start";
 
