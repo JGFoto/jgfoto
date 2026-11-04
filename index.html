@@ -211,8 +211,8 @@
             </div>
         </section>
 
-        <!-- === GALERÍAS DESTACADAS (FONDO CLARO ALTERNADO) === -->
-        <section id="seccion-destacadas" class="bg-brand-base py-16 border-t border-zinc-800" style="display: none;">
+        <!-- === GALERÍAS DESTACADAS (FONDO GRIS OSCURO ALTERNADO) === -->
+        <section id="seccion-destacadas" class="bg-[#121212] py-16 border-t border-zinc-800" style="display: none;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
                     <div>
@@ -236,7 +236,7 @@
             </div>
         </section>
 
-        <!-- === SECCIÓN: SIN BALÓN (FONDO OSCURO ALTERNADO) === -->
+        <!-- === SECCIÓN: SIN BALÓN (FONDO OSCURO PRINCIPAL) === -->
         <section class="bg-zinc-950 py-20 border-t border-zinc-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
@@ -272,8 +272,8 @@
             </div>
         </section>
 
-        <!-- === SECCIÓN: TU ESFUERZO (FONDO CLARO ALTERNADO) === -->
-        <section class="bg-brand-base py-16 lg:py-24 border-t border-zinc-800">
+        <!-- === SECCIÓN: TU ESFUERZO (FONDO GRIS OSCURO ALTERNADO) === -->
+        <section class="bg-[#121212] py-16 lg:py-24 border-t border-zinc-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
                     
@@ -291,6 +291,40 @@
                         </p>
                     </div>
                     
+                </div>
+            </div>
+        </section>
+
+        <!-- === SECCIÓN: NUESTRA CULTURA (FONDO OSCURO PRINCIPAL) === -->
+        <section class="bg-zinc-950 py-20 border-t border-zinc-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                    
+                    <!-- Columna Izquierda: Textos -->
+                    <div class="w-full lg:w-1/2 flex flex-col items-start">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-8 h-px bg-brand-highlight"></div>
+                            <span class="text-brand-highlight text-xs font-bold tracking-widest uppercase">Arte, tradición y emociones</span>
+                        </div>
+                        <h2 class="text-5xl sm:text-7xl font-black text-white tracking-tight mb-4 uppercase flex items-baseline">
+                            Nuestra Cultura
+                        </h2>
+                        <p class="text-gray-400 text-sm md:text-base mb-10 leading-relaxed max-w-lg">
+                            Tradiciones, arte y momentos que forman parte de nuestra historia. Descubre nuestras galerías de Semana Santa, Carnaval, Almossassa, conciertos, teatro, folklore y Noche en Blanco.
+                        </p>
+                        
+                        <a href="#" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-highlight hover:text-brand-highlight transition-colors cursor-pointer">
+                            Explorar cultura
+                        </a>
+                    </div>
+                    
+                    <!-- Columna Derecha: Imagen desde Google Sheets (Hoja CULTURA, celda D5) o Imagen por defecto -->
+                    <div class="w-full lg:w-1/2">
+                        <div class="relative w-full overflow-hidden shadow-2xl">
+                            <img id="img-seccion-cultura" src="https://images.unsplash.com/photo-1533605553641-76865fc2db2b?q=80&w=800&auto=format&fit=crop" alt="Nuestra Cultura" class="w-full h-auto object-cover grayscale transition-transform duration-700 hover:scale-105">
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -503,8 +537,16 @@
                 if (imgSeccion && datosCompletos.imgSinBalon && String(datosCompletos.imgSinBalon).trim() !== '') {
                     imgSeccion.src = datosCompletos.imgSinBalon;
                 } else if (imgSeccion) {
-                    // Si no hay imagen, se muestra una de archivo relacionada con la fotografía.
                     imgSeccion.src = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=800&auto=format&fit=crop';
+                }
+                
+                // 4. Cargar Imagen de la sección "NUESTRA CULTURA" (Celda D5 de la hoja Cultura)
+                const imgCultura = document.getElementById('img-seccion-cultura');
+                if (imgCultura && datosCompletos.imgCultura && String(datosCompletos.imgCultura).trim() !== '') {
+                    imgCultura.src = datosCompletos.imgCultura;
+                } else if (imgCultura) {
+                    // Imagen por defecto temática cultural
+                    imgCultura.src = 'https://images.unsplash.com/photo-1533605553641-76865fc2db2b?q=80&w=800&auto=format&fit=crop';
                 }
                 
             } catch (error) {
