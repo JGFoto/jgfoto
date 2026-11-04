@@ -66,12 +66,13 @@
                     
                     <!-- Menú Desplegable Categorías -->
                     <div class="relative">
-                        <button id="desktop-cat-btn" class="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors focus:outline-none">
+                        <button id="desktop-cat-btn" class="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                             Categorías
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <!-- pointer-events-none evita que el svg bloquee el clic del botón -->
+                            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         
-                        <!-- Dropdown -->
+                        <!-- Dropdown de Escritorio -->
                         <div id="desktop-cat-menu" class="hidden absolute top-full left-0 mt-2 w-56 bg-brand-base border border-zinc-800 rounded-md shadow-xl py-2 z-50">
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Fútbol</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Fútbol femenino</a>
@@ -83,13 +84,12 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Esgrima</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Atletismo</a>
                             <div class="border-t border-zinc-700 my-1"></div>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Más deportes</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Mas deportes</a>
                         </div>
                     </div>
                     
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div> <!-- Separador visual -->
                     
-                    <!-- Ahora Sin balón y Cultura tienen el mismo formato que el resto -->
                     <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Sin balón</a>
                     <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Cultura</a>
 
@@ -100,7 +100,7 @@
                 <!-- Botón Menú Móvil -->
                 <div class="flex md:hidden items-center">
                     <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md transition-colors">
-                        <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="h-7 w-7 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
                     </button>
@@ -109,7 +109,7 @@
         </div>
 
         <!-- Menú Móvil Desplegable -->
-        <div id="mobile-menu" class="hidden md:hidden bg-brand-base border-t border-zinc-800 absolute w-full shadow-lg">
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-base border-t border-zinc-800 absolute w-full shadow-lg z-50">
             <div class="px-4 pt-2 pb-6 space-y-1 max-h-[85vh] overflow-y-auto">
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-bold text-brand-dark bg-brand-accent">Inicio</a>
                 
@@ -117,28 +117,27 @@
                 <div>
                     <button id="mobile-cat-btn" class="w-full flex justify-between items-center px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent transition-colors focus:outline-none">
                         Categorías
-                        <svg id="mobile-cat-icon" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <svg id="mobile-cat-icon" class="w-5 h-5 transform transition-transform pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     
                     <!-- Submenú móvil (oculto por defecto) -->
                     <div id="mobile-cat-menu" class="hidden pl-6 pr-3 py-2 space-y-2 bg-zinc-900/50 rounded-md mt-1">
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Fútbol</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Fútbol femenino</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Baloncesto</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">BSR</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Ciclismo</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Carrera</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Rugby</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Esgrima</a>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Atletismo</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Fútbol</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Fútbol femenino</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Baloncesto</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">BSR</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Ciclismo</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Carrera</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Rugby</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Esgrima</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Atletismo</a>
                         <div class="border-t border-zinc-700/50 my-1"></div>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent">Más deportes</a>
+                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Mas deportes</a>
                     </div>
                 </div>
 
                 <div class="border-t border-zinc-700 my-2"></div>
                 
-                <!-- Sin balón y Cultura en móvil con estilo estándar -->
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Sin balón</a>
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Cultura</a>
                 
@@ -151,23 +150,19 @@
 
     <!-- HERO SECTION (Bienvenida) -->
     <section class="relative bg-black overflow-hidden border-b border-zinc-800">
-        <!-- Imagen de fondo placeholder -->
         <div class="absolute inset-0">
             <img src="https://placehold.co/1920x800/18181b/3f3f46?text=FOTO+DEPORTIVA+EPICA+BADAJOZ" alt="Fotografía deportiva en Badajoz" class="w-full h-full object-cover opacity-30 grayscale">
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/50 to-transparent"></div>
         </div>
         
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col items-center text-center">
-            <!-- Ubicación / Tag superior -->
             <span class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-4">Fotografía deportiva - Badajoz</span>
             
-            <!-- Lema principal -->
             <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 drop-shadow-lg">
                 Capturando momentos,<br>
                 <span class="text-brand-accent">creando recuerdos.</span>
             </h1>
             
-            <!-- Sublema -->
             <p class="mt-4 text-xl sm:text-2xl text-gray-300 max-w-2xl drop-shadow font-light italic">
                 "El instante pasa, la emoción se queda"
             </p>
@@ -180,7 +175,7 @@
         </div>
     </section>
 
-    <!-- SECCIÓN DE EVENTOS RECIENTES (Grid de Álbumes) -->
+    <!-- SECCIÓN DE EVENTOS RECIENTES -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
         <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
             <div>
@@ -190,7 +185,7 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <!-- Tarjeta 1 (Ejemplo BSR) -->
+            <!-- Tarjetas de ejemplo... -->
             <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
                 <div class="relative h-56 overflow-hidden">
                     <img src="https://placehold.co/600x400/27272a/71717a?text=Partido+BSR" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
@@ -205,6 +200,128 @@
                 </div>
             </article>
 
-            <!-- Tarjeta 2 (Ejemplo Futfem) -->
             <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
-                <div class="relative h-56 overflow-
+                <div class="relative h-56 overflow-hidden">
+                    <img src="https://placehold.co/600x400/27272a/71717a?text=Partido+Futfem" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Futfem</span>
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <span class="text-brand-accent text-xs font-semibold mb-1">05 Noviembre 2023 • El Vivero</span>
+                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Santa Teresa CD vs Cacereño Femenino</h3>
+                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Derbi extremeño cargado de tensión y grandes jugadas bajo la lluvia.</p>
+                </div>
+            </article>
+
+            <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
+                <div class="relative h-56 overflow-hidden">
+                    <img src="https://placehold.co/600x400/27272a/71717a?text=Competicion+Gimnasia" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sin Balón</span>
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <span class="text-brand-accent text-xs font-semibold mb-1">20 Octubre 2023 • Pabellón Juancho Pérez</span>
+                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Campeonato Regional de Gimnasia Rítmica</h3>
+                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Movimiento, elasticidad y color en una jornada de deporte en estado puro.</p>
+                </div>
+            </article>
+            
+            <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
+                <div class="relative h-56 overflow-hidden">
+                    <img src="https://placehold.co/600x400/27272a/71717a?text=Evento+Cultural" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cultura</span>
+                    </div>
+                </div>
+                <div class="p-5 flex flex-col flex-grow">
+                    <span class="text-brand-accent text-xs font-semibold mb-1">Carnavales 2023 • Paseo de San Francisco</span>
+                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Gran Desfile de Comparsas de Badajoz</h3>
+                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Los colores, los trajes y la percusión del Carnaval de Interés Turístico Internacional.</p>
+                </div>
+            </article>
+        </div>
+        
+        <div class="mt-12 text-center">
+            <button class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none">
+                Cargar más galerías
+                <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-white py-12 mt-auto border-t border-zinc-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0 text-center md:text-left">
+                <span class="text-xl font-extrabold tracking-tighter">
+                    tu<span class="text-brand-accent">foto</span>enfoco
+                </span>
+                <p class="text-gray-400 text-sm mt-2">Fotografía deportiva en Badajoz.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT DE INTERACCIONES -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- MENÚ MÓVIL PRINCIPAL ---
+            const btnMobileMenu = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const iconPathMenu = document.getElementById('menu-icon');
+
+            if(btnMobileMenu) {
+                btnMobileMenu.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    if (mobileMenu.classList.contains('hidden')) {
+                        iconPathMenu.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); 
+                    } else {
+                        iconPathMenu.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+                    }
+                });
+            }
+
+            // --- MENÚ DESPLEGABLE ESCRITORIO (CATEGORÍAS) ---
+            const desktopCatBtn = document.getElementById('desktop-cat-btn');
+            const desktopCatMenu = document.getElementById('desktop-cat-menu');
+
+            if(desktopCatBtn) {
+                desktopCatBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Evita que recargue si estuviera en un <a>
+                    e.stopPropagation(); // Evita que se propague al documento y lo cierre al instante
+                    desktopCatMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Cerrar menú escritorio al hacer clic en cualquier otra parte de la pantalla
+            document.addEventListener('click', () => {
+                if (desktopCatMenu && !desktopCatMenu.classList.contains('hidden')) {
+                    desktopCatMenu.classList.add('hidden');
+                }
+            });
+
+            // Evitar que el menú se cierre si haces clic directamente dentro de sus opciones
+            if(desktopCatMenu) {
+                desktopCatMenu.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            }
+
+            // --- MENÚ DESPLEGABLE MÓVIL (CATEGORÍAS) ---
+            const mobileCatBtn = document.getElementById('mobile-cat-btn');
+            const mobileCatMenu = document.getElementById('mobile-cat-menu');
+            const mobileCatIcon = document.getElementById('mobile-cat-icon');
+
+            if(mobileCatBtn) {
+                mobileCatBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileCatMenu.classList.toggle('hidden');
+                    mobileCatIcon.classList.toggle('rotate-180');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
