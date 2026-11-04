@@ -258,15 +258,13 @@
                         </a>
                     </div>
                     
-                    <!-- Columna Derecha: Imagen desde Google Sheets (Hoja SIN BALÓN, Celda D5) -->
+                    <!-- Columna Derecha: Imagen desde Google Sheets o Imagen por defecto -->
                     <div class="w-full lg:w-1/2">
                         <div class="relative w-full overflow-hidden shadow-2xl">
-                            <img id="img-seccion-sin-balon" src="https://placehold.co/800x600/18181b/3f3f46?text=Cargando..." alt="Momento Sin Balón" class="w-full h-auto object-cover grayscale transition-transform duration-700 hover:scale-105">
+                            <!-- La imagen por defecto es una cámara de fotos de Unsplash, cambiará automáticamente si hay un enlace válido en Google Sheets -->
+                            <img id="img-seccion-sin-balon" src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=800&auto=format&fit=crop" alt="Momento Sin Balón" class="w-full h-auto object-cover grayscale transition-transform duration-700 hover:scale-105">
                         </div>
-                        <div class="mt-4 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 bg-brand-accent rounded-full inline-block"></span>
-                            <span class="text-brand-accent text-xs font-bold">8 visitas</span>
-                        </div>
+                        <!-- Se eliminó el contador de visitas -->
                     </div>
 
                 </div>
@@ -481,7 +479,8 @@
                 if (imgSeccion && datosCompletos.imgSinBalon && String(datosCompletos.imgSinBalon).trim() !== '') {
                     imgSeccion.src = datosCompletos.imgSinBalon;
                 } else if (imgSeccion) {
-                    imgSeccion.src = 'https://placehold.co/800x600/18181b/3f3f46?text=Falta+Imagen+en+Celda+D5';
+                    // Si no hay imagen, se muestra una de archivo relacionada con la fotografía.
+                    imgSeccion.src = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=800&auto=format&fit=crop';
                 }
                 
             } catch (error) {
