@@ -37,7 +37,22 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Ocultar barra de scroll para siempre en los carruseles */
+        /* Barra de scroll personalizada para los carruseles horizontales */
+        .carrusel-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-track {
+            background: #18181b;
+            border-radius: 4px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb {
+            background: #eab308;
+            border-radius: 4px;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb:hover {
+            background: #facc15;
+        }
+        
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -166,6 +181,7 @@
     <!-- SECCIÓN PRINCIPAL DE GALERÍAS -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full overflow-hidden">
         
+        <!-- === ÚLTIMAS GALERÍAS === -->
         <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4" id="titulo-galerias">
             <div>
                 <h2 class="text-3xl font-bold text-white tracking-tight">Últimas Galerías</h2>
@@ -173,7 +189,6 @@
             </div>
         </div>
 
-        <!-- 1. Envoltorio Carrusel Principal -->
         <div class="relative w-full group">
             <button id="prev-main" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
                 <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
@@ -188,8 +203,30 @@
             </button>
         </div>
         
-        <!-- Botón Más Galerías (Fijo y sin acción por ahora) -->
-        <div class="mt-8 flex justify-center w-full">
+        <!-- === GALERÍAS DESTACADAS === -->
+        <!-- Estará oculto por defecto hasta que detecte que hay destacadas -->
+        <div class="flex justify-between items-end mt-20 mb-10 border-b border-zinc-800 pb-4" id="titulo-destacadas" style="display: none;">
+            <div>
+                <h2 class="text-3xl font-bold text-white tracking-tight">Galerías Destacadas</h2>
+                <p class="text-gray-400 mt-2">Los mejores reportajes de la temporada</p>
+            </div>
+        </div>
+
+        <div class="relative w-full group" id="wrapper-destacadas" style="display: none;">
+            <button id="prev-destacadas" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            
+            <div id="contenedor-destacadas" class="flex flex-wrap justify-center gap-8 w-full pb-4">
+            </div>
+
+            <button id="next-destacadas" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1 md:p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+        
+        <!-- Botón Más Galerías -->
+        <div class="mt-16 flex justify-center w-full">
             <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                 Más galerías
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -212,7 +249,7 @@
     <!-- SCRIPT LÓGICO -->
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
-        
+
         function checkIsTrue(val) {
             return val === true || String(val).trim().toUpperCase() === 'TRUE';
         }
@@ -321,17 +358,18 @@
             if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
             if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
-            // Inicializar interacción en el carrusel principal
+            // Inicializar interacción en los carruseles
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
+            inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
 
             cargarGaleriasDesdeSheet();
             
-            // Botón Más Galerías sin funcionalidad (plantilla)
+            // Botón Más Galerías (plantilla)
             const btnCargarMas = document.getElementById('btn-cargar-mas');
             if(btnCargarMas) {
                 btnCargarMas.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Botón Más Galerías - Clickeado (Preparado para el futuro)');
+                    console.log('Botón Más Galerías - Clickeado');
                 });
             }
         });
@@ -342,15 +380,16 @@
                 const respuesta = await fetch(APPS_SCRIPT_URL);
                 const todasLasGalerias = await respuesta.json();
                 
-                // Actualizar ambos menús (Categorías principales y Más deportes)
                 actualizarMenusDinamicos(todasLasGalerias);
                 
+                // Extraer galerías según la columna
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
+                const galeriasDestacadas = todasLasGalerias.filter(g => checkIsTrue(g.Destacadas));
                 
+                // 1. Renderizar Últimas Galerías
                 const contPrincipal = document.getElementById('contenedor-galerias');
                 const prevMain = document.getElementById('prev-main');
                 const nextMain = document.getElementById('next-main');
-
                 contPrincipal.innerHTML = ''; 
 
                 if (galeriasPrincipales.length === 0) {
@@ -362,13 +401,42 @@
                     nextMain.classList.add('hidden');
                     galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
                 } else {
-                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start cursor-pointer';
+                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer';
                     prevMain.classList.remove('hidden');
                     nextMain.classList.remove('hidden');
                     galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
                 }
+
+                // 2. Renderizar Galerías Destacadas (Columna Q)
+                const contDestacadas = document.getElementById('contenedor-destacadas');
+                const prevDestacadas = document.getElementById('prev-destacadas');
+                const nextDestacadas = document.getElementById('next-destacadas');
+                const tituloDestacadas = document.getElementById('titulo-destacadas');
+                const wrapperDestacadas = document.getElementById('wrapper-destacadas');
+                contDestacadas.innerHTML = '';
+
+                if (galeriasDestacadas.length > 0) {
+                    tituloDestacadas.style.display = 'flex';
+                    wrapperDestacadas.style.display = 'block';
+
+                    if (galeriasDestacadas.length <= 4) {
+                        contDestacadas.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
+                        prevDestacadas.classList.add('hidden');
+                        nextDestacadas.classList.add('hidden');
+                        galeriasDestacadas.forEach(evento => contDestacadas.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
+                    } else {
+                        contDestacadas.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer';
+                        prevDestacadas.classList.remove('hidden');
+                        nextDestacadas.classList.remove('hidden');
+                        galeriasDestacadas.forEach(evento => contDestacadas.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
+                    }
+                } else {
+                    // Si no hay ninguna marcada como destacada, ocultamos la sección entera
+                    tituloDestacadas.style.display = 'none';
+                    wrapperDestacadas.style.display = 'none';
+                }
                 
-                // Mostrar el botón de Más Galerías (incluso aunque no haga nada)
+                // Mostrar el botón de Más Galerías (siempre activo al final de la página)
                 document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 
             } catch (error) {
