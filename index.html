@@ -68,7 +68,6 @@
                     <div class="relative">
                         <button id="desktop-cat-btn" class="flex items-center gap-1 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                             Categorías
-                            <!-- pointer-events-none evita que el svg bloquee el clic del botón -->
                             <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         
@@ -83,8 +82,20 @@
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Rugby</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Esgrima</a>
                             <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Atletismo</a>
+                            
                             <div class="border-t border-zinc-700 my-1"></div>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">Mas deportes</a>
+                            
+                            <!-- Submenú de Más deportes (Escritorio) -->
+                            <div class="relative w-full">
+                                <button id="desktop-mas-deportes-btn" class="w-full flex justify-between items-center px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors focus:outline-none">
+                                    Más deportes
+                                    <svg class="w-4 h-4 transform -rotate-90 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <!-- Aquí se inyectarán las categorías desde el Excel -->
+                                <div id="desktop-mas-deportes-menu" class="hidden absolute top-0 left-full ml-1 w-48 bg-brand-base border border-zinc-800 rounded-md shadow-xl py-2">
+                                    <span class="block px-4 py-2 text-sm text-gray-500">Cargando...</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -120,7 +131,7 @@
                         <svg id="mobile-cat-icon" class="w-5 h-5 transform transition-transform pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                     </button>
                     
-                    <!-- Submenú móvil (oculto por defecto) -->
+                    <!-- Submenú Categorías móvil -->
                     <div id="mobile-cat-menu" class="hidden pl-6 pr-3 py-2 space-y-2 bg-zinc-900/50 rounded-md mt-1">
                         <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Fútbol</a>
                         <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Fútbol femenino</a>
@@ -131,8 +142,20 @@
                         <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Rugby</a>
                         <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Esgrima</a>
                         <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Atletismo</a>
+                        
                         <div class="border-t border-zinc-700/50 my-1"></div>
-                        <a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">Mas deportes</a>
+                        
+                        <!-- Submenú de Más deportes (Móvil) -->
+                        <div>
+                            <button id="mobile-mas-deportes-btn" class="w-full flex justify-between items-center text-sm font-medium text-gray-400 hover:text-brand-accent py-1 focus:outline-none">
+                                Más deportes
+                                <svg id="mobile-mas-deportes-icon" class="w-4 h-4 transform transition-transform pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <!-- Aquí se inyectarán las categorías desde el Excel -->
+                            <div id="mobile-mas-deportes-menu" class="hidden pl-4 py-1 space-y-2 border-l border-zinc-700/50 ml-2 mt-1">
+                                <span class="block text-sm text-gray-500 py-1">Cargando...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -175,7 +198,7 @@
         </div>
     </section>
 
-    <!-- SECCIÓN DE EVENTOS RECIENTES -->
+    <!-- SECCIÓN DE EVENTOS RECIENTES (Dinámico) -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
         <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
             <div>
@@ -184,67 +207,14 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <!-- Tarjetas de ejemplo... -->
-            <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
-                <div class="relative h-56 overflow-hidden">
-                    <img src="https://placehold.co/600x400/27272a/71717a?text=Partido+BSR" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">BSR</span>
-                    </div>
-                </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <span class="text-brand-accent text-xs font-semibold mb-1">12 Octubre 2023 • Pabellón La Granadilla</span>
-                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Mideba Extremadura vs Bidaideak Bilbao</h3>
-                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Jornada apasionante de la División de Honor de Baloncesto en Silla de Ruedas.</p>
-                </div>
-            </article>
-
-            <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
-                <div class="relative h-56 overflow-hidden">
-                    <img src="https://placehold.co/600x400/27272a/71717a?text=Partido+Futfem" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Futfem</span>
-                    </div>
-                </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <span class="text-brand-accent text-xs font-semibold mb-1">05 Noviembre 2023 • El Vivero</span>
-                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Santa Teresa CD vs Cacereño Femenino</h3>
-                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Derbi extremeño cargado de tensión y grandes jugadas bajo la lluvia.</p>
-                </div>
-            </article>
-
-            <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
-                <div class="relative h-56 overflow-hidden">
-                    <img src="https://placehold.co/600x400/27272a/71717a?text=Competicion+Gimnasia" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Sin Balón</span>
-                    </div>
-                </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <span class="text-brand-accent text-xs font-semibold mb-1">20 Octubre 2023 • Pabellón Juancho Pérez</span>
-                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Campeonato Regional de Gimnasia Rítmica</h3>
-                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Movimiento, elasticidad y color en una jornada de deporte en estado puro.</p>
-                </div>
-            </article>
-            
-            <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group border border-zinc-800 hover:border-brand-accent flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
-                <div class="relative h-56 overflow-hidden">
-                    <img src="https://placehold.co/600x400/27272a/71717a?text=Evento+Cultural" alt="Portada Álbum" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                    <div class="absolute top-3 left-3 flex gap-2">
-                        <span class="bg-black/80 backdrop-blur-sm text-white border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Cultura</span>
-                    </div>
-                </div>
-                <div class="p-5 flex flex-col flex-grow">
-                    <span class="text-brand-accent text-xs font-semibold mb-1">Carnavales 2023 • Paseo de San Francisco</span>
-                    <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">Gran Desfile de Comparsas de Badajoz</h3>
-                    <p class="text-sm text-gray-400 line-clamp-2 mt-auto">Los colores, los trajes y la percusión del Carnaval de Interés Turístico Internacional.</p>
-                </div>
-            </article>
+        <!-- Contenedor donde Javascript inyectará las tarjetas -->
+        <div id="contenedor-galerias" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <p id="mensaje-carga" class="text-brand-accent col-span-full text-center py-10 font-bold animate-pulse">Cargando galerías...</p>
         </div>
         
-        <div class="mt-12 text-center">
-            <button class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none">
+        <!-- Botón Cargar Más -->
+        <div class="mt-12 text-center" id="contenedor-cargar-mas" style="display: none;">
+            <button id="btn-cargar-mas" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                 Cargar más galerías
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
@@ -263,11 +233,18 @@
         </div>
     </footer>
 
-    <!-- SCRIPT DE INTERACCIONES -->
+    <!-- SCRIPT PRINCIPAL: MENÚS Y GOOGLE SHEETS -->
     <script>
+        // --- 1. CONFIGURACIÓN DE APPS SCRIPT ---
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
+        let todasLasGalerias = [];
+        let galeriasMostradas = 0;
+        const GALERIAS_POR_PAGINA = 8;
+
+        // --- 2. LÓGICA DE LA INTERFAZ Y MENÚS ---
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- MENÚ MÓVIL PRINCIPAL ---
+            // Lógica de menús principales (Móvil y Categorías)
             const btnMobileMenu = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const iconPathMenu = document.getElementById('menu-icon');
@@ -275,45 +252,22 @@
             if(btnMobileMenu) {
                 btnMobileMenu.addEventListener('click', () => {
                     mobileMenu.classList.toggle('hidden');
-                    if (mobileMenu.classList.contains('hidden')) {
-                        iconPathMenu.setAttribute('d', 'M4 6h16M4 12h16M4 18h16'); 
-                    } else {
-                        iconPathMenu.setAttribute('d', 'M6 18L18 6M6 6l12 12');
-                    }
+                    iconPathMenu.setAttribute('d', mobileMenu.classList.contains('hidden') ? 'M4 6h16M4 12h16M4 18h16' : 'M6 18L18 6M6 6l12 12');
                 });
             }
 
-            // --- MENÚ DESPLEGABLE ESCRITORIO (CATEGORÍAS) ---
             const desktopCatBtn = document.getElementById('desktop-cat-btn');
             const desktopCatMenu = document.getElementById('desktop-cat-menu');
-
             if(desktopCatBtn) {
                 desktopCatBtn.addEventListener('click', (e) => {
-                    e.preventDefault(); // Evita que recargue si estuviera en un <a>
-                    e.stopPropagation(); // Evita que se propague al documento y lo cierre al instante
+                    e.preventDefault(); e.stopPropagation();
                     desktopCatMenu.classList.toggle('hidden');
                 });
             }
 
-            // Cerrar menú escritorio al hacer clic en cualquier otra parte de la pantalla
-            document.addEventListener('click', () => {
-                if (desktopCatMenu && !desktopCatMenu.classList.contains('hidden')) {
-                    desktopCatMenu.classList.add('hidden');
-                }
-            });
-
-            // Evitar que el menú se cierre si haces clic directamente dentro de sus opciones
-            if(desktopCatMenu) {
-                desktopCatMenu.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                });
-            }
-
-            // --- MENÚ DESPLEGABLE MÓVIL (CATEGORÍAS) ---
             const mobileCatBtn = document.getElementById('mobile-cat-btn');
             const mobileCatMenu = document.getElementById('mobile-cat-menu');
             const mobileCatIcon = document.getElementById('mobile-cat-icon');
-
             if(mobileCatBtn) {
                 mobileCatBtn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -321,7 +275,149 @@
                     mobileCatIcon.classList.toggle('rotate-180');
                 });
             }
+
+            // Lógica de los submenús "Más deportes"
+            const desktopMasDeportesBtn = document.getElementById('desktop-mas-deportes-btn');
+            const desktopMasDeportesMenu = document.getElementById('desktop-mas-deportes-menu');
+            if(desktopMasDeportesBtn) {
+                desktopMasDeportesBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    desktopMasDeportesMenu.classList.toggle('hidden');
+                });
+            }
+
+            const mobileMasDeportesBtn = document.getElementById('mobile-mas-deportes-btn');
+            const mobileMasDeportesMenu = document.getElementById('mobile-mas-deportes-menu');
+            const mobileMasDeportesIcon = document.getElementById('mobile-mas-deportes-icon');
+            if(mobileMasDeportesBtn) {
+                mobileMasDeportesBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); e.stopPropagation();
+                    mobileMasDeportesMenu.classList.toggle('hidden');
+                    mobileMasDeportesIcon.classList.toggle('rotate-180');
+                });
+            }
+
+            // Cerrar menú escritorio al hacer click fuera
+            document.addEventListener('click', () => {
+                if (desktopCatMenu && !desktopCatMenu.classList.contains('hidden')) desktopCatMenu.classList.add('hidden');
+                if (desktopMasDeportesMenu && !desktopMasDeportesMenu.classList.contains('hidden')) desktopMasDeportesMenu.classList.add('hidden');
+            });
+            if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
+            if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
+
+            // Iniciar carga de datos
+            cargarGaleriasDesdeSheet();
+            const btnCargarMas = document.getElementById('btn-cargar-mas');
+            if(btnCargarMas) btnCargarMas.addEventListener('click', renderizarSiguientesGalerias);
         });
+
+        // --- 3. LÓGICA DE GOOGLE SHEETS ---
+        async function cargarGaleriasDesdeSheet() {
+            try {
+                const respuesta = await fetch(APPS_SCRIPT_URL);
+                todasLasGalerias = await respuesta.json();
+                
+                document.getElementById('contenedor-galerias').innerHTML = ''; 
+                galeriasMostradas = 0;
+                
+                actualizarSubmenuMasDeportes();
+                renderizarSiguientesGalerias();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 col-span-full text-center py-10">Error al cargar datos. Verifica la conexión o el script.</p>';
+            }
+        }
+
+        // Leer la Columna K y L para actualizar el menú automáticamente
+        function actualizarSubmenuMasDeportes() {
+            const masDeportesUnicos = new Set();
+            
+            // Recorremos las galerías buscando las que sean "Más deportes" (Col K y L)
+            todasLasGalerias.forEach(evento => {
+                if (evento.Es_Mas_Deportes === true && evento.Categoria_Mas_Deportes) {
+                    masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
+                }
+            });
+
+            const desktopMasMenu = document.getElementById('desktop-mas-deportes-menu');
+            const mobileMasMenu = document.getElementById('mobile-mas-deportes-menu');
+
+            if (masDeportesUnicos.size > 0) {
+                let htmlDesktop = '';
+                let htmlMobile = '';
+                
+                masDeportesUnicos.forEach(deporte => {
+                    htmlDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${deporte}</a>`;
+                    htmlMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${deporte}</a>`;
+                });
+                
+                desktopMasMenu.innerHTML = htmlDesktop;
+                mobileMasMenu.innerHTML = htmlMobile;
+            } else {
+                // Si no hay deportes marcados aún en el Excel
+                desktopMasMenu.innerHTML = '<span class="block px-4 py-2 text-sm text-gray-500">Próximamente</span>';
+                mobileMasMenu.innerHTML = '<span class="block text-sm text-gray-500 py-1">Próximamente</span>';
+            }
+        }
+
+        function renderizarSiguientesGalerias() {
+            const contenedor = document.getElementById('contenedor-galerias');
+            const contenedorBoton = document.getElementById('contenedor-cargar-mas');
+            
+            const tope = Math.min(galeriasMostradas + GALERIAS_POR_PAGINA, todasLasGalerias.length);
+            
+            for (let i = galeriasMostradas; i < tope; i++) {
+                const evento = todasLasGalerias[i];
+                
+                let catColorClass = "bg-black/80 text-white";
+                let borderColor = "border-zinc-800 hover:border-brand-accent";
+                let iconColor = "text-brand-accent";
+                
+                const categoriaFiltro = evento.Categoria_Header ? String(evento.Categoria_Header).toLowerCase().trim() : '';
+
+                if(categoriaFiltro === 'sin balón' || categoriaFiltro === 'sin balon') {
+                    catColorClass = "bg-brand-accent text-black";
+                    borderColor = "border-2 border-brand-accent/30 hover:border-brand-accent";
+                } else if(categoriaFiltro === 'cultura') {
+                    catColorClass = "bg-brand-highlight text-black";
+                    borderColor = "border-2 border-brand-highlight/30 hover:border-brand-highlight";
+                    iconColor = "text-brand-highlight";
+                }
+
+                const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
+                // Usamos las columnas Lugar (E) y Fecha (F)
+                const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
+
+                // Si es de "Más deportes" (K=TRUE), mostramos su categoría específica (L) en la tarjeta
+                const categoriaMostrar = evento.Es_Mas_Deportes && evento.Categoria_Mas_Deportes ? evento.Categoria_Mas_Deportes : (evento.Categoria_Header || 'General');
+
+                const htmlTarjeta = `
+                    <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)]">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="${catColorClass} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${categoriaMostrar}</span>
+                            </div>
+                            <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-zinc-700">
+                                <svg class="w-4 h-4 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                ${evento.Total_Fotos || 0}
+                            </div>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow">
+                            <span class="text-brand-accent text-xs font-semibold mb-1">${fechaLugarSegura}</span>
+                            <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">${evento.Titulo || ''}</h3>
+                            <p class="text-sm text-gray-400 line-clamp-2 mt-auto">${evento.Descripcion_Corta || ''}</p>
+                        </div>
+                    </article>
+                `;
+                
+                contenedor.insertAdjacentHTML('beforeend', htmlTarjeta);
+            }
+            
+            galeriasMostradas = tope;
+            contenedorBoton.style.display = (galeriasMostradas >= todasLasGalerias.length) ? 'none' : 'block';
+        }
     </script>
 </body>
 </html>
