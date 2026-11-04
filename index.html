@@ -462,4 +462,83 @@
             document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function actualizarSubmenuMasDeportes(datos)
+        function actualizarSubmenuMasDeportes(datos) {
+            const masDeportesUnicos = new Set();
+            datos.forEach(evento => {
+                if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) {
+                    masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
+                }
+            });
+
+            const desktopMasMenu = document.getElementById('desktop-mas-deportes-menu');
+            const mobileMasMenu = document.getElementById('mobile-mas-deportes-menu');
+
+            if (masDeportesUnicos.size > 0) {
+                let htmlDesktop = '';
+                let htmlMobile = '';
+                masDeportesUnicos.forEach(deporte => {
+                    htmlDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${deporte}</a>`;
+                    htmlMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${deporte}</a>`;
+                });
+                desktopMasMenu.innerHTML = htmlDesktop;
+                mobileMasMenu.innerHTML = htmlMobile;
+            }
+        }
+
+        // Generador de Tarjetas
+        function generarTarjetaHTML(evento) {
+            // Evaluamos la categoría principal de la Columna J
+            const catHeaderOriginal = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : 'General';
+            
+            let catColorClass = "bg-black/80 text-white";
+            let borderColor = "border-zinc-800 hover:border-brand-accent";
+            let iconColor = "text-brand-accent";
+            let categoriaMostrar = catHeaderOriginal;
+
+            // Filtros de color
+            if(catHeaderOriginal.toLowerCase() === 'sin balón' || catHeaderOriginal.toLowerCase() === 'sin balon') {
+                catColorClass = "bg-brand-accent text-black";
+                borderColor = "border-2 border-brand-accent/30 hover:border-brand-accent";
+            } else if(catHeaderOriginal.toLowerCase() === 'cultura') {
+                catColorClass = "bg-brand-highlight text-black";
+                borderColor = "border-2 border-brand-highlight/30 hover:border-brand-highlight";
+                iconColor = "text-brand-highlight";
+            }
+
+            // Lógica exacta de la Columna J y L.
+            // "si en esa columna [J] es la categoria mas deporte entonces tiene que cogerlo de la columna L"
+            const esMasDeportesColJ = catHeaderOriginal.toLowerCase() === 'más deportes' || catHeaderOriginal.toLowerCase() === 'mas deportes';
+            if (esMasDeportesColJ) {
+                categoriaMostrar = evento.Categoria_Mas_Deportes && evento.Categoria_Mas_Deportes.trim() !== '' 
+                    ? evento.Categoria_Mas_Deportes.trim() 
+                    : 'Más deportes'; // Fallback por si la columna L está vacía
+            }
+
+            const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
+            const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
+
+            const claseAnchoFijo = "w-full sm:w-[300px] lg:w-[280px] xl:w-[280px] flex-shrink-0 snap-start select-none";
+
+            return `
+                <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} flex flex-col transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] ${claseAnchoFijo}">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none">
+                        <div class="absolute top-3 left-3 flex gap-2">
+                            <span class="${catColorClass} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">${categoriaMostrar}</span>
+                        </div>
+                        <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-zinc-700 pointer-events-none">
+                            <svg class="w-4 h-4 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            ${evento.Total_Fotos || 0}
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow pointer-events-none">
+                        <span class="text-brand-accent text-xs font-semibold mb-1">${fechaLugarSegura}</span>
+                        <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">${evento.Titulo || ''}</h3>
+                        <p class="text-sm text-gray-400 line-clamp-2 mt-auto">${evento.Descripcion_Corta || ''}</p>
+                    </div>
+                </article>
+            `;
+        }
+    </script>
+</body>
+</html>
