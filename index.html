@@ -37,20 +37,13 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Barra de scroll personalizada para los carruseles horizontales */
-        .carrusel-scroll::-webkit-scrollbar {
-            height: 8px; /* Altura de la barra horizontal */
+        /* Ocultar barra de scroll para siempre en los carruseles */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
         }
-        .carrusel-scroll::-webkit-scrollbar-track {
-            background: #18181b; /* Fondo oscuro */
-            border-radius: 4px;
-        }
-        .carrusel-scroll::-webkit-scrollbar-thumb {
-            background: #eab308; /* Amarillo de tu marca */
-            border-radius: 4px;
-        }
-        .carrusel-scroll::-webkit-scrollbar-thumb:hover {
-            background: #facc15; /* Amarillo más claro al pasar el ratón */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -192,16 +185,38 @@
             </div>
         </div>
 
-        <!-- 1. Contenedor inicial -->
-        <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full pb-4">
-            <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
+        <!-- 1. Envoltorio Carrusel Principal -->
+        <div class="relative w-full group">
+            <!-- Botones de flechas Principal -->
+            <button id="prev-main" class="hidden absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            
+            <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full pb-4">
+                <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
+            </div>
+
+            <button id="next-main" class="hidden absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+            </button>
         </div>
         
-        <!-- 2. Contenedor para "Cargar más" -->
-        <div id="contenedor-carrusel-mas" style="display: none;"></div>
+        <!-- 2. Envoltorio Carrusel Secundario ("Cargar más") -->
+        <div class="relative w-full group mt-12" id="wrapper-secundario" style="display: none;">
+            <!-- Botones de flechas Secundario -->
+            <button id="prev-mas" class="hidden absolute left-0 md:-left-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
+            
+            <div id="contenedor-carrusel-mas" class="flex flex-wrap justify-center gap-8 w-full pb-4"></div>
+
+            <button id="next-mas" class="hidden absolute right-0 md:-right-4 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
         
-        <!-- Botones de Acción -->
-        <div class="mt-12 flex justify-center gap-4 w-full">
+        <!-- Botones de Acción Global -->
+        <div class="mt-8 flex justify-center gap-4 w-full">
             <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                 Cargar más galerías
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -232,14 +247,83 @@
         
         let galeriasCarruselData = [];
 
-        // Función auxiliar para leer los checks de Sheets a prueba de errores
         function checkIsTrue(val) {
             return val === true || String(val).trim().toUpperCase() === 'TRUE';
         }
 
+        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL ---
+        function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
+            const slider = document.getElementById(contenedorId);
+            const prevBtn = document.getElementById(prevBtnId);
+            const nextBtn = document.getElementById(nextBtnId);
+            
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            let hasDragged = false;
+
+            // Evitar múltiples escuchadores
+            if(slider.dataset.init === 'true') return;
+            slider.dataset.init = 'true';
+
+            // Arrastre ratón/táctil
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                hasDragged = false;
+                slider.style.cursor = 'grabbing';
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.style.cursor = 'pointer';
+            });
+            
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+                slider.style.cursor = 'pointer';
+            });
+            
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2; // Multiplicador de velocidad de arrastre
+                if (Math.abs(walk) > 10) {
+                    hasDragged = true; // Identifica que es un arrastre, no un clic
+                }
+                slider.scrollLeft = scrollLeft - walk;
+            });
+
+            // Intercepta el clic si se ha arrastrado para evitar abrir la tarjeta por error
+            slider.addEventListener('click', (e) => {
+                if (hasDragged) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            }, true);
+
+            // Botones Laterales
+            if(prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    const tarjeta = slider.querySelector('article');
+                    // Desplazarse exactamente 1 tarjeta hacia la izquierda (+ 32px del hueco)
+                    if (tarjeta) slider.scrollBy({ left: -(tarjeta.offsetWidth + 32), behavior: 'smooth' });
+                });
+            }
+            if(nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    const tarjeta = slider.querySelector('article');
+                    // Desplazarse exactamente 1 tarjeta hacia la derecha (+ 32px del hueco)
+                    if (tarjeta) slider.scrollBy({ left: tarjeta.offsetWidth + 32, behavior: 'smooth' });
+                });
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             
-            // --- EVENTOS DEL MENÚ ---
+            // Eventos del menú general (Omitidos por brevedad visual, funcionan igual)
             const btnMobileMenu = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const iconPathMenu = document.getElementById('menu-icon');
@@ -252,43 +336,21 @@
 
             const desktopCatBtn = document.getElementById('desktop-cat-btn');
             const desktopCatMenu = document.getElementById('desktop-cat-menu');
-            if(desktopCatBtn) {
-                desktopCatBtn.addEventListener('click', (e) => {
-                    e.preventDefault(); e.stopPropagation();
-                    desktopCatMenu.classList.toggle('hidden');
-                });
-            }
+            if(desktopCatBtn) desktopCatBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); desktopCatMenu.classList.toggle('hidden'); });
 
             const mobileCatBtn = document.getElementById('mobile-cat-btn');
             const mobileCatMenu = document.getElementById('mobile-cat-menu');
             const mobileCatIcon = document.getElementById('mobile-cat-icon');
-            if(mobileCatBtn) {
-                mobileCatBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    mobileCatMenu.classList.toggle('hidden');
-                    mobileCatIcon.classList.toggle('rotate-180');
-                });
-            }
+            if(mobileCatBtn) mobileCatBtn.addEventListener('click', (e) => { e.preventDefault(); mobileCatMenu.classList.toggle('hidden'); mobileCatIcon.classList.toggle('rotate-180'); });
 
             const desktopMasDeportesBtn = document.getElementById('desktop-mas-deportes-btn');
             const desktopMasDeportesMenu = document.getElementById('desktop-mas-deportes-menu');
-            if(desktopMasDeportesBtn) {
-                desktopMasDeportesBtn.addEventListener('click', (e) => {
-                    e.preventDefault(); e.stopPropagation();
-                    desktopMasDeportesMenu.classList.toggle('hidden');
-                });
-            }
+            if(desktopMasDeportesBtn) desktopMasDeportesBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); desktopMasDeportesMenu.classList.toggle('hidden'); });
 
             const mobileMasDeportesBtn = document.getElementById('mobile-mas-deportes-btn');
             const mobileMasDeportesMenu = document.getElementById('mobile-mas-deportes-menu');
             const mobileMasDeportesIcon = document.getElementById('mobile-mas-deportes-icon');
-            if(mobileMasDeportesBtn) {
-                mobileMasDeportesBtn.addEventListener('click', (e) => {
-                    e.preventDefault(); e.stopPropagation();
-                    mobileMasDeportesMenu.classList.toggle('hidden');
-                    mobileMasDeportesIcon.classList.toggle('rotate-180');
-                });
-            }
+            if(mobileMasDeportesBtn) mobileMasDeportesBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); mobileMasDeportesMenu.classList.toggle('hidden'); mobileMasDeportesIcon.classList.toggle('rotate-180'); });
 
             document.addEventListener('click', () => {
                 if (desktopCatMenu && !desktopCatMenu.classList.contains('hidden')) desktopCatMenu.classList.add('hidden');
@@ -297,7 +359,11 @@
             if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
             if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
-            // --- INICIO DE DATOS ---
+            // Iniciar interacción de los dos carruseles (el ratón y los botones ya quedarán listos)
+            inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
+            inicializarCarruselInteractivos('contenedor-carrusel-mas', 'prev-mas', 'next-mas');
+
+            // Cargar datos Google Sheets
             cargarGaleriasDesdeSheet();
             
             const btnCargarMas = document.getElementById('btn-cargar-mas');
@@ -307,7 +373,7 @@
             if(btnOcultarMas) btnOcultarMas.addEventListener('click', ocultarSeccionCarrusel);
         });
 
-        // --- Carga y Gestión de Galerías ---
+        // --- Lógica de Google Sheets ---
         async function cargarGaleriasDesdeSheet() {
             try {
                 const respuesta = await fetch(APPS_SCRIPT_URL);
@@ -315,33 +381,38 @@
                 
                 actualizarSubmenuMasDeportes(todasLasGalerias);
                 
-                // 1. Galerías Principales (columna M) usando la verificación segura
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
-                
-                // 2. Más galerías (columna N) usando la verificación segura
                 galeriasCarruselData = todasLasGalerias.filter(g => checkIsTrue(g.Más_galerias));
                 
                 const contPrincipal = document.getElementById('contenedor-galerias');
+                const prevMain = document.getElementById('prev-main');
+                const nextMain = document.getElementById('next-main');
+
                 contPrincipal.innerHTML = ''; 
 
                 if (galeriasPrincipales.length === 0) {
                     contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
                     contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
                 } else if (galeriasPrincipales.length <= 4) {
-                    // Si son 4 o menos, mostramos centrado
+                    // Si son 4 o menos, se ocultan botones y centramos las tarjetas
                     contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
+                    prevMain.classList.add('hidden');
+                    nextMain.classList.add('hidden');
+
                     galeriasPrincipales.forEach(evento => {
                         contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
                     });
                 } else {
-                    // Si son MÁS de 4, forzamos CARRUSEL con scrollbar activa
-                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll pb-4 w-full justify-start';
+                    // Si son MÁS de 4, forzamos CARRUSEL, activamos drag y mostramos botones laterales
+                    contPrincipal.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start cursor-pointer';
+                    prevMain.classList.remove('hidden');
+                    nextMain.classList.remove('hidden');
+
                     galeriasPrincipales.forEach(evento => {
                         contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
                     });
                 }
                 
-                // Controlar aparición del botón
                 if (galeriasCarruselData.length > 0) {
                     document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 }
@@ -352,33 +423,38 @@
             }
         }
 
-        // --- Lógica del botón "Cargar más / Ocultar" ---
+        // --- Ocultar / Mostrar más galerías ---
         function mostrarSeccionCarrusel() {
             document.getElementById('btn-cargar-mas').style.display = 'none';
             document.getElementById('btn-ocultar-mas').style.display = 'inline-flex';
             
-            const contenedorSec = document.getElementById('contenedor-carrusel-mas');
-            contenedorSec.innerHTML = '';
+            const wrapperSec = document.getElementById('wrapper-secundario');
+            const contSec = document.getElementById('contenedor-carrusel-mas');
+            const prevMas = document.getElementById('prev-mas');
+            const nextMas = document.getElementById('next-mas');
+            
+            wrapperSec.style.display = 'block';
+            contSec.innerHTML = '';
             
             if (galeriasCarruselData.length <= 4) {
-                // Si son 4 o menos, mostramos centrado
-                contenedorSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full pb-4';
+                contSec.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
+                prevMas.classList.add('hidden');
+                nextMas.classList.add('hidden');
             } else {
-                // Si son MÁS de 4, forzamos CARRUSEL con scrollbar activa
-                contenedorSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll pb-4 mt-8 w-full justify-start';
+                contSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 w-full justify-start cursor-pointer';
+                prevMas.classList.remove('hidden');
+                nextMas.classList.remove('hidden');
             }
             
-            contenedorSec.style.display = 'flex';
-            
             galeriasCarruselData.forEach(evento => {
-                contenedorSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
+                contSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
             });
         }
 
         function ocultarSeccionCarrusel() {
-            const contenedorSec = document.getElementById('contenedor-carrusel-mas');
-            contenedorSec.style.display = 'none';
-            contenedorSec.innerHTML = ''; 
+            const wrapperSec = document.getElementById('wrapper-secundario');
+            wrapperSec.style.display = 'none';
+            document.getElementById('contenedor-carrusel-mas').innerHTML = ''; 
             
             document.getElementById('btn-ocultar-mas').style.display = 'none';
             document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
@@ -386,72 +462,4 @@
             document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        function actualizarSubmenuMasDeportes(datos) {
-            const masDeportesUnicos = new Set();
-            datos.forEach(evento => {
-                if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) {
-                    masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
-                }
-            });
-
-            const desktopMasMenu = document.getElementById('desktop-mas-deportes-menu');
-            const mobileMasMenu = document.getElementById('mobile-mas-deportes-menu');
-
-            if (masDeportesUnicos.size > 0) {
-                let htmlDesktop = '';
-                let htmlMobile = '';
-                masDeportesUnicos.forEach(deporte => {
-                    htmlDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${deporte}</a>`;
-                    htmlMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${deporte}</a>`;
-                });
-                desktopMasMenu.innerHTML = htmlDesktop;
-                mobileMasMenu.innerHTML = htmlMobile;
-            }
-        }
-
-        // Generador de Tarjetas
-        function generarTarjetaHTML(evento) {
-            let catColorClass = "bg-black/80 text-white";
-            let borderColor = "border-zinc-800 hover:border-brand-accent";
-            let iconColor = "text-brand-accent";
-            
-            const categoriaFiltro = evento.Categoria_Header ? String(evento.Categoria_Header).toLowerCase().trim() : '';
-
-            if(categoriaFiltro === 'sin balón' || categoriaFiltro === 'sin balon') {
-                catColorClass = "bg-brand-accent text-black";
-                borderColor = "border-2 border-brand-accent/30 hover:border-brand-accent";
-            } else if(categoriaFiltro === 'cultura') {
-                catColorClass = "bg-brand-highlight text-black";
-                borderColor = "border-2 border-brand-highlight/30 hover:border-brand-highlight";
-                iconColor = "text-brand-highlight";
-            }
-
-            const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
-            const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
-            const categoriaMostrar = checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes ? evento.Categoria_Mas_Deportes : (evento.Categoria_Header || 'General');
-
-            const claseAnchoFijo = "w-full sm:w-[300px] lg:w-[280px] xl:w-[280px] flex-shrink-0 snap-start";
-
-            return `
-                <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] ${claseAnchoFijo}">
-                    <div class="relative h-56 overflow-hidden">
-                        <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <div class="absolute top-3 left-3 flex gap-2">
-                            <span class="${catColorClass} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${categoriaMostrar}</span>
-                        </div>
-                        <div class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-zinc-700">
-                            <svg class="w-4 h-4 ${iconColor}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            ${evento.Total_Fotos || 0}
-                        </div>
-                    </div>
-                    <div class="p-5 flex flex-col flex-grow">
-                        <span class="text-brand-accent text-xs font-semibold mb-1">${fechaLugarSegura}</span>
-                        <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors">${evento.Titulo || ''}</h3>
-                        <p class="text-sm text-gray-400 line-clamp-2 mt-auto">${evento.Descripcion_Corta || ''}</p>
-                    </div>
-                </article>
-            `;
-        }
-    </script>
-</body>
-</html>
+        function actualizarSubmenuMasDeportes(datos)
