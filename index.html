@@ -185,17 +185,16 @@
             </div>
         </div>
 
-        <!-- 1. Cuadrícula inicial (Aquí van las 4 elegidas en la columna Ultimas_galerias) -->
-        <div id="contenedor-galerias" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <p id="mensaje-carga" class="text-brand-accent col-span-full text-center py-10 font-bold animate-pulse">Cargando galerías...</p>
+        <!-- 1. Contenedor inicial (MÁXIMO 5 GALERÍAS, SIEMPRE CENTRADAS) -->
+        <div id="contenedor-galerias" class="flex flex-wrap justify-center gap-8 w-full">
+            <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
         </div>
         
-        <!-- 2. Contenedor que aparecerá al pulsar "Cargar más" (Grid o Carrusel) -->
-        <!-- Estará oculto por defecto -->
+        <!-- 2. Contenedor para "Cargar más" -->
         <div id="contenedor-carrusel-mas" style="display: none;"></div>
         
         <!-- Botón Cargar Más -->
-        <div class="mt-12 text-center" id="contenedor-cargar-mas" style="display: none;">
+        <div class="mt-12 text-center w-full" id="contenedor-cargar-mas" style="display: none;">
             <button id="btn-cargar-mas" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                 Cargar más galerías
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -217,6 +216,7 @@
 
     <!-- SCRIPT LÓGICO -->
     <script>
+        // URL de tu Apps Script
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
         
         let galeriasCarruselData = [];
@@ -299,18 +299,18 @@
                 // Actualizar menú "Más Deportes"
                 actualizarSubmenuMasDeportes(todasLasGalerias);
                 
-                // 1. Filtrar exactamente un MÁXIMO de 4 para la cabecera
-                const galeriasPrincipales = todasLasGalerias.filter(g => g.Ultimas_galerias === true).slice(0, 4);
+                // 1. Filtrar exactamente un MÁXIMO de 5 para la cabecera
+                const galeriasPrincipales = todasLasGalerias.filter(g => g.Ultimas_galerias === true).slice(0, 5);
                 
-                // 2. Guardar las que van en "Cargar más" (Carrusel)
+                // 2. Guardar las que van en "Cargar más" (Carrusel / Columna N)
                 galeriasCarruselData = todasLasGalerias.filter(g => g.Carrusel_ultimas_galerias === true);
                 
                 const contPrincipal = document.getElementById('contenedor-galerias');
                 if (galeriasPrincipales.length === 0) {
-                    contPrincipal.innerHTML = '<p class="col-span-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
+                    contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
                 } else {
                     galeriasPrincipales.forEach(evento => {
-                        contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento, false));
+                        contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
                     });
                 }
                 
@@ -321,7 +321,7 @@
                 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 col-span-full text-center py-10">Error al cargar datos. Verifica los permisos del Script.</p>';
+                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 w-full text-center py-10">Error al cargar datos. Verifica los permisos del Script.</p>';
             }
         }
 
@@ -332,29 +332,25 @@
             
             const contenedorSec = document.getElementById('contenedor-carrusel-mas');
             contenedorSec.innerHTML = '';
-            contenedorSec.style.display = 'flex'; // Necesario activarlo
             
-            if (galeriasCarruselData.length <= 4) {
-                // Si son 4 o menos, mostramos GRID normal (tarjetas estáticas)
-                contenedorSec.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-12 w-full';
-                galeriasCarruselData.forEach(evento => {
-                    contenedorSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento, false));
-                });
+            if (galeriasCarruselData.length <= 5) {
+                // Si son 5 o menos, mostramos FLEX normal (estáticas, envueltas y centradas)
+                contenedorSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full';
             } else {
-                // Si son MÁS de 4, mostramos CARRUSEL SCROLLABLE
-                // Clases Tailwind para carrusel fluido con puntos de snap
-                contenedorSec.className = 'flex overflow-x-auto gap-6 snap-x snap-mandatory no-scrollbar py-4 mt-8 w-full';
-                galeriasCarruselData.forEach(evento => {
-                    // Pasamos "true" para que le asigne los estilos del carrusel a la tarjeta
-                    contenedorSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento, true));
-                });
+                // Si son MÁS de 5, forzamos FLEX sin envolver (carrusel) justificado a la izquierda
+                contenedorSec.className = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory no-scrollbar py-4 mt-8 w-full justify-start';
             }
+            
+            contenedorSec.style.display = 'flex'; // Necesario para anular el display: none
+            
+            galeriasCarruselData.forEach(evento => {
+                contenedorSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
+            });
         }
 
         function actualizarSubmenuMasDeportes(datos) {
             const masDeportesUnicos = new Set();
             datos.forEach(evento => {
-                // Adaptado al nuevo nombre "Categoria_Mas_Deportes"
                 if (evento.Es_Mas_Deportes === true && evento.Categoria_Mas_Deportes) {
                     masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
                 }
@@ -376,7 +372,7 @@
         }
 
         // Generador de Tarjetas
-        function generarTarjetaHTML(evento, modoCarrusel) {
+        function generarTarjetaHTML(evento) {
             let catColorClass = "bg-black/80 text-white";
             let borderColor = "border-zinc-800 hover:border-brand-accent";
             let iconColor = "text-brand-accent";
@@ -393,17 +389,15 @@
             }
 
             const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
-            
-            // Adaptado a las nuevas columnas "Fecha" y "Lugar"
             const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
-
             const categoriaMostrar = evento.Es_Mas_Deportes && evento.Categoria_Mas_Deportes ? evento.Categoria_Mas_Deportes : (evento.Categoria_Header || 'General');
 
-            // Si está en modo Carrusel, le forzamos un ancho para que las demás se oculten a la derecha y se puedan scrollear
-            const clasesDeCarrusel = modoCarrusel ? "min-w-[85%] sm:min-w-[45%] lg:min-w-[30%] xl:min-w-[24%] flex-shrink-0 snap-start" : "";
+            // Esta clase unificada garantiza que las tarjetas tengan un tamaño idéntico en cualquier situación.
+            // Al usar flex-shrink-0, si se agrupan en flex-wrap se centran. Si es un carrusel (flex-nowrap), provocan scroll.
+            const claseAnchoFijo = "w-full sm:w-[300px] lg:w-[280px] xl:w-[280px] flex-shrink-0 snap-start";
 
             return `
-                <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] ${clasesDeCarrusel}">
+                <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} flex flex-col cursor-pointer transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] ${claseAnchoFijo}">
                     <div class="relative h-56 overflow-hidden">
                         <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out">
                         <div class="absolute top-3 left-3 flex gap-2">
