@@ -188,22 +188,11 @@
             </button>
         </div>
         
-        <!-- 2. Envoltorio Secundario ("Cargar más" - SIN CARRUSEL) -->
-        <div class="relative w-full group mt-12" id="wrapper-secundario" style="display: none;">
-            <!-- Ya no hay botones de carrusel aquí -->
-            <div id="contenedor-carrusel-mas" class="flex flex-wrap justify-center gap-8 w-full pb-4"></div>
-        </div>
-        
-        <!-- Botones de Acción Global -->
-        <div class="mt-8 flex justify-center gap-4 w-full">
+        <!-- Botón Más Galerías (Fijo y sin acción por ahora) -->
+        <div class="mt-8 flex justify-center w-full">
             <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
-                Cargar más galerías
+                Más galerías
                 <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            
-            <button id="btn-ocultar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
-                Ocultar galerías
-                <svg class="ml-2 -mr-1 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
             </button>
         </div>
     </main>
@@ -224,13 +213,11 @@
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
         
-        let galeriasCarruselData = [];
-
         function checkIsTrue(val) {
             return val === true || String(val).trim().toUpperCase() === 'TRUE';
         }
 
-        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL (Sólo para Principal) ---
+        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL ---
         function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(contenedorId);
             const prevBtn = document.getElementById(prevBtnId);
@@ -334,16 +321,19 @@
             if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
             if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
-            // Inicializar interacción sólo en el carrusel principal
+            // Inicializar interacción en el carrusel principal
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
 
             cargarGaleriasDesdeSheet();
             
+            // Botón Más Galerías sin funcionalidad (plantilla)
             const btnCargarMas = document.getElementById('btn-cargar-mas');
-            const btnOcultarMas = document.getElementById('btn-ocultar-mas');
-            
-            if(btnCargarMas) btnCargarMas.addEventListener('click', mostrarSeccionMas);
-            if(btnOcultarMas) btnOcultarMas.addEventListener('click', ocultarSeccionMas);
+            if(btnCargarMas) {
+                btnCargarMas.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Botón Más Galerías - Clickeado (Preparado para el futuro)');
+                });
+            }
         });
 
         // --- Carga y Gestión de Galerías ---
@@ -352,10 +342,10 @@
                 const respuesta = await fetch(APPS_SCRIPT_URL);
                 const todasLasGalerias = await respuesta.json();
                 
+                // Actualizar ambos menús (Categorías principales y Más deportes)
                 actualizarMenusDinamicos(todasLasGalerias);
                 
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
-                galeriasCarruselData = todasLasGalerias.filter(g => checkIsTrue(g.Más_galerias));
                 
                 const contPrincipal = document.getElementById('contenedor-galerias');
                 const prevMain = document.getElementById('prev-main');
@@ -378,43 +368,13 @@
                     galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
                 }
                 
-                if (galeriasCarruselData.length > 0) {
-                    document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
-                }
+                // Mostrar el botón de Más Galerías (incluso aunque no haga nada)
+                document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 w-full text-center py-10">Error al cargar datos. Verifica los permisos del Script.</p>';
             }
-        }
-
-        function mostrarSeccionMas() {
-            document.getElementById('btn-cargar-mas').style.display = 'none';
-            document.getElementById('btn-ocultar-mas').style.display = 'inline-flex';
-            
-            const wrapperSec = document.getElementById('wrapper-secundario');
-            const contSec = document.getElementById('contenedor-carrusel-mas');
-            
-            wrapperSec.style.display = 'block';
-            contSec.innerHTML = '';
-            
-            // SIEMPRE será un flex-wrap normal, sin carrusel.
-            contSec.className = 'flex flex-wrap justify-center gap-8 mt-12 w-full pb-4';
-            
-            galeriasCarruselData.forEach(evento => {
-                contSec.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento));
-            });
-        }
-
-        function ocultarSeccionMas() {
-            const wrapperSec = document.getElementById('wrapper-secundario');
-            wrapperSec.style.display = 'none';
-            document.getElementById('contenedor-carrusel-mas').innerHTML = ''; 
-            
-            document.getElementById('btn-ocultar-mas').style.display = 'none';
-            document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
-            
-            document.getElementById('titulo-galerias').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // --- LÓGICA DE MENÚS DINÁMICOS ---
