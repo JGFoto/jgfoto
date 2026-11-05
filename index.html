@@ -129,6 +129,28 @@
         @media (min-width: 768px) and (max-width: 1199px) {
             .max-w-\[1600px\], .max-w-\[95\%\] { max-width: 97vw !important; }
         }
+        /* Bloques editoriales: más imagen y menos espacio vacío en pantallas grandes */
+        .feature-split-inner { display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:clamp(1.5rem,3vw,3.5rem); align-items:stretch; }
+        .feature-copy { min-width:0; }
+        .feature-image-frame { min-height:clamp(420px,34vw,700px); height:100%; }
+        .feature-image-frame > img { width:100%; height:100%; min-height:inherit; object-fit:cover; }
+        .effort-story-panel { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); gap:clamp(1.5rem,4vw,4rem); align-items:center; padding:clamp(1.75rem,4vw,4.5rem); border:1px solid #292929; border-radius:1rem; background:radial-gradient(ellipse at 8% 50%,rgba(241,233,51,.09),transparent 42%),linear-gradient(120deg,#111113,#050505 70%); }
+        .effort-story-title { max-width:14ch; font-size:clamp(2.6rem,4.6vw,5.5rem); line-height:.98; letter-spacing:-.055em; }
+        .effort-story-copy { position:relative; padding-left:clamp(1.25rem,2.5vw,2.5rem); border-left:3px solid #F1E933; }
+        @media (max-width:1023px) {
+            .feature-split-inner { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:1.5rem; }
+            .feature-image-frame { min-height:clamp(340px,48vw,520px); }
+            .effort-story-panel { grid-template-columns:1fr; gap:1.5rem; }
+            .effort-story-title { max-width:18ch; }
+        }
+        @media (max-width:767px) {
+            .feature-split-inner { grid-template-columns:1fr; gap:1.5rem; }
+            .feature-image-frame { min-height:0; height:auto; aspect-ratio:4/3; }
+            .feature-image-frame > img { min-height:0; height:100%; }
+            .effort-story-panel { padding:1.5rem; border-radius:.75rem; }
+            .effort-story-title { font-size:clamp(2.35rem,10vw,3.5rem); }
+            .effort-story-copy { padding-left:1rem; }
+        }
     </style>
 </head>
 <body class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
@@ -248,86 +270,64 @@
             </div>
         </section>
 
-        <section class="alternating-section py-24 lg:py-32 border-b border-zinc-800 transition-colors duration-300">
+        <section class="alternating-section py-16 lg:py-20 border-b border-zinc-800 transition-colors duration-300">
             <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
-                    <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[400px]">
-                        <div>
-                            <div class="flex items-center gap-4 mb-3">
-                                <div class="w-8 h-px bg-brand-accent"></div>
-                                <span class="text-brand-accent text-xs font-bold tracking-widest uppercase">Otra forma de mirar el deporte</span>
-                            </div>
-                            <h2 class="text-7xl sm:text-8xl font-black text-white tracking-tight flex items-baseline">
-                                SIN BALÓN <span class="text-brand-accent ml-2">.</span>
-                            </h2>
+                <div class="feature-split-inner">
+                    <div class="feature-copy flex flex-col justify-center items-start py-2 lg:py-6">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-8 h-px bg-brand-accent"></div>
+                            <span class="text-brand-accent text-xs font-bold tracking-widest uppercase">Otra forma de mirar el deporte</span>
                         </div>
-                        <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-xl">
-                            <p class="text-2xl sm:text-3xl text-gray-200 font-bold leading-tight">
-                                La tensión en el banquillo. La voz de la grada. Un abrazo al final.
-                            </p>
-                            <p class="text-base sm:text-lg text-gray-400">
-                                Los momentos que también forman parte del juego.
-                            </p>
+                        <h2 class="text-6xl sm:text-7xl xl:text-8xl font-black text-white tracking-tight leading-none">SIN BALÓN<span class="text-brand-accent">.</span></h2>
+                        <div class="mt-7 mb-8 max-w-2xl">
+                            <p class="text-2xl sm:text-3xl xl:text-4xl text-gray-100 font-bold leading-tight">La tensión en el banquillo. La voz de la grada. Un abrazo al final.</p>
+                            <p class="text-base sm:text-lg text-gray-400 mt-4">Los momentos que también forman parte del juego.</p>
                         </div>
-                        <a href="sin-balon.html" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors cursor-pointer rounded-sm">
-                            Descubrir sin balón
-                        </a>
+                        <a href="sin-balon.html" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors cursor-pointer rounded-sm">Descubrir sin balón</a>
                     </div>
-                    <div class="w-full lg:w-1/2 flex items-stretch">
-                        <div class="relative w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
-                            <img id="img-seccion-sin-balon" onclick="abrirModalImagenSimple(this.src)" src="" alt="Momento Sin Balón" class="opacity-0">
-                        </div>
+                    <div class="feature-image-frame relative rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
+                        <img id="img-seccion-sin-balon" onclick="abrirModalImagenSimple(this.src)" src="" alt="Momento Sin Balón" class="opacity-0">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="alternating-section py-16 lg:py-24 border-b border-zinc-800 transition-colors duration-300">
+        <section class="alternating-section py-14 lg:py-16 border-b border-zinc-800 transition-colors duration-300">
             <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
-                    <div class="w-full lg:w-1/2">
-                        <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none">
-                            TU ESFUERZO. TU HISTORIA. TU FOTO.
-                        </h2>
+                <div class="effort-story-panel">
+                    <div>
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-8 h-px bg-brand-accent"></div>
+                            <span class="text-brand-accent text-xs font-bold tracking-widest uppercase">Cada momento cuenta</span>
+                        </div>
+                        <h2 class="effort-story-title font-black text-white uppercase">TU ESFUERZO.<br><span class="text-brand-accent">TU HISTORIA.</span><br>TU FOTO.</h2>
                     </div>
-                    <div class="w-full lg:w-1/2">
-                        <p class="text-lg sm:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-xl transform transition-transform duration-300 hover:scale-105 inline-block cursor-default">
-                            El gol, la última zancada, esa mirada antes de salir. Hay momentos que merecen quedarse contigo.
-                        </p>
+                    <div class="effort-story-copy">
+                        <p class="text-xl sm:text-2xl lg:text-3xl text-gray-100 font-semibold leading-snug">El gol, la última zancada, esa mirada antes de salir.</p>
+                        <p class="text-base sm:text-lg text-gray-400 leading-relaxed mt-5">Hay momentos que merecen quedarse contigo. Encuentra el tuyo y llévate el recuerdo.</p>
+                        <div class="mt-7 flex items-center gap-3 text-brand-accent text-xs font-bold uppercase tracking-widest"><span class="w-8 h-px bg-brand-accent"></span>Fotografía que cuenta historias</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="alternating-section py-24 lg:py-32 border-b border-zinc-800 transition-colors duration-300">
+        <section class="alternating-section py-16 lg:py-20 border-b border-zinc-800 transition-colors duration-300">
             <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
-                    <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[400px]">
-                        <div>
-                            <div class="flex items-center gap-4 mb-3">
-                                <div class="w-8 h-px bg-brand-highlight"></div>
-                                <span class="text-brand-highlight text-xs font-bold tracking-widest uppercase">Arte, tradición y emociones</span>
-                            </div>
-                            <h2 class="text-7xl sm:text-8xl font-black text-white tracking-tight uppercase flex items-baseline">
-                                Nuestra Cultura
-                            </h2>
+                <div class="feature-split-inner">
+                    <div class="feature-copy flex flex-col justify-center items-start py-2 lg:py-6">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-8 h-px bg-brand-highlight"></div>
+                            <span class="text-brand-highlight text-xs font-bold tracking-widest uppercase">Arte, tradición y emociones</span>
                         </div>
-                        <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-xl">
-                            <p class="text-2xl sm:text-3xl text-gray-200 font-bold leading-tight">
-                                Tradiciones, arte y momentos que forman parte de nuestra historia.
-                            </p>
-                            <p class="text-base sm:text-lg text-gray-400">
-                                Descubre nuestras galerías de Semana Santa, Carnaval, Almossassa, conciertos, teatro, folklore y Noche en Blanco.
-                            </p>
+                        <h2 class="text-6xl sm:text-7xl xl:text-8xl font-black text-white tracking-tight uppercase leading-none">Nuestra Cultura</h2>
+                        <div class="mt-7 mb-8 max-w-2xl">
+                            <p class="text-2xl sm:text-3xl xl:text-4xl text-gray-100 font-bold leading-tight">Tradiciones, arte y momentos que forman parte de nuestra historia.</p>
+                            <p class="text-base sm:text-lg text-gray-400 mt-4">Descubre nuestras galerías de Semana Santa, Carnaval, Almossassa, conciertos, teatro, folklore y Noche en Blanco.</p>
                         </div>
-                        <a href="cultura.html" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-highlight hover:text-brand-highlight transition-colors cursor-pointer rounded-sm">
-                            Explorar cultura
-                        </a>
+                        <a href="cultura.html" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-highlight hover:text-brand-highlight transition-colors cursor-pointer rounded-sm">Explorar cultura</a>
                     </div>
-                    <div class="w-full lg:w-1/2 flex items-stretch">
-                        <div class="relative w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
-                            <img id="img-seccion-cultura" onclick="abrirModalImagenSimple(this.src)" src="" alt="Nuestra Cultura" class="opacity-0">
-                        </div>
+                    <div class="feature-image-frame relative rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
+                        <img id="img-seccion-cultura" onclick="abrirModalImagenSimple(this.src)" src="" alt="Nuestra Cultura" class="opacity-0">
                     </div>
                 </div>
             </div>
