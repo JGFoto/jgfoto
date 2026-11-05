@@ -203,6 +203,24 @@
 @media (max-width:767px) { #modal-contacto { align-items:center !important; overflow:hidden !important; padding:12px !important; } #modal-contacto > div { width:100% !important; max-height:calc(100dvh - 24px) !important; padding:18px 16px !important; } #modal-contacto #form-contacto textarea { height:82px !important; min-height:82px !important; } }
 
 </style>
+
+<style id="intro-copy-panel-sizing">
+/* El recuadro se ajusta al contenido más ancho y queda centrado; el texto conserva alineación izquierda. */
+.intro-copy-panel {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  text-align: left;
+  box-sizing: border-box;
+}
+.intro-copy-panel ul,
+.intro-copy-panel li { text-align: left; }
+@media (max-width: 640px) {
+  .intro-copy-panel { width: 100%; }
+}
+</style>
+
 </head>
 <body class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
 
@@ -254,7 +272,7 @@
 
         <section class="alternating-section py-16 lg:py-24 border-b border-zinc-800 transition-colors duration-300">
             <div class="w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="w-full box-border border border-white p-6 sm:p-8 lg:p-10 2xl:p-12 text-[clamp(0.95rem,1vw,1.125rem)] text-gray-200 leading-relaxed rounded-2xl shadow-none bg-black/20">
+                <div class="intro-copy-panel box-border border border-white p-6 sm:p-8 lg:p-10 2xl:p-12 text-[clamp(0.95rem,1vw,1.125rem)] text-gray-200 leading-relaxed rounded-2xl shadow-none bg-black/20">
                     <ul class="pl-4 bullet-yellow space-y-4">
                         <li>En TUFOTO<span class="text-brand-highlight font-bold">ENFOCO</span> documento la pasión del deporte para transformarla en recuerdos imborrables.</li>
                         <li>Explora las galerías, encuéntrate en la acción y vuelve a sentir la emoción de cada instante.</li>
