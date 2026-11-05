@@ -15,6 +15,9 @@
     
     <script>
         tailwind.config = {
+            future: {
+                hoverOnlyWhenSupported: true,
+            },
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
@@ -34,29 +37,16 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Personalización de barra de desplazamiento fina (3px) y centrada */
-        .carrusel-scroll::-webkit-scrollbar { 
-            height: 3px; 
-        }
-        .carrusel-scroll::-webkit-scrollbar-track { 
-            background-color: #18181b; 
-            border-radius: 2px;
-        }
-        /* Solo en pantallas grandes acortamos el raíl para que mida aprox 3 tarjetas (900px) */
+        .carrusel-scroll::-webkit-scrollbar { height: 3px; }
+        .carrusel-scroll::-webkit-scrollbar-track { background-color: #18181b; border-radius: 2px; }
         @media (min-width: 1024px) {
             .carrusel-scroll::-webkit-scrollbar-track { 
                 margin-left: calc(50vw - 450px);
                 margin-right: calc(50vw - 450px);
             }
         }
-        .carrusel-scroll::-webkit-scrollbar-thumb { 
-            background-color: #F1E933; 
-            border-radius: 2px;
-        }
-        .carrusel-scroll::-webkit-scrollbar-thumb:hover { 
-            background-color: #d4cc20; 
-        }
-
+        .carrusel-scroll::-webkit-scrollbar-thumb { background-color: #F1E933; border-radius: 2px; }
+        .carrusel-scroll::-webkit-scrollbar-thumb:hover { background-color: #d4cc20; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .bullet-yellow li::before {
@@ -66,16 +56,21 @@
 </head>
 <body class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
 
-    <header id="main-header" class="bg-brand-dark border-b border-zinc-800 sticky top-0 z-50 transition-all duration-500">
+    <!-- PANTALLA DE CARGA INICIAL (Evita parpadeos) -->
+    <div id="pantalla-carga" class="fixed inset-0 bg-zinc-950 z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-accent mb-4"></div>
+        <p class="text-brand-accent text-sm font-bold tracking-widest uppercase animate-pulse">Cargando...</p>
+    </div>
+
+    <!-- EL HEADER EMPIEZA OCULTO (hidden) -->
+    <header id="main-header" class="hidden bg-brand-dark border-b border-zinc-800 sticky top-0 z-50 transition-all duration-500">
         <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-24">
                 
-                <!-- IZQUIERDA: Logo -->
                 <div id="header-logo-container" class="flex-1 flex justify-start items-center cursor-pointer transition-all duration-500" onclick="window.scrollTo(0,0)">
                     <img src="https://i.imgur.com/jCOEEj0.png" alt="tufotoenfoco" class="h-10 md:h-14 w-auto">
                 </div>
 
-                <!-- CENTRO: Navegación Principal -->
                 <nav id="nav-links-container" class="hidden md:flex flex-auto justify-center items-center transition-all duration-500">
                     <div id="nav-links-normal" class="flex items-center space-x-2 lg:space-x-4">
                         <a href="#" class="px-3 py-2 rounded-md text-base font-bold text-brand-accent transition-colors">Inicio</a>
@@ -110,7 +105,6 @@
                     <a href="#" id="nav-link-contacto" class="abrir-contacto px-3 py-2 rounded-md text-base font-normal text-gray-300 hover:text-brand-accent transition-colors">Contacto</a>
                 </nav>
 
-                <!-- DERECHA: Redes Sociales -->
                 <div id="header-social-container" class="flex-1 hidden md:flex justify-end items-center gap-4 px-2 text-brand-accent transition-all duration-500">
                     <span class="text-white text-sm font-bold uppercase tracking-widest mr-1">Sígueme:</span>
                     <a href="https://www.instagram.com/tufotoenfoco/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" title="Instagram">
@@ -121,7 +115,6 @@
                     </a>
                 </div>
 
-                <!-- Botón Menú Móvil -->
                 <div id="mobile-menu-btn-container" class="flex md:hidden items-center flex-1 justify-end">
                     <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md transition-colors">
                         <svg class="h-7 w-7 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -130,7 +123,6 @@
             </div>
         </div>
 
-        <!-- Menú Móvil Desplegable -->
         <div id="mobile-menu" class="hidden md:hidden bg-brand-base border-t border-zinc-800 absolute w-full shadow-lg z-50">
             <div id="mobile-nav-links" class="px-4 pt-2 pb-6 space-y-1 max-h-[85vh] overflow-y-auto">
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-bold text-brand-dark bg-brand-accent">Inicio</a>
@@ -163,7 +155,7 @@
     </header>
 
     <!-- PANTALLA DE MANTENIMIENTO / CONSTRUCCIÓN -->
-    <div id="estado-mensaje" class="hidden flex-grow flex flex-col items-center justify-center min-h-[60vh] text-center px-6 py-20 bg-zinc-950 relative z-20">
+    <div id="estado-mensaje" class="hidden flex-grow flex-col items-center justify-center min-h-[60vh] text-center px-6 py-20 bg-zinc-950 relative z-20">
         <div class="w-16 h-16 bg-brand-accent rounded-full flex items-center justify-center text-black mb-6 animate-bounce shadow-[0_0_20px_rgba(241,233,51,0.3)]">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         </div>
@@ -171,8 +163,8 @@
         <p id="estado-desc" class="text-gray-400 text-lg md:text-xl max-w-xl font-light leading-relaxed"></p>
     </div>
 
-    <!-- CONTENIDO NORMAL DE LA WEB -->
-    <main class="flex-grow w-full overflow-hidden flex flex-col" id="main-content-sections">
+    <!-- EL MAIN EMPIEZA OCULTO -->
+    <main id="main-content-sections" class="hidden flex-grow w-full overflow-hidden flex-col">
         
         <section class="relative bg-black overflow-hidden border-b border-zinc-800 min-h-[calc(100vh-96px)] flex">
             <div class="absolute inset-0">
@@ -354,18 +346,19 @@
             </div>
         </section>
 
-        <!-- CAJA DE BADAJOZ ES DEPORTE GARANTIZADA -->
+        <!-- CAJA DE BADAJOZ ES DEPORTE EXACTA A LA IMAGEN[cite: 1] -->
         <section class="alternating-section py-16 flex justify-center items-center overflow-hidden transition-colors duration-300">
-            <div class="bg-brand-highlight px-6 sm:px-10 py-6 sm:py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 w-full max-w-5xl flex justify-center items-center rounded-sm">
-                <h3 class="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-black uppercase tracking-widest sm:tracking-[0.15em] m-0 leading-tight text-center break-words">
-                    BADAJOZ ES DEPORTE <span class="mx-2 sm:mx-4 inline-block">*</span> BADAJOZ ES MÁS
+            <div class="bg-brand-highlight px-6 sm:px-10 py-6 sm:py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 w-auto flex justify-center items-center rounded-sm">
+                <!-- Se usa text-[4.5vw] en móviles para que jamás baje de línea -->
+                <h3 class="text-[4.5vw] sm:text-3xl md:text-4xl lg:text-5xl font-black text-black uppercase m-0 leading-none text-center whitespace-nowrap tracking-normal">
+                    *BADAJOZ ES DEPORTE *BADAJOZ ES MÁS
                 </h3>
             </div>
         </section>
     </main>
 
-    <!-- FOOTER -->
-    <footer id="main-footer" class="bg-[#0a0a0a] text-white py-12 lg:py-16 mt-auto border-t border-zinc-800 transition-all duration-500">
+    <!-- EL FOOTER EMPIEZA OCULTO -->
+    <footer id="main-footer" class="hidden bg-[#0a0a0a] text-white py-12 lg:py-16 mt-auto border-t border-zinc-800 transition-all duration-500">
         <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row justify-between items-center gap-8 mb-10">
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
@@ -449,7 +442,7 @@
         <img id="modal-imagen-simple-src" src="" class="max-h-[90vh] max-w-[95vw] object-contain shadow-2xl transform scale-95 transition-transform duration-300">
     </div>
 
-    <!-- MODALES CONTACTO (Formulario, Éxito, Error) -->
+    <!-- MODALES CONTACTO -->
     <div id="modal-contacto" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base border border-zinc-800 rounded-2xl p-6 sm:p-10 max-w-lg w-full relative transform scale-95 transition-transform duration-300 shadow-2xl">
             <button id="btn-cerrar-contacto" class="absolute top-4 right-4 text-gray-400 hover:text-brand-accent transition-colors focus:outline-none">
@@ -481,7 +474,6 @@
         </div>
     </div>
     
-    <!-- MODAL ÉXITO -->
     <div id="modal-exito" class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base border border-zinc-800 rounded-2xl p-8 max-w-sm w-full relative transform scale-95 transition-transform duration-300 shadow-2xl text-center">
             <div class="w-16 h-16 bg-brand-accent rounded-full flex items-center justify-center mx-auto mb-5 text-black shadow-[0_0_15px_rgba(241,233,51,0.3)]">
@@ -495,7 +487,6 @@
         </div>
     </div>
     
-    <!-- MODAL ERROR -->
     <div id="modal-error" class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base border border-zinc-800 rounded-2xl p-8 max-w-sm w-full relative transform scale-95 transition-transform duration-300 shadow-2xl text-center">
             <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-5 text-black shadow-[0_0_15px_rgba(239,68,68,0.3)]">
@@ -540,7 +531,6 @@
             toggleModal(modal, true);
         }
 
-        // Lógica actualizada para visibilidad dinámica de botones y desbordamiento
         function updateCarouselButtons(sliderId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(sliderId);
             const prevBtn = document.getElementById(prevBtnId);
@@ -650,7 +640,6 @@
             document.getElementById('modal-gal-lugar').textContent = ev.Lugar || 'Lugar sin especificar';
             document.getElementById('modal-gal-fecha').textContent = ev.Fecha || '';
 
-            // Map variables (ahora adaptadas a las nuevas columnas O y P)
             const habilitarDescarga = checkIsTrue(ev.Descarga) || checkIsTrue(ev['Descarga gratis']) || checkIsTrue(ev.Habilitar_Descarga) || checkIsTrue(ev.O);
             const habilitarCompra = checkIsTrue(ev.Compra) || checkIsTrue(ev['Activar compra']) || checkIsTrue(ev.Habilitar_Compra) || checkIsTrue(ev.P);
             
@@ -830,36 +819,38 @@
             try {
                 const req = await fetch(APPS_SCRIPT_URL);
                 const data = await req.json();
-                
-                // LÓGICA DE ESTADOS (Construcción / Mantenimiento)
+
+                // LÓGICA DE ESTADOS Y PANTALLA DE CARGA
+                document.getElementById('pantalla-carga').style.display = 'none';
+
                 const gWeb = data.gestionWeb || {};
                 const isConstruccion = checkIsTrue(gWeb.construccion);
                 const isMantenimiento = checkIsTrue(gWeb.mantenimiento);
                 const isMantenimientoTotal = checkIsTrue(gWeb.mantenimientoTotal);
 
                 if (isConstruccion || isMantenimiento || isMantenimientoTotal) {
-                    // Ocultamos todas las secciones del main normal
-                    document.querySelectorAll('#main-content-sections > section').forEach(s => s.style.display = 'none');
                     document.getElementById('estado-mensaje').classList.remove('hidden');
+                    document.getElementById('estado-mensaje').classList.add('flex');
                     
                     if (isConstruccion) {
-                        // Construcción: Desaparece header. En el footer solo queda el logo y la frase.
                         document.getElementById('estado-titulo').textContent = 'Próximamente';
-                        document.getElementById('estado-desc').textContent = 'Estamos creando una nueva experiencia web. Vuelve pronto para descubrirla.';
-                        document.getElementById('main-header').style.display = 'none';
+                        document.getElementById('estado-desc').innerHTML = 'Estamos creando una nueva experiencia web.<br>Vuelve pronto para descubrirla.';
+                        document.getElementById('main-footer').classList.remove('hidden');
                         document.getElementById('footer-redes').style.display = 'none';
-                        document.getElementById('estado-mensaje').classList.add('min-h-screen');
+                        document.getElementById('estado-mensaje').classList.add('min-h-[calc(100vh-200px)]');
                     } else if (isMantenimientoTotal) {
-                        // Mantenimiento Total: Header sin enlaces (solo logo y redes). Footer sin contacto.
                         document.getElementById('estado-titulo').textContent = 'En Mantenimiento';
-                        document.getElementById('estado-desc').textContent = 'Estamos realizando mejoras técnicas en la web. Disculpa las molestias.';
+                        document.getElementById('estado-desc').innerHTML = 'Estamos realizando mejoras técnicas en la web.<br>Disculpa las molestias.';
+                        document.getElementById('main-header').classList.remove('hidden');
+                        document.getElementById('main-footer').classList.remove('hidden');
                         document.getElementById('nav-links-container').style.display = 'none';
                         document.getElementById('mobile-menu-btn-container').style.display = 'none';
                         document.querySelectorAll('.abrir-contacto').forEach(l => l.style.display = 'none');
                     } else if (isMantenimiento) {
-                        // Mantenimiento Parcial: Header con logo, contacto y redes. Footer normal.
                         document.getElementById('estado-titulo').textContent = 'En Mantenimiento';
-                        document.getElementById('estado-desc').textContent = 'Estamos actualizando las galerías, pero puedes contactarme si lo necesitas.';
+                        document.getElementById('estado-desc').innerHTML = '<span class="whitespace-nowrap">Estamos actualizando las galerías, pero puedes contactarme si lo necesitas.</span>';
+                        document.getElementById('main-header').classList.remove('hidden');
+                        document.getElementById('main-footer').classList.remove('hidden');
                         document.getElementById('nav-links-normal').style.display = 'none';
                         document.getElementById('mobile-nav-links').querySelectorAll('a, div').forEach(el => {
                             if(el.id !== 'mobile-nav-contacto' && !el.classList.contains('border-t')) {
@@ -867,12 +858,15 @@
                             }
                         });
                     }
-                    
-                    // Solo evitamos procesar galerías si estamos en construcción o mantenimiento total.
-                    if(isConstruccion || isMantenimientoTotal || isMantenimiento) return;
+                    return; 
                 }
 
-                // SI TODO ES NORMAL CONTINUAMOS AQUÍ
+                // SI TODO ES NORMAL, MOSTRAMOS LA WEB COMPLETA
+                document.getElementById('main-header').classList.remove('hidden');
+                document.getElementById('main-content-sections').classList.remove('hidden');
+                document.getElementById('main-content-sections').classList.add('flex');
+                document.getElementById('main-footer').classList.remove('hidden');
+                
                 const imgFondoPortada = document.getElementById('img-hero-fondo');
                 if(data.imgPortada && String(data.imgPortada).trim() !== '') {
                     imgFondoPortada.src = data.imgPortada;
@@ -882,7 +876,7 @@
                 const gals = data.galerias || [];
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
                 
-                // Actualizado para revisar explícitamente "Destacadas" y la "N" antigua
+                // Columnas de Google Sheet actualizadas
                 const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const dest = gals.filter(g => checkIsTrue(g.Destacadas) || checkIsTrue(g['Categorías destacadas']) || checkIsTrue(g.N));
                 
@@ -938,6 +932,8 @@
                 
             } catch (e) {
                 console.error(e);
+                // Por si falla, mostramos un error de cargar
+                document.getElementById('pantalla-carga').innerHTML = '<p class="text-red-500 font-bold">Error de conexión. Recarga la página.</p>';
             }
         }
 
@@ -993,7 +989,6 @@
             const fot = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
             const fec = `${evento.Fecha || ''} ${(evento.Fecha && evento.Lugar) ? '•' : ''} ${evento.Lugar || ''}`.trim();
 
-            // Hover effects aplicados a un subgrupo interno `.tarjeta-interior`
             return `
                 <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(241,233,51,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer relative z-10 ${bColor} hover:border-brand-accent">
                     <div class="tarjeta-interior h-full flex flex-col">
