@@ -108,6 +108,17 @@
             #header-logo-container img { max-width:100%; height:auto; }
             #nav-links-container { flex:1 1 auto; min-width:0; }
         }
+        /* Contenido adaptable a resoluciones de escritorio */
+        @media (min-width: 1200px) {
+            .max-w-\[1600px\] { max-width: min(98vw, 1900px) !important; }
+            .max-w-\[95\%\] { max-width: 98vw !important; }
+        }
+        @media (min-width: 1600px) {
+            .max-w-\[1600px\] { max-width: min(97vw, 2100px) !important; }
+        }
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .max-w-\[1600px\], .max-w-\[95\%\] { max-width: 97vw !important; }
+        }
     </style>
 </head>
 <body data-page="cultura" class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
@@ -401,7 +412,11 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Hablemos.</h3>
-            <p class="text-gray-400 text-sm mb-8">Rellena el formulario y me pondré en contacto contigo lo antes posible.</p>
+            <p class="text-gray-400 text-sm mb-5">Rellena el formulario y me pondré en contacto contigo lo antes posible.</p>
+            <div class="mb-7 rounded-lg border border-brand-accent/40 bg-brand-accent/5 px-4 py-3 shadow-[0_0_18px_rgba(241,233,51,0.05)]">
+                <p class="text-brand-accent text-xs font-bold uppercase tracking-wider mb-1">Solicitud de retirada de fotografías</p>
+                <p class="text-gray-300 text-sm leading-relaxed">Si deseas solicitar la retirada de una fotografía en la que aparezcas, indícame en el mensaje el nombre del álbum y el número de la fotografía para poder localizarla.</p>
+            </div>
             <form id="form-contacto" class="space-y-5">
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Tu nombre</label>
