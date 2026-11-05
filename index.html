@@ -23,8 +23,8 @@
                         brand: {
                             dark: '#000000',
                             base: '#18181b',
-                            accent: '#eab308',
-                            highlight: '#facc15',
+                            accent: '#E9D84A', /* Color amarillo extraído del logo ENFOCO */
+                            highlight: '#E9D84A',
                         }
                     }
                 }
@@ -36,14 +36,14 @@
         html { scroll-behavior: smooth; }
         .carrusel-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
         .carrusel-scroll::-webkit-scrollbar-track { background: #18181b; border-radius: 2px; }
-        .carrusel-scroll::-webkit-scrollbar-thumb { background: #eab308; border-radius: 2px; }
-        .carrusel-scroll::-webkit-scrollbar-thumb:hover { background: #facc15; }
+        .carrusel-scroll::-webkit-scrollbar-thumb { background: #E9D84A; border-radius: 2px; }
+        .carrusel-scroll::-webkit-scrollbar-thumb:hover { background: #E9D84A; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
         .bullet-yellow li::before {
             content: "•";
-            color: #facc15;
+            color: #E9D84A;
             font-weight: bold;
             display: inline-block;
             width: 1em;
@@ -92,6 +92,7 @@
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div>
                     <a href="#" class="abrir-contacto px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Contacto</a>
                     
+                    <!-- Redes sociales cabecera -->
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div>
                     <div class="flex items-center gap-4 px-2">
                         <a href="https://www.instagram.com/tufotoenfoco/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-brand-accent transition-colors" title="Instagram">
@@ -147,21 +148,37 @@
         </div>
     </header>
 
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION MODIFICADO CON IMAGEN DINÁMICA -->
     <section class="relative bg-black overflow-hidden border-b border-zinc-800">
         <div class="absolute inset-0">
-            <img src="https://placehold.co/1920x800/18181b/3f3f46?text=FOTO+DEPORTIVA+EPICA+BADAJOZ" alt="Fotografía deportiva en Badajoz" class="w-full h-full object-cover opacity-30 grayscale">
+            <img id="img-hero-fondo" src="https://placehold.co/1920x800/18181b/3f3f46?text=FOTO+DEPORTIVA+EPICA+BADAJOZ" alt="Fotografía deportiva en Badajoz" class="w-full h-full object-cover opacity-30 grayscale blur-sm">
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/50 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
         </div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32 flex flex-col items-center text-center">
-            <span class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-4">Fotografía deportiva - Badajoz</span>
-            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 drop-shadow-lg">
-                Capturando momentos,<br>
-                <span class="text-brand-accent">creando recuerdos.</span>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-48 flex flex-col items-start justify-center">
+            
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-8 h-px bg-brand-accent"></div>
+                <span class="text-brand-accent font-bold tracking-widest uppercase text-sm">Fotografía deportiva • Badajoz</span>
+            </div>
+
+            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white tracking-tighter mb-2 drop-shadow-lg leading-none">
+                CAPTURANDO<br>
+                MOMENTOS.
             </h1>
-            <p class="mt-4 text-xl sm:text-2xl text-gray-300 max-w-2xl drop-shadow font-light italic">
-                "El instante pasa, la emoción se queda"
+            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold text-brand-accent tracking-tighter mb-8 drop-shadow-lg leading-none">
+                CREANDO<br>
+                RECUERDOS.
+            </h1>
+
+            <p class="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl drop-shadow font-light mb-10">
+                El instante pasa, la emoción se queda.
             </p>
+
+            <a href="#" class="inline-flex items-center justify-center px-8 py-4 bg-brand-accent text-black text-xs font-bold uppercase tracking-widest hover:bg-brand-highlight transition-colors cursor-pointer rounded-sm">
+                Explorar galerías ↗
+            </a>
+            
         </div>
     </section>
 
@@ -171,7 +188,7 @@
         <!-- === SECCIÓN INFO (CAJA CON BORDE AMARILLO) === -->
         <section class="bg-[#121212] py-16 lg:py-24 border-b border-zinc-800">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="border border-brand-highlight p-8 sm:p-12 text-base sm:text-lg text-gray-200 leading-relaxed rounded-2xl shadow-[0_0_30px_rgba(250,204,21,0.05)] bg-black/20">
+                <div class="border border-brand-highlight p-8 sm:p-12 text-base sm:text-lg text-gray-200 leading-relaxed rounded-2xl shadow-[0_0_30px_rgba(233,216,74,0.05)] bg-black/20">
                     <ul class="pl-4 bullet-yellow space-y-4">
                         <li>En TUFOTO<span class="text-brand-highlight font-bold">ENFOCO</span> documento la pasión del deporte para transformarla en recuerdos imborrables.</li>
                         <li>Explora las galerías, encuéntrate en la acción y vuelve a sentir la emoción de cada instante.</li>
@@ -184,7 +201,7 @@
             </div>
         </section>
 
-        <!-- === ÚLTIMAS GALERÍAS (FONDO OSCURO) === -->
+        <!-- === ÚLTIMAS GALERÍAS === -->
         <section class="bg-zinc-950 pt-16 pb-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
@@ -199,7 +216,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
+                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start px-2 min-h-[350px]">
                         <p id="mensaje-carga-main" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
                     </div>
 
@@ -216,7 +233,7 @@
             </div>
         </section>
 
-        <!-- === GALERÍAS DESTACADAS (FONDO GRIS OSCURO ALTERNADO) === -->
+        <!-- === GALERÍAS DESTACADAS === -->
         <section id="seccion-destacadas" class="bg-[#121212] py-16 border-t border-zinc-800" style="display: none;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
@@ -231,7 +248,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
+                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start px-2 min-h-[350px]">
                     </div>
 
                     <button id="next-destacadas" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
@@ -269,7 +286,8 @@
                     </div>
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
-                            <img id="img-seccion-sin-balon" src="" alt="Momento Sin Balón" class="opacity-0">
+                            <!-- Al hacer click abre el modal simple con la imagen cargada -->
+                            <img id="img-seccion-sin-balon" onclick="abrirModalImagenSimple(this.src)" src="" alt="Momento Sin Balón" class="opacity-0">
                         </div>
                     </div>
                 </div>
@@ -322,7 +340,8 @@
                     </div>
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
-                            <img id="img-seccion-cultura" src="" alt="Nuestra Cultura" class="opacity-0">
+                            <!-- Al hacer click abre el modal simple con la imagen cargada -->
+                            <img id="img-seccion-cultura" onclick="abrirModalImagenSimple(this.src)" src="" alt="Nuestra Cultura" class="opacity-0">
                         </div>
                     </div>
                 </div>
@@ -331,7 +350,7 @@
 
         <!-- === BANNER BADAJOZ ES DEPORTE === -->
         <section class="bg-zinc-950 py-16 flex justify-center items-center overflow-hidden border-t border-zinc-800">
-            <div class="bg-brand-highlight px-6 sm:px-10 py-5 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.2)] cursor-default mx-4 text-center">
+            <div class="bg-brand-highlight px-6 sm:px-10 py-5 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(233,216,74,0.2)] cursor-default mx-4 text-center">
                 <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-tighter m-0 leading-none">
                     * BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
                 </h3>
@@ -367,7 +386,7 @@
         </div>
     </footer>
 
-    <!-- MODAL GALERÍA COMPLETA (SUPERPOSICIÓN) -->
+    <!-- MODAL GALERÍA COMPLETA (SUPERPOSICIÓN DE GALERÍAS Y ÁLBUMES) -->
     <div id="modal-galeria-vista" class="fixed inset-0 z-[120] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base w-full max-w-7xl h-[90vh] md:h-[85vh] rounded-2xl flex flex-col relative overflow-hidden shadow-2xl border border-zinc-800 transform scale-95 transition-transform duration-300" id="modal-galeria-content">
             
@@ -386,10 +405,6 @@
                 
                 <div class="flex-grow relative flex items-center justify-center bg-black overflow-hidden group">
                     <img id="modal-gal-img-principal" src="" class="max-h-full max-w-full object-contain relative z-10 select-none transition-opacity duration-300">
-                    
-                    <div class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none select-none opacity-40">
-                        <img src="https://i.imgur.com/jCOEEj0.png" class="w-1/2 md:w-1/3 min-w-[200px] max-w-sm rotate-[-15deg] grayscale opacity-50 contrast-200">
-                    </div>
                     
                     <button id="modal-gal-prev" class="absolute left-4 z-30 bg-black/60 border-2 border-brand-accent text-brand-accent p-2 md:p-3 rounded-full hover:bg-brand-accent hover:text-black transition-all focus:outline-none opacity-0 group-hover:opacity-100 hidden md:block">
                         <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
@@ -435,6 +450,15 @@
         </div>
     </div>
 
+    <!-- MODAL IMAGEN ÚNICA (PARA SIN BALÓN Y CULTURA) -->
+    <div id="modal-imagen-simple" class="fixed inset-0 z-[130] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <button id="btn-cerrar-imagen-simple" class="absolute top-4 right-4 z-50 bg-black/50 hover:bg-brand-accent hover:text-black text-white rounded-full p-2 transition-colors focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <img id="modal-imagen-simple-src" src="" class="max-h-[90vh] max-w-[95vw] object-contain shadow-2xl transform scale-95 transition-transform duration-300">
+    </div>
+
+    <!-- MODALES DE CONTACTO (Formulario, Éxito, Error) -->
     <!-- MODAL CONTACTO -->
     <div id="modal-contacto" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base border border-zinc-800 rounded-2xl p-6 sm:p-10 max-w-lg w-full relative transform scale-95 transition-transform duration-300 shadow-2xl">
@@ -471,7 +495,7 @@
     <!-- MODAL ÉXITO -->
     <div id="modal-exito" class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base border border-zinc-800 rounded-2xl p-8 max-w-sm w-full relative transform scale-95 transition-transform duration-300 shadow-2xl text-center">
-            <div class="w-16 h-16 bg-brand-accent rounded-full flex items-center justify-center mx-auto mb-5 text-black shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+            <div class="w-16 h-16 bg-brand-accent rounded-full flex items-center justify-center mx-auto mb-5 text-black shadow-[0_0_15px_rgba(233,216,74,0.3)]">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
             </div>
             <h3 class="text-2xl font-black text-white mb-2 tracking-tight">¡Enviado!</h3>
@@ -496,7 +520,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT LÓGICO Y CONTROL DE GALERÍA -->
+    <!-- SCRIPT LÓGICO -->
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
         const svgCamara = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233f3f46' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E";
@@ -507,6 +531,15 @@
 
         function checkIsTrue(val) { return val === true || String(val).trim().toUpperCase() === 'TRUE'; }
 
+        // --- FUNCIONALIDAD PARA ABRIR IMAGEN SIMPLE (SIN BALÓN Y CULTURA) ---
+        window.abrirModalImagenSimple = function(srcUrl) {
+            // Solo abrimos si la fuente NO es el SVG por defecto (es una URL real)
+            if(!srcUrl || srcUrl.includes("data:image/svg+xml")) return;
+            const modal = document.getElementById('modal-imagen-simple');
+            document.getElementById('modal-imagen-simple-src').src = srcUrl;
+            toggleModal(modal, true);
+        }
+
         // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL ---
         function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(contenedorId);
@@ -515,28 +548,38 @@
             
             if(!slider) return;
 
-            let isDown = false, startX, scrollLeft, hasDragged = false;
+            let isDown = false, startX, scrollLeft, isDragging = false;
             if(slider.dataset.init === 'true') return;
             slider.dataset.init = 'true';
 
             slider.addEventListener('mousedown', (e) => {
-                isDown = true; hasDragged = false;
+                isDown = true; 
+                isDragging = false;
                 slider.style.cursor = 'grabbing';
                 startX = e.pageX - slider.offsetLeft;
                 scrollLeft = slider.scrollLeft;
             });
+            
             slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'pointer'; });
             slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'pointer'; });
+            
             slider.addEventListener('mousemove', (e) => {
                 if (!isDown) return;
-                e.preventDefault();
                 const x = e.pageX - slider.offsetLeft;
                 const walk = (x - startX) * 2; 
-                if (Math.abs(walk) > 10) hasDragged = true; 
+                if (Math.abs(walk) > 10) {
+                    isDragging = true; 
+                }
+                e.preventDefault(); 
                 slider.scrollLeft = scrollLeft - walk;
             });
-            // Evitar click si se ha arrastrado
-            slider.addEventListener('click', (e) => { if (hasDragged) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+            slider.addEventListener('click', (e) => { 
+                if (isDragging) { 
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+                } 
+            }, true);
 
             if(prevBtn) prevBtn.addEventListener('click', () => {
                 const t = slider.querySelector('article');
@@ -548,17 +591,18 @@
             });
         }
 
-        // Utilidad común para abrir/cerrar modales
         function toggleModal(modal, show) {
             if (show) {
                 modal.classList.remove('hidden');
-                void modal.offsetWidth; // forzar repintado
+                void modal.offsetWidth; 
                 modal.classList.remove('opacity-0');
-                modal.querySelector('div').classList.remove('scale-95');
-                document.body.style.overflow = 'hidden'; // evitar scroll en fondo
+                if(modal.querySelector('div.scale-95')) modal.querySelector('div.scale-95').classList.remove('scale-95');
+                if(modal.querySelector('img.scale-95')) modal.querySelector('img.scale-95').classList.remove('scale-95');
+                document.body.style.overflow = 'hidden'; 
             } else {
                 modal.classList.add('opacity-0');
-                modal.querySelector('div').classList.add('scale-95');
+                if(modal.querySelector('div.scale-95') === false && modal.querySelector('div')) modal.querySelector('div').classList.add('scale-95');
+                if(modal.querySelector('img')) modal.querySelector('img').classList.add('scale-95');
                 setTimeout(() => { 
                     modal.classList.add('hidden'); 
                     document.body.style.overflow = '';
@@ -566,8 +610,104 @@
             }
         }
 
+        async function fetchFotosDesdeBackblaze(idEvento) {
+            return new Promise(resolve => {
+                setTimeout(() => { resolve(null); }, 600);
+            });
+        }
+
+        window.abrirModalGaleria = async function(idEv) {
+            const ev = window.eventosGlobal[idEv];
+            if(!ev) return;
+            
+            document.getElementById('modal-gal-titulo').textContent = ev.Titulo || 'Álbum sin título';
+            document.getElementById('modal-gal-desc').textContent = ev.Descripcion_Larga || ev.Descripcion_Corta || 'Sin descripción adicional.';
+            document.getElementById('modal-gal-lugar').textContent = ev.Lugar || 'Lugar sin especificar';
+            document.getElementById('modal-gal-fecha').textContent = ev.Fecha || '';
+
+            const habilitarDescarga = checkIsTrue(ev.Descarga) || checkIsTrue(ev.Habilitar_Descarga) || checkIsTrue(ev['Habilitar descarga']) || checkIsTrue(ev.N);
+            const habilitarCompra = checkIsTrue(ev.Compra) || checkIsTrue(ev.Habilitar_Compra) || checkIsTrue(ev['Habilitar compra']) || checkIsTrue(ev.O);
+            
+            const btnDesc = document.getElementById('modal-btn-descargar');
+            const btnComp = document.getElementById('modal-btn-comprar');
+            
+            if(habilitarDescarga) btnDesc.classList.remove('hidden'); else btnDesc.classList.add('hidden');
+            if(habilitarCompra) {
+                btnComp.classList.remove('hidden');
+                btnComp.href = ev.Link_Compra || '#'; 
+            } else {
+                btnComp.classList.add('hidden');
+            }
+
+            const mainPhoto = ev.Foto_Cabecera || 'https://placehold.co/1200x800/18181b/71717a?text=Sin+Imagen';
+            arrayFotosActuales = [mainPhoto];
+            indexFotoActual = 0;
+            
+            actualizarFotoModal();
+            document.getElementById('modal-gal-thumbs-container').innerHTML = '<p class="text-xs text-brand-accent animate-pulse p-4">Conectando con servidor...</p>';
+            
+            const modal = document.getElementById('modal-galeria-vista');
+            toggleModal(modal, true);
+
+            try {
+                const idFetch = ev.ID_evento || ev.ID_Evento || ev.ID || idEv;
+                const fotosBackblaze = await fetchFotosDesdeBackblaze(idFetch);
+                if (fotosBackblaze && fotosBackblaze.length > 0) arrayFotosActuales = fotosBackblaze; 
+                else arrayFotosActuales = [mainPhoto, mainPhoto, mainPhoto, mainPhoto];
+            } catch (error) {
+                document.getElementById('modal-gal-thumbs-container').innerHTML = '<p class="text-xs text-red-500 p-4">Error al cargar más fotos</p>';
+            }
+
+            indexFotoActual = 0;
+            actualizarFotoModal();
+            dibujarMiniaturasModal();
+        }
+
+        function actualizarFotoModal() {
+            const imgEl = document.getElementById('modal-gal-img-principal');
+            imgEl.style.opacity = 0;
+            setTimeout(() => {
+                imgEl.src = arrayFotosActuales[indexFotoActual];
+                imgEl.style.opacity = 1;
+            }, 150);
+            
+            const thumbs = document.querySelectorAll('.gal-thumb');
+            thumbs.forEach((t, i) => {
+                if(i === indexFotoActual) {
+                    t.classList.add('border-brand-accent', 'opacity-100');
+                    t.classList.remove('border-transparent', 'opacity-50');
+                } else {
+                    t.classList.add('border-transparent', 'opacity-50');
+                    t.classList.remove('border-brand-accent', 'opacity-100');
+                }
+            });
+        }
+
+        function cambiarFotoModal(direccion) {
+            indexFotoActual += direccion;
+            if(indexFotoActual < 0) indexFotoActual = arrayFotosActuales.length - 1;
+            if(indexFotoActual >= arrayFotosActuales.length) indexFotoActual = 0;
+            actualizarFotoModal();
+        }
+
+        window.irAFotoModal = function(index) { indexFotoActual = index; actualizarFotoModal(); }
+
+        function dibujarMiniaturasModal() {
+            const container = document.getElementById('modal-gal-thumbs-container');
+            let html = '';
+            arrayFotosActuales.forEach((url, i) => {
+                const isSelected = i === 0 ? 'border-brand-accent opacity-100' : 'border-transparent opacity-50';
+                html += `
+                    <div onclick="irAFotoModal(${i})" class="gal-thumb w-24 h-24 lg:w-full lg:h-32 rounded-lg overflow-hidden border-2 ${isSelected} cursor-pointer hover:opacity-100 transition-all flex-shrink-0 relative group bg-[#121212]">
+                        <img src="${url}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Eventos Menús Móvil/Desktop
             const toggleClass = (el, cls) => el.classList.toggle(cls);
             
             document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
@@ -602,39 +742,38 @@
                 menus.forEach(m => { if(m && !m.classList.contains('hidden') && m.id.includes('desktop')) m.classList.add('hidden'); });
             });
 
-            // LÓGICA MODALES CONTACTO
+            // Formularios
             const modalContacto = document.getElementById('modal-contacto');
-            const modalExito = document.getElementById('modal-exito');
-            const modalError = document.getElementById('modal-error');
             const formContacto = document.getElementById('form-contacto');
             
             document.querySelectorAll('.abrir-contacto').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleModal(modalContacto, true);
-                    if(!document.getElementById('mobile-menu').classList.contains('hidden')) {
-                        document.getElementById('mobile-menu').classList.add('hidden');
-                        document.getElementById('menu-icon').setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-                    }
+                    e.preventDefault(); toggleModal(modalContacto, true);
                 });
             });
 
             document.getElementById('btn-cerrar-contacto').addEventListener('click', () => toggleModal(modalContacto, false));
-            document.getElementById('btn-cerrar-exito').addEventListener('click', () => toggleModal(modalExito, false));
-            document.getElementById('btn-cerrar-error').addEventListener('click', () => toggleModal(modalError, false));
+            document.getElementById('btn-cerrar-exito').addEventListener('click', () => toggleModal(document.getElementById('modal-exito'), false));
+            document.getElementById('btn-cerrar-error').addEventListener('click', () => toggleModal(document.getElementById('modal-error'), false));
             
-            [modalContacto, modalExito, modalError].forEach(m => {
-                m.addEventListener('click', (e) => { if (e.target === m) toggleModal(m, false); });
-            });
+            // Cerrar Modales de imagen y galeria con click fuera
+            const mGal = document.getElementById('modal-galeria-vista');
+            const mImg = document.getElementById('modal-imagen-simple');
+            
+            document.getElementById('btn-cerrar-galeria').addEventListener('click', () => toggleModal(mGal, false));
+            document.getElementById('btn-cerrar-imagen-simple').addEventListener('click', () => toggleModal(mImg, false));
+            
+            mGal.addEventListener('click', (e) => { if(e.target === mGal) toggleModal(mGal, false); });
+            mImg.addEventListener('click', (e) => { if(e.target === mImg) toggleModal(mImg, false); });
+            
+            document.getElementById('modal-gal-prev').addEventListener('click', () => cambiarFotoModal(-1));
+            document.getElementById('modal-gal-next').addEventListener('click', () => cambiarFotoModal(1));
 
             formContacto.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const btnEnviar = document.getElementById('btn-enviar-contacto');
-                const btnText = btnEnviar.querySelector('span');
-                
-                btnText.textContent = 'Enviando...';
+                btnEnviar.querySelector('span').textContent = 'Enviando...';
                 btnEnviar.disabled = true;
-                btnEnviar.classList.add('opacity-75', 'cursor-not-allowed');
 
                 const formData = new URLSearchParams();
                 formData.append('nombre', document.getElementById('form-nombre').value);
@@ -643,235 +782,98 @@
                 formData.append('mensaje', document.getElementById('form-mensaje').value);
 
                 try {
-                    const request = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
-                    const result = await request.json();
-                    
-                    if (result.status === "ok") {
-                        toggleModal(modalContacto, false);
-                        formContacto.reset();
-                        setTimeout(() => toggleModal(modalExito, true), 300);
-                    } else throw new Error(result.message);
-                } catch (error) {
+                    const req = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
+                    const res = await req.json();
+                    if (res.status === "ok") {
+                        toggleModal(modalContacto, false); formContacto.reset();
+                        setTimeout(() => toggleModal(document.getElementById('modal-exito'), true), 300);
+                    } else throw new Error();
+                } catch (e) {
                     toggleModal(modalContacto, false);
-                    setTimeout(() => toggleModal(modalError, true), 300);
+                    setTimeout(() => toggleModal(document.getElementById('modal-error'), true), 300);
                 } finally {
-                    btnText.textContent = 'Enviar mensaje';
+                    btnEnviar.querySelector('span').textContent = 'Enviar mensaje';
                     btnEnviar.disabled = false;
-                    btnEnviar.classList.remove('opacity-75', 'cursor-not-allowed');
                 }
             });
 
-            // LÓGICA MODAL GALERÍA
-            const modalGaleria = document.getElementById('modal-galeria-vista');
-            document.getElementById('btn-cerrar-galeria').addEventListener('click', () => toggleModal(modalGaleria, false));
-            modalGaleria.addEventListener('click', (e) => { if(e.target === modalGaleria) toggleModal(modalGaleria, false); });
-            
-            // Controles carrusel interno modal
-            document.getElementById('modal-gal-prev').addEventListener('click', () => cambiarFotoModal(-1));
-            document.getElementById('modal-gal-next').addEventListener('click', () => cambiarFotoModal(1));
-
-            inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
-            inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
             cargarDatosDesdeSheet();
         });
 
-        // --- FUNCIONES DEL MODAL DE GALERÍA ---
-        window.abrirModalGaleria = async function(idEv) {
-            const ev = window.eventosGlobal[idEv];
-            if(!ev) return;
-            
-            // 1. Textos
-            document.getElementById('modal-gal-titulo').textContent = ev.Titulo || 'Álbum sin título';
-            document.getElementById('modal-gal-desc').textContent = ev.Descripcion_Larga || ev.Descripcion_Corta || 'Sin descripción adicional.';
-            document.getElementById('modal-gal-lugar').textContent = ev.Lugar || 'Lugar sin especificar';
-            document.getElementById('modal-gal-fecha').textContent = ev.Fecha || '';
-
-            // 2. Botones de interacción (Mirando columnas N y O según tu descripción)
-            // Soporta variantes de nombre por si acaso (Descarga, Habilitar_Descarga, etc.)
-            const habilitarDescarga = checkIsTrue(ev.Descarga) || checkIsTrue(ev.Habilitar_Descarga) || checkIsTrue(ev['Habilitar descarga']) || checkIsTrue(ev.N); // columna N
-            const habilitarCompra = checkIsTrue(ev.Compra) || checkIsTrue(ev.Habilitar_Compra) || checkIsTrue(ev['Habilitar compra']) || checkIsTrue(ev.O); // columna O
-            
-            const btnDesc = document.getElementById('modal-btn-descargar');
-            const btnComp = document.getElementById('modal-btn-comprar');
-            
-            if(habilitarDescarga) btnDesc.classList.remove('hidden'); else btnDesc.classList.add('hidden');
-            if(habilitarCompra) {
-                btnComp.classList.remove('hidden');
-                // Aquí va el link real de compra, si lo hubiera (por ahora un #)
-                btnComp.href = ev.Link_Compra || '#'; 
-            } else {
-                btnComp.classList.add('hidden');
-            }
-
-            // 3. Sistema de Fotos inicial
-            const mainPhoto = ev.Foto_Cabecera || 'https://placehold.co/1200x800/18181b/71717a?text=Sin+Imagen';
-            arrayFotosActuales = [mainPhoto];
-            indexFotoActual = 0;
-            
-            actualizarFotoModal();
-            document.getElementById('modal-gal-thumbs-container').innerHTML = '<p class="text-xs text-brand-accent animate-pulse p-4">Conectando con Backblaze...</p>';
-            
-            // Abrir el modal instantáneamente
-            const modal = document.getElementById('modal-galeria-vista');
-            toggleModal(modal, true);
-
-            // Fetch a Backblaze (simulado por ahora, hasta que conectes la API)
-            try {
-                const idFetch = ev.ID_evento || ev.ID_Evento || ev.ID || idEv;
-                const fotosBackblaze = await new Promise(resolve => {
-                    setTimeout(() => resolve(null), 600); // Simulador
-                });
-                
-                if (fotosBackblaze && fotosBackblaze.length > 0) {
-                    arrayFotosActuales = fotosBackblaze; 
-                } else {
-                    // Fallback para simular que llegan varias fotos
-                    arrayFotosActuales = [mainPhoto, mainPhoto, mainPhoto, mainPhoto];
-                }
-            } catch (error) {
-                console.error("Error Backblaze:", error);
-                document.getElementById('modal-gal-thumbs-container').innerHTML = '<p class="text-xs text-red-500 p-4">Error al cargar más fotos</p>';
-            }
-
-            indexFotoActual = 0;
-            actualizarFotoModal();
-            dibujarMiniaturasModal();
-        }
-
-        function actualizarFotoModal() {
-            const imgEl = document.getElementById('modal-gal-img-principal');
-            // Efecto suave de transición
-            imgEl.style.opacity = 0;
-            setTimeout(() => {
-                imgEl.src = arrayFotosActuales[indexFotoActual];
-                imgEl.style.opacity = 1;
-            }, 150);
-            
-            // Resaltar miniatura activa
-            const thumbs = document.querySelectorAll('.gal-thumb');
-            thumbs.forEach((t, i) => {
-                if(i === indexFotoActual) {
-                    t.classList.add('border-brand-accent', 'opacity-100');
-                    t.classList.remove('border-transparent', 'opacity-50');
-                } else {
-                    t.classList.add('border-transparent', 'opacity-50');
-                    t.classList.remove('border-brand-accent', 'opacity-100');
-                }
-            });
-        }
-
-        function cambiarFotoModal(direccion) {
-            indexFotoActual += direccion;
-            if(indexFotoActual < 0) indexFotoActual = arrayFotosActuales.length - 1;
-            if(indexFotoActual >= arrayFotosActuales.length) indexFotoActual = 0;
-            actualizarFotoModal();
-        }
-
-        window.irAFotoModal = function(index) {
-            indexFotoActual = index;
-            actualizarFotoModal();
-        }
-
-        function dibujarMiniaturasModal() {
-            const container = document.getElementById('modal-gal-thumbs-container');
-            let html = '';
-            arrayFotosActuales.forEach((url, i) => {
-                const isSelected = i === 0 ? 'border-brand-accent opacity-100' : 'border-transparent opacity-50';
-                html += `
-                    <div onclick="irAFotoModal(${i})" class="gal-thumb w-24 h-24 lg:w-full lg:h-32 rounded-lg overflow-hidden border-2 ${isSelected} cursor-pointer hover:opacity-100 transition-all flex-shrink-0 relative group">
-                        <img src="${url}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        // --- CARGA Y GENERACIÓN ---
+        // Funciones de carga
         async function cargarDatosDesdeSheet() {
             try {
-                const respuesta = await fetch(APPS_SCRIPT_URL);
-                const datosCompletos = await respuesta.json();
+                const req = await fetch(APPS_SCRIPT_URL);
+                const data = await req.json();
                 
-                const todasLasGalerias = datosCompletos.galerias || [];
-                
-                // Mapear eventos globales con un ID único basado en su posición para que el modal sepa cuál abrir
-                todasLasGalerias.forEach((ev, idx) => {
-                    ev._id = idx;
-                    window.eventosGlobal[idx] = ev;
-                });
-                
-                actualizarMenusDinamicos(todasLasGalerias);
-                
-                const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
-                const galeriasDestacadas = todasLasGalerias.filter(g => checkIsTrue(g.Destacadas));
-                
-                const claseGrid = 'flex flex-wrap justify-center gap-6 w-full pb-4';
-                const claseCarrusel = 'flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]';
-
-                // 1. Renderizar Últimas Galerías
-                const contPrincipal = document.getElementById('contenedor-galerias');
-                const prevMain = document.getElementById('prev-main');
-                const nextMain = document.getElementById('next-main');
-
-                if (galeriasPrincipales.length === 0) {
-                    contPrincipal.className = claseGrid;
-                    contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
-                    prevMain.classList.add('hidden'); nextMain.classList.add('hidden');
-                } else if (galeriasPrincipales.length <= 4) {
-                    contPrincipal.className = claseGrid;
-                    contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
-                    prevMain.classList.add('hidden'); nextMain.classList.add('hidden');
-                } else {
-                    contPrincipal.className = claseCarrusel;
-                    contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
-                    prevMain.classList.remove('hidden'); nextMain.classList.remove('hidden');
+                // --- APLICAR IMAGEN PORTADA ---
+                const imgFondoPortada = document.getElementById('img-hero-fondo');
+                if(data.imgPortada && String(data.imgPortada).trim() !== '') {
+                    imgFondoPortada.src = data.imgPortada;
                 }
 
-                // 2. Renderizar Galerías Destacadas
-                const contDestacadas = document.getElementById('contenedor-destacadas');
-                const prevDestacadas = document.getElementById('prev-destacadas');
-                const nextDestacadas = document.getElementById('next-destacadas');
-                const seccionDestacadas = document.getElementById('seccion-destacadas');
+                const gals = data.galerias || [];
+                gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
+                
+                const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
+                const dest = gals.filter(g => checkIsTrue(g.Destacadas));
+                
+                const cGrid = 'flex flex-wrap justify-center gap-6 w-full pb-4';
+                const cCar = 'flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start px-2 min-h-[350px]';
 
-                if (galeriasDestacadas.length > 0) {
-                    seccionDestacadas.style.display = 'block';
-                    if (galeriasDestacadas.length <= 4) {
-                        contDestacadas.className = claseGrid;
-                        contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
-                        prevDestacadas.classList.add('hidden'); nextDestacadas.classList.add('hidden');
-                    } else {
-                        contDestacadas.className = claseCarrusel;
-                        contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
-                        prevDestacadas.classList.remove('hidden'); nextDestacadas.classList.remove('hidden');
-                    }
+                const contPr = document.getElementById('contenedor-galerias');
+                if (pr.length === 0) {
+                    contPr.className = cGrid; contPr.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
+                    document.getElementById('prev-main').classList.add('hidden'); document.getElementById('next-main').classList.add('hidden');
+                } else if (pr.length <= 4) {
+                    contPr.className = cGrid; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
+                    document.getElementById('prev-main').classList.add('hidden'); document.getElementById('next-main').classList.add('hidden');
                 } else {
-                    seccionDestacadas.style.display = 'none';
+                    contPr.className = cCar; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
+                    document.getElementById('prev-main').classList.remove('hidden'); document.getElementById('next-main').classList.remove('hidden');
+                }
+                inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
+
+                const contDest = document.getElementById('contenedor-destacadas');
+                if (dest.length > 0) {
+                    document.getElementById('seccion-destacadas').style.display = 'block';
+                    if (dest.length <= 4) {
+                        contDest.className = cGrid; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
+                        document.getElementById('prev-destacadas').classList.add('hidden'); document.getElementById('next-destacadas').classList.add('hidden');
+                    } else {
+                        contDest.className = cCar; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
+                        document.getElementById('prev-destacadas').classList.remove('hidden'); document.getElementById('next-destacadas').classList.remove('hidden');
+                    }
+                    inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
+                } else {
+                    document.getElementById('seccion-destacadas').style.display = 'none';
                 }
                 
                 document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 
-                // 3 & 4. Cargar Imágenes Fijas
                 const setImagenSeccion = (idImg, srcDato) => {
                     const imgEl = document.getElementById(idImg);
                     if (imgEl) {
                         imgEl.classList.remove('opacity-0');
                         if (srcDato && String(srcDato).trim() !== '') {
                             imgEl.src = srcDato;
-                            imgEl.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105";
+                            imgEl.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105 cursor-pointer";
                         } else {
                             imgEl.src = svgCamara;
+                            // Si no hay imagen real (es svg), quitamos el cursor pointer porque no hace nada abrirla
                             imgEl.className = "w-24 h-24 object-contain opacity-30 grayscale transition-transform duration-700 group-hover:scale-110";
+                            imgEl.onclick = null; 
                         }
                     }
                 };
                 
-                setImagenSeccion('img-seccion-sin-balon', datosCompletos.imgSinBalon);
-                setImagenSeccion('img-seccion-cultura', datosCompletos.imgCultura);
+                setImagenSeccion('img-seccion-sin-balon', data.imgSinBalon);
+                setImagenSeccion('img-seccion-cultura', data.imgCultura);
                 
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 w-full text-center py-10">Error de conexión con el servidor.</p>';
+                actualizarMenusDinamicos(gals);
+                
+            } catch (e) {
+                console.error(e);
             }
         }
 
@@ -921,9 +923,9 @@
             const fec = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
 
             return `
-                <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${bColor} transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer">
+                <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${bColor} transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(233,216,74,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer relative z-10">
                     <div class="relative h-64 overflow-hidden flex-shrink-0">
-                        <img src="${fot}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none">
+                        <img src="${fot}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none" draggable="false">
                         <div class="absolute top-3 left-3 flex gap-2">
                             <span class="${cColor} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">${catMost}</span>
                         </div>
