@@ -50,7 +50,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="https://i.imgur.com/pWjGPQl.png" alt="tufotoenfoco" class="h-8 md:h-10 w-auto">
+                    <img src="https://i.imgur.com/jCOEEj0.png" alt="tufotoenfoco" class="h-8 md:h-10 w-auto">
                 </div>
 
                 <nav class="hidden md:flex space-x-2 lg:space-x-4 items-center">
@@ -165,7 +165,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
+                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
                         <p id="mensaje-carga-main" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
                     </div>
 
@@ -174,6 +174,7 @@
                     </button>
                 </div>
                 
+                <!-- Botón Más Galerías -->
                 <div class="mt-12 flex justify-center w-full">
                     <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                         Más galerías
@@ -183,8 +184,8 @@
             </div>
         </section>
 
-        <!-- === GALERÍAS DESTACADAS (FONDO GRIS OSCURO ALTERNADO - COPIA EXACTA DE LA ANTERIOR) === -->
-        <section id="seccion-destacadas" class="bg-[#121212] pt-16 pb-8 border-t border-zinc-800" style="display: none;">
+        <!-- === GALERÍAS DESTACADAS (FONDO GRIS OSCURO ALTERNADO) === -->
+        <section id="seccion-destacadas" class="bg-[#121212] py-16 border-t border-zinc-800" style="display: none;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
                     <div>
@@ -198,7 +199,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
+                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
                         <!-- Se llena mediante JS -->
                     </div>
 
@@ -214,6 +215,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                     
+                    <!-- Columna Izquierda: Textos (flex-col para centrar) -->
                     <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
@@ -225,6 +227,7 @@
                             </h2>
                         </div>
 
+                        <!-- Textos centrados verticalmente y más pequeños -->
                         <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
                             <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
                                 La tensión en el banquillo. La voz de la grada. Un abrazo al final.
@@ -239,11 +242,14 @@
                         </a>
                     </div>
                     
+                    <!-- Columna Derecha: Imagen fija con bordes, horizontal (aspect-video) -->
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
+                            <!-- La imagen (o SVG) se inyectará aquí desde JS -->
                             <img id="img-seccion-sin-balon" src="" alt="Momento Sin Balón" class="opacity-0">
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -271,6 +277,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                     
+                    <!-- Columna Izquierda: Textos (flex-col para centrar) -->
                     <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
@@ -282,6 +289,7 @@
                             </h2>
                         </div>
 
+                        <!-- Textos centrados verticalmente y más pequeños -->
                         <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
                             <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
                                 Tradiciones, arte y momentos que forman parte de nuestra historia.
@@ -296,8 +304,10 @@
                         </a>
                     </div>
                     
+                    <!-- Columna Derecha: Imagen fija con bordes, horizontal (aspect-video) -->
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
+                            <!-- La imagen (o SVG) se inyectará aquí desde JS -->
                             <img id="img-seccion-cultura" src="" alt="Nuestra Cultura" class="opacity-0">
                         </div>
                     </div>
@@ -323,7 +333,7 @@
             <div class="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 mb-10">
                 
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                    <img src="https://i.imgur.com/pWjGPQl.png" alt="TUFOTOENFOCO" class="h-10 sm:h-12 w-auto">
+                    <img src="https://i.imgur.com/jCOEEj0.png" alt="TUFOTOENFOCO" class="h-10 sm:h-12 w-auto">
                     <p class="text-gray-400 text-sm md:text-base font-light">El instante pasa, la emoción se queda.</p>
                 </div>
 
@@ -410,20 +420,20 @@
             if(prevBtn) {
                 prevBtn.addEventListener('click', () => {
                     const tarjeta = slider.querySelector('article');
-                    if (tarjeta) slider.scrollBy({ left: -(tarjeta.offsetWidth + 32), behavior: 'smooth' });
+                    if (tarjeta) slider.scrollBy({ left: -(tarjeta.offsetWidth + 24), behavior: 'smooth' });
                 });
             }
             if(nextBtn) {
                 nextBtn.addEventListener('click', () => {
                     const tarjeta = slider.querySelector('article');
-                    if (tarjeta) slider.scrollBy({ left: tarjeta.offsetWidth + 32, behavior: 'smooth' });
+                    if (tarjeta) slider.scrollBy({ left: tarjeta.offsetWidth + 24, behavior: 'smooth' });
                 });
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Eventos Menús Móvil/Desktop (Optimizado)
+            // Eventos Menús Móvil/Desktop
             const toggleClass = (el, cls) => el.classList.toggle(cls);
             
             document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
@@ -476,26 +486,32 @@
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const galeriasDestacadas = todasLasGalerias.filter(g => checkIsTrue(g.Destacadas));
                 
-                const claseContenedorCarrusel = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]';
+                const claseGrid = 'flex flex-wrap justify-center gap-6 w-full pb-4';
+                const claseCarrusel = 'flex flex-nowrap overflow-x-auto gap-6 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]';
 
-                // 1. Renderizar Últimas Galerías (Inyección rápida usando map.join)
+                // 1. Renderizar Últimas Galerías
                 const contPrincipal = document.getElementById('contenedor-galerias');
                 const prevMain = document.getElementById('prev-main');
                 const nextMain = document.getElementById('next-main');
 
                 if (galeriasPrincipales.length === 0) {
-                    contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
+                    contPrincipal.className = claseGrid;
                     contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
                     prevMain.classList.add('hidden');
                     nextMain.classList.add('hidden');
+                } else if (galeriasPrincipales.length <= 4) {
+                    contPrincipal.className = claseGrid;
+                    contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
+                    prevMain.classList.add('hidden');
+                    nextMain.classList.add('hidden');
                 } else {
-                    contPrincipal.className = claseContenedorCarrusel;
+                    contPrincipal.className = claseCarrusel;
                     contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
                     prevMain.classList.remove('hidden');
                     nextMain.classList.remove('hidden');
                 }
 
-                // 2. Renderizar Galerías Destacadas (Inyección exacta a Últimas)
+                // 2. Renderizar Galerías Destacadas
                 const contDestacadas = document.getElementById('contenedor-destacadas');
                 const prevDestacadas = document.getElementById('prev-destacadas');
                 const nextDestacadas = document.getElementById('next-destacadas');
@@ -503,10 +519,17 @@
 
                 if (galeriasDestacadas.length > 0) {
                     seccionDestacadas.style.display = 'block';
-                    contDestacadas.className = claseContenedorCarrusel;
-                    contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
-                    prevDestacadas.classList.remove('hidden');
-                    nextDestacadas.classList.remove('hidden');
+                    if (galeriasDestacadas.length <= 4) {
+                        contDestacadas.className = claseGrid;
+                        contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
+                        prevDestacadas.classList.add('hidden');
+                        nextDestacadas.classList.add('hidden');
+                    } else {
+                        contDestacadas.className = claseCarrusel;
+                        contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
+                        prevDestacadas.classList.remove('hidden');
+                        nextDestacadas.classList.remove('hidden');
+                    }
                 } else {
                     seccionDestacadas.style.display = 'none';
                 }
@@ -580,7 +603,7 @@
             renderLinks(masDeportesUnicos, 'desktop-mas-deportes-menu', 'mobile-mas-deportes-menu', 'Próximamente');
         }
 
-        // Generador de Tarjetas Unificado
+        // Generador de Tarjetas
         function generarTarjetaHTML(evento) {
             const catHeaderOriginal = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : 'General';
             
@@ -606,11 +629,12 @@
             const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
             const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
 
-            const claseAnchoFijo = "w-[280px] sm:w-[300px] flex-shrink-0 snap-start select-none flex flex-col";
+            // Ancho fijo diseñado matemáticamente para que 4 tarjetas entren exactas en 1216px de espacio sin forzar scroll
+            const claseAnchoFijo = "w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px]";
 
             return `
                 <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] ${claseAnchoFijo}">
-                    <div class="relative h-56 overflow-hidden flex-shrink-0">
+                    <div class="relative h-64 overflow-hidden flex-shrink-0">
                         <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none" loading="lazy">
                         <div class="absolute top-3 left-3 flex gap-2">
                             <span class="${catColorClass} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">${categoriaMostrar}</span>
