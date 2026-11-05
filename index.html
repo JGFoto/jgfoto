@@ -146,7 +146,7 @@
         .feature-copy { min-width:0; }
         .feature-image-frame { min-height:clamp(420px,34vw,700px); height:100%; }
         .feature-image-frame > img { width:100%; height:100%; min-height:inherit; object-fit:cover; }
-        .effort-story-panel { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); gap:clamp(1.5rem,4vw,4rem); align-items:center; padding:clamp(1.75rem,4vw,4.5rem); border:1px solid #292929; border-radius:1rem; background:radial-gradient(ellipse at 8% 50%,rgba(241,233,51,.09),transparent 42%),linear-gradient(120deg,#111113,#050505 70%); }
+        .effort-story-panel { display:grid; grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); gap:clamp(1.5rem,4vw,4rem); align-items:center; padding:clamp(1.75rem,4vw,4.5rem); border:1px solid #292929; border-radius:1rem; background:#121212; box-shadow:none; transition:background-color .3s ease; }\n        /* Tarjetas de carrusel: hasta cuatro visibles, centradas cuando caben */\n        .carrusel-principal > article { flex:0 0 clamp(240px, 21vw, 340px); width:auto; }\n        @media (max-width:1100px) { .carrusel-principal > article { flex-basis:clamp(220px, 29vw, 300px); } }\n        @media (max-width:767px) { .carrusel-principal > article { flex-basis:82vw; } }
         .effort-story-title { max-width:14ch; font-size:clamp(2.6rem,4.6vw,5.5rem); line-height:.98; letter-spacing:-.055em; }
         .effort-story-copy { position:relative; padding-left:clamp(1.25rem,2.5vw,2.5rem); border-left:3px solid #F1E933; }
         @media (max-width:1023px) {
@@ -505,13 +505,14 @@
 
         function aplicarFondosAlternos() {
             const sections = document.querySelectorAll('section.alternating-section');
-            let isDark = true; 
+            let isDark = true;
             sections.forEach(sec => {
                 if (window.getComputedStyle(sec).display !== 'none') {
                     sec.classList.remove('bg-zinc-950', 'bg-[#121212]');
-                    if (isDark) sec.classList.add('bg-zinc-950');
-                    else sec.classList.add('bg-[#121212]');
-                    isDark = !isDark; 
+                    sec.classList.add(isDark ? 'bg-zinc-950' : 'bg-[#121212]');
+                    const panel = sec.querySelector('.effort-story-panel');
+                    if (panel) panel.style.backgroundColor = isDark ? '#121212' : '#09090b';
+                    isDark = !isDark;
                 }
             });
         }
