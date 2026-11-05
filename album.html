@@ -940,7 +940,10 @@
                 buy.href=linkCompra||'#';
                 buy.classList.toggle('hidden',!/^https?:\/\//i.test(linkCompra));
                 const options=document.getElementById('modal-descarga-opciones');
-                options.style.zIndex='400';
+                if(options.parentElement!==document.body) document.body.appendChild(options);
+                options.style.zIndex='99999';
+                options.classList.remove('hidden');
+                options.classList.add('flex');
                 toggleModal(options,true);
             };
             const updateDetails=()=>{document.getElementById('album-photo-details').innerHTML=photoInfoHtml();document.getElementById('album-photo-details').classList.remove('hidden');};
@@ -948,7 +951,7 @@
             const draw=()=>{const start=page*perPage,end=Math.min(start+perPage,all.length),holder=document.getElementById('album-thumbs');
                 document.getElementById('album-counter').textContent=`${end} de ${fotosTotal} fotografías`;
                 if(Number(holder.dataset.page)!==page){holder.dataset.page=String(page);holder.innerHTML=all.slice(start,end).map((url,i)=>`<button type="button" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent bg-zinc-800 transition-all" data-photo="${start+i}" aria-label="Ver fotografía ${start+i+1}"><img src="${url}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${placeholderImagen}'"></button>`).join('');}
-                holder.querySelectorAll('button').forEach(b=>{const active=Number(b.dataset.photo)===selected;b.classList.toggle('border-brand-accent',active);b.classList.toggle('shadow-[0_0_10px_rgba(241,233,51,0.22)]',active);});
+                holder.querySelectorAll('button').forEach(b=>{const active=Number(b.dataset.photo)===selected;b.classList.toggle('border-brand-accent',active);b.classList.toggle('border-[3px]',active);b.classList.toggle('shadow-[0_0_0_2px_rgba(241,233,51,0.45),0_0_18px_rgba(241,233,51,0.55)]',active);});
                 document.getElementById('album-prev').disabled=page===0;document.getElementById('album-next').disabled=end>=all.length;
             };
             const selectPhoto=(n)=>{selected=Math.max(0,Math.min(all.length-1,n));page=Math.floor(selected/perPage);updateMain();draw();};
@@ -957,7 +960,7 @@
             root.addEventListener('click',e=>{if(!e.target.closest('#album-main-photo')&&!e.target.closest('#album-photo-details'))details.classList.add('hidden');});
             document.addEventListener('click',e=>{if(!root.contains(e.target))details.classList.add('hidden');});
             document.getElementById('album-thumbs').addEventListener('click',e=>{const b=e.target.closest('button[data-photo]');if(!b)return;stopPlay();selected=Number(b.dataset.photo);updateMain();draw();});
-            details.addEventListener('click',e=>{if(e.target.closest('#album-free-download'))downloadSelected();});
+            root.addEventListener('click',e=>{const btn=e.target.closest('#album-free-download');if(btn){e.preventDefault();e.stopPropagation();downloadSelected();}});
             document.getElementById('player-info').addEventListener('click',e=>{if(e.target.closest('#player-free-download'))downloadSelected();});
             document.getElementById('album-photo-prev').addEventListener('click',()=>{stopPlay();selectPhoto(selected-1);});
             document.getElementById('album-photo-next').addEventListener('click',()=>{stopPlay();selectPhoto(selected+1);});
