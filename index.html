@@ -47,13 +47,16 @@
 <body class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
 
     <header class="bg-brand-dark border-b border-zinc-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-24">
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
+                
+                <!-- IZQUIERDA: Logo -->
+                <div class="flex-1 flex justify-start items-center cursor-pointer" onclick="window.scrollTo(0,0)">
                     <img src="https://i.imgur.com/jCOEEj0.png" alt="tufotoenfoco" class="h-10 md:h-14 w-auto">
                 </div>
 
-                <nav class="hidden md:flex space-x-2 lg:space-x-4 items-center">
+                <!-- CENTRO: Navegación Principal -->
+                <nav class="hidden md:flex flex-auto justify-center space-x-2 lg:space-x-4 items-center">
                     <a href="#" class="px-3 py-2 rounded-md text-base font-bold text-brand-accent transition-colors">Inicio</a>
                     
                     <div class="relative">
@@ -61,7 +64,7 @@
                             Categorías
                             <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div id="desktop-cat-menu" class="hidden absolute top-full left-0 mt-2 w-56 bg-brand-base border border-zinc-800 rounded-md shadow-xl py-2 z-50">
+                        <div id="desktop-cat-menu" class="hidden absolute top-full left-1/2 -translate-x-1/2 mt-2 w-56 bg-brand-base border border-zinc-800 rounded-md shadow-xl py-2 z-50">
                             <div id="desktop-dynamic-cats" class="py-1">
                                 <span class="block px-4 py-2 text-sm text-gray-500">Cargando...</span>
                             </div>
@@ -83,19 +86,21 @@
                     <a href="#" class="px-3 py-2 rounded-md text-base font-normal text-gray-300 hover:text-brand-accent transition-colors">Cultura</a>
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div>
                     <a href="#" class="abrir-contacto px-3 py-2 rounded-md text-base font-normal text-gray-300 hover:text-brand-accent transition-colors">Contacto</a>
-                    
-                    <div class="h-6 w-px bg-zinc-700 mx-1"></div>
-                    <div class="flex items-center gap-4 px-2 text-brand-accent">
-                        <a href="https://www.instagram.com/tufotoenfoco/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" title="Instagram">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.487.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
-                        </a>
-                        <a href="https://www.facebook.com/share/1C9KxgBYbg/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" title="Facebook">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/></svg>
-                        </a>
-                    </div>
                 </nav>
 
-                <div class="flex md:hidden items-center">
+                <!-- DERECHA: Redes Sociales -->
+                <div class="flex-1 hidden md:flex justify-end items-center gap-4 px-2 text-brand-accent">
+                    <span class="text-white text-sm font-bold uppercase tracking-widest mr-1">Sígueme:</span>
+                    <a href="https://www.instagram.com/tufotoenfoco/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" title="Instagram">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.487.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/share/1C9KxgBYbg/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors" title="Facebook">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/></svg>
+                    </a>
+                </div>
+
+                <!-- Botón Menú Móvil -->
+                <div class="flex md:hidden items-center flex-1 justify-end">
                     <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md transition-colors">
                         <svg class="h-7 w-7 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                     </button>
@@ -103,6 +108,7 @@
             </div>
         </div>
 
+        <!-- Menú Móvil Desplegable -->
         <div id="mobile-menu" class="hidden md:hidden bg-brand-base border-t border-zinc-800 absolute w-full shadow-lg z-50">
             <div class="px-4 pt-2 pb-6 space-y-1 max-h-[85vh] overflow-y-auto">
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-bold text-brand-dark bg-brand-accent">Inicio</a>
@@ -141,7 +147,7 @@
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/50 to-transparent"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
         </div>
-        <div class="relative max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 flex flex-col items-start justify-start">
+        <div class="relative max-w-[95%] 2xl:max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-24 flex flex-col items-start justify-start">
             <div class="flex items-center gap-4 mb-6 mt-4">
                 <div class="w-8 h-px bg-brand-accent"></div>
                 <span class="text-brand-accent font-bold tracking-widest uppercase text-sm">Fotografía deportiva • Badajoz</span>
@@ -162,6 +168,7 @@
     </section>
 
     <main class="flex-grow w-full overflow-hidden flex flex-col" id="main-content-sections">
+        
         <section class="alternating-section py-16 lg:py-24 border-b border-zinc-800 transition-colors duration-300">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="border border-brand-highlight p-8 sm:p-12 text-base sm:text-lg text-gray-200 leading-relaxed rounded-2xl shadow-[0_0_30px_rgba(241,233,51,0.05)] bg-black/20">
@@ -178,7 +185,7 @@
         </section>
 
         <section class="alternating-section py-16 border-b border-zinc-800 transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
                     <div>
                         <h2 class="text-3xl font-bold text-white tracking-tight">Últimas Galerías</h2>
@@ -209,7 +216,7 @@
         </section>
 
         <section id="seccion-destacadas" class="alternating-section py-16 border-b border-zinc-800 transition-colors duration-300" style="display: none;">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
                     <div>
                         <h2 class="text-3xl font-bold text-white tracking-tight">Galerías Destacadas</h2>
@@ -232,23 +239,23 @@
         </section>
 
         <section class="alternating-section py-24 lg:py-32 border-b border-zinc-800 transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
-                    <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
+                    <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[400px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
                                 <div class="w-8 h-px bg-brand-accent"></div>
                                 <span class="text-brand-accent text-xs font-bold tracking-widest uppercase">Otra forma de mirar el deporte</span>
                             </div>
-                            <h2 class="text-6xl sm:text-7xl font-black text-white tracking-tight flex items-baseline">
+                            <h2 class="text-7xl sm:text-8xl font-black text-white tracking-tight flex items-baseline">
                                 SIN BALÓN <span class="text-brand-accent ml-2">.</span>
                             </h2>
                         </div>
-                        <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
-                            <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
+                        <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-xl">
+                            <p class="text-2xl sm:text-3xl text-gray-200 font-bold leading-tight">
                                 La tensión en el banquillo. La voz de la grada. Un abrazo al final.
                             </p>
-                            <p class="text-sm sm:text-base text-gray-400">
+                            <p class="text-base sm:text-lg text-gray-400">
                                 Los momentos que también forman parte del juego.
                             </p>
                         </div>
@@ -256,8 +263,8 @@
                             Descubrir sin balón
                         </a>
                     </div>
-                    <div class="w-full lg:w-1/2 flex items-center">
-                        <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
+                    <div class="w-full lg:w-1/2 flex items-stretch">
+                        <div class="relative w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
                             <img id="img-seccion-sin-balon" onclick="abrirModalImagenSimple(this.src)" src="" alt="Momento Sin Balón" class="opacity-0">
                         </div>
                     </div>
@@ -266,15 +273,15 @@
         </section>
 
         <section class="alternating-section py-16 lg:py-24 border-b border-zinc-800 transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
                     <div class="w-full lg:w-1/2">
-                        <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none">
+                        <h2 class="text-5xl sm:text-6xl lg:text-7xl font-black text-white uppercase tracking-tighter leading-none">
                             TU ESFUERZO. TU HISTORIA. TU FOTO.
                         </h2>
                     </div>
                     <div class="w-full lg:w-1/2">
-                        <p class="text-base sm:text-lg text-gray-400 leading-relaxed max-w-xl">
+                        <p class="text-lg sm:text-xl lg:text-2xl text-gray-400 leading-relaxed max-w-xl transform transition-transform duration-300 hover:scale-105 inline-block cursor-default">
                             El gol, la última zancada, esa mirada antes de salir. Hay momentos que merecen quedarse contigo.
                         </p>
                     </div>
@@ -283,23 +290,23 @@
         </section>
 
         <section class="alternating-section py-24 lg:py-32 border-b border-zinc-800 transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
-                    <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
+                    <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[400px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
                                 <div class="w-8 h-px bg-brand-highlight"></div>
                                 <span class="text-brand-highlight text-xs font-bold tracking-widest uppercase">Arte, tradición y emociones</span>
                             </div>
-                            <h2 class="text-5xl sm:text-7xl font-black text-white tracking-tight uppercase flex items-baseline">
+                            <h2 class="text-7xl sm:text-8xl font-black text-white tracking-tight uppercase flex items-baseline">
                                 Nuestra Cultura
                             </h2>
                         </div>
-                        <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
-                            <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
+                        <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-xl">
+                            <p class="text-2xl sm:text-3xl text-gray-200 font-bold leading-tight">
                                 Tradiciones, arte y momentos que forman parte de nuestra historia.
                             </p>
-                            <p class="text-sm sm:text-base text-gray-400">
+                            <p class="text-base sm:text-lg text-gray-400">
                                 Descubre nuestras galerías de Semana Santa, Carnaval, Almossassa, conciertos, teatro, folklore y Noche en Blanco.
                             </p>
                         </div>
@@ -307,8 +314,8 @@
                             Explorar cultura
                         </a>
                     </div>
-                    <div class="w-full lg:w-1/2 flex items-center">
-                        <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
+                    <div class="w-full lg:w-1/2 flex items-stretch">
+                        <div class="relative w-full h-full min-h-[400px] rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-brand-base flex items-center justify-center group cursor-pointer">
                             <img id="img-seccion-cultura" onclick="abrirModalImagenSimple(this.src)" src="" alt="Nuestra Cultura" class="opacity-0">
                         </div>
                     </div>
@@ -317,8 +324,8 @@
         </section>
 
         <section class="alternating-section py-16 flex justify-center items-center overflow-hidden transition-colors duration-300">
-            <div class="bg-brand-highlight px-6 sm:px-10 py-5 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 text-center">
-                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-tighter m-0 leading-none">
+            <div class="bg-brand-highlight px-8 sm:px-12 py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 text-center">
+                <h3 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black uppercase tracking-tighter m-0 leading-none">
                     * BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
                 </h3>
             </div>
@@ -327,11 +334,11 @@
 
     <!-- FOOTER -->
     <footer class="bg-[#0a0a0a] text-white py-12 lg:py-16 mt-auto border-t border-zinc-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 mb-10">
+        <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row justify-between items-center gap-8 mb-10">
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                    <img src="https://i.imgur.com/jCOEEj0.png" alt="TUFOTOENFOCO" class="h-10 sm:h-12 w-auto">
-                    <p class="text-gray-400 text-sm md:text-base font-light">El instante pasa, la emoción se queda.</p>
+                    <img src="https://i.imgur.com/jCOEEj0.png" alt="TUFOTOENFOCO" class="h-12 sm:h-16 w-auto">
+                    <p class="text-gray-400 text-lg md:text-xl font-light transform transition-transform duration-300 hover:scale-105 inline-block cursor-default">El instante pasa, la emoción se queda.</p>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center gap-6">
                     <span class="text-xs font-bold tracking-widest uppercase">Sígueme en:</span>
@@ -501,6 +508,22 @@
             toggleModal(modal, true);
         }
 
+        function checkCarouselOverflow(sliderId, prevBtnId, nextBtnId) {
+            const slider = document.getElementById(sliderId);
+            const prevBtn = document.getElementById(prevBtnId);
+            const nextBtn = document.getElementById(nextBtnId);
+            if(!slider || !prevBtn || !nextBtn) return;
+            
+            // Si el contenido interno (scrollWidth) es mayor que el ancho visible (clientWidth), activamos botones
+            if(slider.scrollWidth > slider.clientWidth) {
+                prevBtn.classList.remove('hidden');
+                nextBtn.classList.remove('hidden');
+            } else {
+                prevBtn.classList.add('hidden');
+                nextBtn.classList.add('hidden');
+            }
+        }
+
         function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(contenedorId);
             const prevBtn = document.getElementById(prevBtnId);
@@ -509,6 +532,11 @@
             if(!slider) return;
 
             let isDown = false, startX, scrollLeft, isDragging = false;
+            
+            // Validación de overflow inicial y tras rezise
+            checkCarouselOverflow(contenedorId, prevBtnId, nextBtnId);
+            window.addEventListener('resize', () => checkCarouselOverflow(contenedorId, prevBtnId, nextBtnId));
+
             if(slider.dataset.init === 'true') return;
             slider.dataset.init = 'true';
 
@@ -695,7 +723,7 @@
                 menus.forEach(m => { if(m && !m.classList.contains('hidden') && m.id.includes('desktop')) m.classList.add('hidden'); });
             });
 
-            // Formularios (Blindado sin CORS manual via URLSearchParams)
+            // Formularios
             const modalContacto = document.getElementById('modal-contacto');
             const formContacto = document.getElementById('form-contacto');
             
@@ -727,18 +755,15 @@
                 btnEnviar.querySelector('span').textContent = 'Enviando...';
                 btnEnviar.disabled = true;
 
-                // Forma estándar de form urlencoded, la más fiable para Apps Script
                 const formData = new URLSearchParams(new FormData(formContacto));
 
                 try {
-                    // Ponemos mode no-cors para evitar el error bloqueante de preflight en navegador.
                     await fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
                         body: formData
                     });
                     
-                    // Como es no-cors la respuesta será "opaca", así que si llega a esta línea asumimos que se envió.
                     toggleModal(modalContacto, false); 
                     formContacto.reset();
                     setTimeout(() => toggleModal(document.getElementById('modal-exito'), true), 300);
@@ -779,26 +804,15 @@
                 const contPr = document.getElementById('contenedor-galerias');
                 if (pr.length === 0) {
                     contPr.className = cGrid; contPr.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
-                    document.getElementById('prev-main').classList.add('hidden'); document.getElementById('next-main').classList.add('hidden');
-                } else if (pr.length <= 4) {
-                    contPr.className = cGrid; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
-                    document.getElementById('prev-main').classList.add('hidden'); document.getElementById('next-main').classList.add('hidden');
                 } else {
                     contPr.className = cCar; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
-                    document.getElementById('prev-main').classList.remove('hidden'); document.getElementById('next-main').classList.remove('hidden');
                 }
                 inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
 
                 const contDest = document.getElementById('contenedor-destacadas');
                 if (dest.length > 0) {
                     document.getElementById('seccion-destacadas').style.display = 'block';
-                    if (dest.length <= 4) {
-                        contDest.className = cGrid; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
-                        document.getElementById('prev-destacadas').classList.add('hidden'); document.getElementById('next-destacadas').classList.add('hidden');
-                    } else {
-                        contDest.className = cCar; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
-                        document.getElementById('prev-destacadas').classList.remove('hidden'); document.getElementById('next-destacadas').classList.remove('hidden');
-                    }
+                    contDest.className = cCar; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
                     inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
                 } else {
                     document.getElementById('seccion-destacadas').style.display = 'none';
