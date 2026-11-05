@@ -82,7 +82,8 @@
                     <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Sin balón</a>
                     <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Cultura</a>
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div>
-                    <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Contacto</a>
+                    <!-- Link de contacto modificado con clase 'abrir-contacto' -->
+                    <a href="#" class="abrir-contacto px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Contacto</a>
                 </nav>
 
                 <div class="flex md:hidden items-center">
@@ -124,7 +125,7 @@
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Sin balón</a>
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Cultura</a>
                 <div class="border-t border-zinc-700 my-2"></div>
-                <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Contacto</a>
+                <a href="#" class="abrir-contacto block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Contacto</a>
             </div>
         </div>
     </header>
@@ -174,7 +175,6 @@
                     </button>
                 </div>
                 
-                <!-- Botón Más Galerías -->
                 <div class="mt-12 flex justify-center w-full">
                     <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                         Más galerías
@@ -215,7 +215,6 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                     
-                    <!-- Columna Izquierda: Textos (flex-col para centrar) -->
                     <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
@@ -227,7 +226,6 @@
                             </h2>
                         </div>
 
-                        <!-- Textos centrados verticalmente y más pequeños -->
                         <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
                             <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
                                 La tensión en el banquillo. La voz de la grada. Un abrazo al final.
@@ -242,10 +240,8 @@
                         </a>
                     </div>
                     
-                    <!-- Columna Derecha: Imagen fija con bordes, horizontal (aspect-video) -->
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
-                            <!-- La imagen (o SVG) se inyectará aquí desde JS -->
                             <img id="img-seccion-sin-balon" src="" alt="Momento Sin Balón" class="opacity-0">
                         </div>
                     </div>
@@ -277,7 +273,6 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                     
-                    <!-- Columna Izquierda: Textos (flex-col para centrar) -->
                     <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
@@ -289,7 +284,6 @@
                             </h2>
                         </div>
 
-                        <!-- Textos centrados verticalmente y más pequeños -->
                         <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
                             <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
                                 Tradiciones, arte y momentos que forman parte de nuestra historia.
@@ -304,10 +298,8 @@
                         </a>
                     </div>
                     
-                    <!-- Columna Derecha: Imagen fija con bordes, horizontal (aspect-video) -->
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
-                            <!-- La imagen (o SVG) se inyectará aquí desde JS -->
                             <img id="img-seccion-cultura" src="" alt="Nuestra Cultura" class="opacity-0">
                         </div>
                     </div>
@@ -316,7 +308,7 @@
             </div>
         </section>
 
-        <!-- === BANNER BADAJOZ ES DEPORTE (CÓDIGO PURO, SIN IMAGEN) === -->
+        <!-- === BANNER BADAJOZ ES DEPORTE (CÓDIGO PURO) === -->
         <section class="bg-zinc-950 py-16 flex justify-center items-center overflow-hidden border-t border-zinc-800">
             <div class="bg-brand-highlight px-6 sm:px-10 py-5 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.2)] cursor-default mx-4 text-center">
                 <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-tighter m-0 leading-none">
@@ -327,8 +319,8 @@
 
     </main>
 
-    <!-- FOOTER NUEVO -->
-    <footer class="bg-[#0a0a0a] text-white py-12 lg:py-16 mt-auto">
+    <!-- FOOTER CON BORDE AÑADIDO Y CONTACTO ELIMINADO -->
+    <footer class="bg-[#0a0a0a] text-white py-12 lg:py-16 mt-auto border-t border-zinc-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 mb-10">
                 
@@ -338,10 +330,6 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center gap-6">
-                    <a href="#" class="text-sm font-medium hover:text-brand-accent transition-colors flex items-center gap-1">
-                        Contacto ↗
-                    </a>
-                    
                     <span class="text-xs font-bold tracking-widest uppercase">Sígueme en:</span>
                     
                     <div class="flex items-center gap-3">
@@ -364,7 +352,54 @@
         </div>
     </footer>
 
-    <!-- SCRIPT LÓGICO OPTIMIZADO -->
+    <!-- MODAL CONTACTO -->
+    <div id="modal-contacto" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-brand-base border border-zinc-800 rounded-2xl p-6 sm:p-10 max-w-lg w-full relative transform scale-95 transition-transform duration-300 shadow-2xl">
+            <button id="btn-cerrar-contacto" class="absolute top-4 right-4 text-gray-400 hover:text-brand-accent transition-colors focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-black text-white mb-2 tracking-tight">Hablemos.</h3>
+            <p class="text-gray-400 text-sm mb-8">Rellena el formulario y me pondré en contacto contigo lo antes posible.</p>
+            
+            <form id="form-contacto" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Tu nombre</label>
+                    <input type="text" id="form-nombre" required class="w-full bg-[#121212] border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors placeholder-gray-600" placeholder="Ej. Javier García">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Tu correo electrónico</label>
+                    <input type="email" id="form-email" required class="w-full bg-[#121212] border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors placeholder-gray-600" placeholder="ejemplo@correo.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Asunto</label>
+                    <input type="text" id="form-asunto" required class="w-full bg-[#121212] border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors placeholder-gray-600" placeholder="¿En qué te puedo ayudar?">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase tracking-widest mb-2">Mensaje</label>
+                    <textarea id="form-mensaje" required rows="4" class="w-full bg-[#121212] border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-brand-accent transition-colors resize-none placeholder-gray-600" placeholder="Cuéntame los detalles..."></textarea>
+                </div>
+                <button type="submit" id="btn-enviar-contacto" class="w-full bg-brand-accent text-black font-bold uppercase tracking-widest py-4 rounded-lg hover:bg-brand-highlight transition-colors mt-2 flex items-center justify-center gap-2">
+                    <span>Enviar mensaje</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ÉXITO -->
+    <div id="modal-exito" class="fixed inset-0 z-[110] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-brand-base border border-zinc-800 rounded-2xl p-8 max-w-sm w-full relative transform scale-95 transition-transform duration-300 shadow-2xl text-center">
+            <div class="w-16 h-16 bg-brand-accent rounded-full flex items-center justify-center mx-auto mb-5 text-black shadow-[0_0_15px_rgba(234,179,8,0.3)]">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h3 class="text-2xl font-black text-white mb-2 tracking-tight">¡Enviado!</h3>
+            <p class="text-gray-400 text-sm mb-8">Tu mensaje ha sido enviado correctamente. Te responderé pronto.</p>
+            <button id="btn-cerrar-exito" class="w-full bg-transparent border border-zinc-700 text-white font-bold uppercase tracking-widest py-3 rounded-lg hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none">
+                Aceptar
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT LÓGICO OPTIMIZADO Y CONTACTO -->
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
 
@@ -466,6 +501,89 @@
 
             document.addEventListener('click', () => {
                 menus.forEach(m => { if(m && !m.classList.contains('hidden') && m.id.includes('desktop')) m.classList.add('hidden'); });
+            });
+
+            // LÓGICA DE MODALES DE CONTACTO
+            const modalContacto = document.getElementById('modal-contacto');
+            const modalExito = document.getElementById('modal-exito');
+            const formContacto = document.getElementById('form-contacto');
+            const btnsAbrirContacto = document.querySelectorAll('.abrir-contacto');
+            
+            function toggleModal(modal, show) {
+                if (show) {
+                    modal.classList.remove('hidden');
+                    void modal.offsetWidth; // Forzar repintado
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('div').classList.remove('scale-95');
+                } else {
+                    modal.classList.add('opacity-0');
+                    modal.querySelector('div').classList.add('scale-95');
+                    setTimeout(() => modal.classList.add('hidden'), 300);
+                }
+            }
+
+            btnsAbrirContacto.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleModal(modalContacto, true);
+                    // Cierra el menu movil si estaba abierto al clickar contacto
+                    if(!document.getElementById('mobile-menu').classList.contains('hidden')) {
+                        document.getElementById('mobile-menu').classList.add('hidden');
+                        document.getElementById('menu-icon').setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    }
+                });
+            });
+
+            document.getElementById('btn-cerrar-contacto').addEventListener('click', () => toggleModal(modalContacto, false));
+            document.getElementById('btn-cerrar-exito').addEventListener('click', () => toggleModal(modalExito, false));
+            
+            // Cerrar al clickar fuera
+            [modalContacto, modalExito].forEach(m => {
+                m.addEventListener('click', (e) => {
+                    if (e.target === m) toggleModal(m, false);
+                });
+            });
+
+            // Envio del formulario a Apps Script
+            formContacto.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btnEnviar = document.getElementById('btn-enviar-contacto');
+                const btnText = btnEnviar.querySelector('span');
+                
+                // Animacion de carga visual
+                btnText.textContent = 'Enviando...';
+                btnEnviar.disabled = true;
+                btnEnviar.classList.add('opacity-75', 'cursor-not-allowed');
+
+                const payload = {
+                    nombre: document.getElementById('form-nombre').value,
+                    email: document.getElementById('form-email').value,
+                    asunto: document.getElementById('form-asunto').value,
+                    mensaje: document.getElementById('form-mensaje').value
+                };
+
+                try {
+                    // Enviamos usando mode no-cors para evitar errores de preflight
+                    await fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    // Exito
+                    toggleModal(modalContacto, false);
+                    formContacto.reset();
+                    setTimeout(() => { toggleModal(modalExito, true); }, 300);
+                    
+                } catch (error) {
+                    console.error("Error al enviar", error);
+                    alert("Ha habido un error de conexión, inténtalo más tarde.");
+                } finally {
+                    btnText.textContent = 'Enviar mensaje';
+                    btnEnviar.disabled = false;
+                    btnEnviar.classList.remove('opacity-75', 'cursor-not-allowed');
+                }
             });
 
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
@@ -629,7 +747,6 @@
             const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
             const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
 
-            // Ancho fijo diseñado matemáticamente para que 4 tarjetas entren exactas en 1216px de espacio sin forzar scroll
             const claseAnchoFijo = "w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px]";
 
             return `
