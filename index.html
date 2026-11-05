@@ -15,6 +15,9 @@
     
     <script>
         tailwind.config = {
+            future: {
+                hoverOnlyWhenSupported: true, // Evita que los efectos hover se queden "pegados" al pasar el cursor rápido o en pantallas táctiles
+            },
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
@@ -343,9 +346,9 @@
         </section>
 
         <section class="alternating-section py-16 flex justify-center items-center overflow-hidden transition-colors duration-300">
-            <div class="bg-brand-highlight px-6 sm:px-10 py-5 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 text-center">
-                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-tighter m-0 leading-none whitespace-nowrap">
-                    * BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
+            <div class="bg-brand-highlight px-8 sm:px-12 py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 w-full max-w-5xl flex justify-center items-center">
+                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-widest m-0 leading-none text-center whitespace-nowrap">
+                    BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
                 </h3>
             </div>
         </section>
@@ -933,24 +936,31 @@
             const cat = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : 'General';
             let cColor = "bg-black/80 text-white", bColor = "border-zinc-800 hover:border-brand-accent", catMost = cat;
 
-            if(cat.toLowerCase() === 'sin balón') { cColor = "bg-brand-accent text-black"; bColor = "border-2 border-brand-accent/30 hover:border-brand-accent"; } 
-            else if(cat.toLowerCase() === 'cultura') { cColor = "bg-brand-highlight text-black"; bColor = "border-2 border-brand-highlight/30 hover:border-brand-highlight"; }
+            if (cat.toLowerCase() === 'más deportes' || cat.toLowerCase() === 'mas deportes') {
+                if (evento.Categoria_Mas_Deportes && String(evento.Categoria_Mas_Deportes).trim() !== '') {
+                    catMost = String(evento.Categoria_Mas_Deportes).trim();
+                }
+            } else if(cat.toLowerCase() === 'sin balón' || cat.toLowerCase() === 'sin balon') { 
+                cColor = "bg-brand-accent text-black"; bColor = "border-2 border-brand-accent/30 hover:border-brand-accent"; 
+            } else if(cat.toLowerCase() === 'cultura') { 
+                cColor = "bg-brand-highlight text-black"; bColor = "border-2 border-brand-highlight/30 hover:border-brand-highlight"; 
+            }
             
             const fot = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
-            const fec = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
+            const fec = `${evento.Fecha || ''} ${(evento.Fecha && evento.Lugar) ? '•' : ''} ${evento.Lugar || ''}`.trim();
 
             return `
                 <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${bColor} transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(241,233,51,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer relative z-10">
                     <div class="relative h-64 overflow-hidden flex-shrink-0">
-                        <img src="${fot}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none" draggable="false">
+                        <img src="${fot}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" draggable="false">
                         <div class="absolute top-3 left-3 flex gap-2">
-                            <span class="${cColor} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">${catMost}</span>
+                            <span class="${cColor} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${catMost}</span>
                         </div>
                     </div>
-                    <div class="p-5 flex flex-col flex-grow pointer-events-none">
+                    <div class="p-5 flex flex-col flex-grow">
                         <span class="text-brand-accent text-xs font-semibold mb-1">${fec}</span>
                         <h3 class="text-lg font-bold text-white leading-tight mb-2 group-hover:text-brand-accent transition-colors line-clamp-2">${evento.Titulo || ''}</h3>
-                        <p class="text-sm text-gray-400 line-clamp-2 mt-auto">${evento.Descripcion_Corta || ''}</p>
+                        <p class="text-sm text-gray-400 line-clamp-2">${evento.Descripcion_Corta || ''}</p>
                     </div>
                 </article>
             `;
