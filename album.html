@@ -849,6 +849,15 @@
                 const gals = (data.galerias || []).filter(g => String(g.ID_Evento || '').trim() !== '');
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
                 if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') await renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
+
+                // La página de álbum es independiente: no debe continuar inicializando
+                // los carruseles y secciones de portada después de renderizar sus fotos.
+                if (pageMode === 'album') {
+                    document.getElementById('main-header')?.classList.remove('hidden');
+                    document.getElementById('main-footer')?.classList.remove('hidden');
+                    if (splash) { splash.classList.add('fade-out-splash'); setTimeout(() => splash.style.display = 'none', 600); }
+                    return;
+                }
                 
                 const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const dest = gals.filter(g => checkIsTrue(g.Destacadas) || checkIsTrue(g['Categorías destacadas']) || checkIsTrue(g.N));
