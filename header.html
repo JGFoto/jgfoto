@@ -2,7 +2,7 @@
     <div class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
             
-            <a id="header-logo-container" href="index.html" aria-label="Ir al inicio" class="flex-1 flex justify-start items-center cursor-pointer transition-all duration-300">
+            <a id="header-logo-container" href="index.html" onclick="if(location.pathname.endsWith('/index.html')||location.pathname==='/'){event.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}" aria-label="Ir al inicio" class="flex-1 flex justify-start items-center cursor-pointer transition-all duration-300">
                 <img src="https://raw.githubusercontent.com/JGFoto/jgfoto/refs/heads/main/assets/LogoWebTuFotoEnFoco.png" alt="tufotoenfoco" class="h-10 md:h-14 w-auto transition-transform duration-300 hover:scale-110">
             </a>
 
