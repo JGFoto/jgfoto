@@ -1109,7 +1109,10 @@
 
         function actualizarMenusDinamicos(datos) {
             const categoriasConAlbumVisible = new Set(datos.filter(e => e && e.Visible !== false && String(e.Visible).toUpperCase() !== 'FALSE').flatMap(e => [String(e.Categoria_Header || '').trim(), String(e.Categoria_Mas_Deportes || '').trim()]).filter(Boolean));
-            const categoriasPrincipales = [...new Set([...(window.categoriasOrdenadas || []), ...(window.categoriasDisponibles || [])].map(v => String(v || '').trim()).filter(Boolean))].filter(cat => !['sin balon','cultura','mas deportes'].includes(normalizarCategoria(cat)) && datos.some(e => normalizarCategoria(e.Categoria_Header) === normalizarCategoria(cat)));
+            const claveMenuCategoria = valor => String(valor || '').trim().toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ');
+            const categoriasPrincipales = [...new Set([...(window.categoriasOrdenadas || []), ...(window.categoriasDisponibles || [])].map(v => String(v || '').trim()).filter(Boolean))]
+                .filter(cat => !['sin balon', 'cultura', 'mas deportes'].includes(claveMenuCategoria(cat)))
+                .filter(cat => datos.some(e => claveMenuCategoria(e.Categoria_Header) === claveMenuCategoria(cat)));
             const usadasEnMasDeportes = [...new Set(datos.filter(e => checkIsTrue(e.Es_Mas_Deportes) && e.Categoria_Mas_Deportes && categoriasConAlbumVisible.has(String(e.Categoria_Mas_Deportes).trim())).map(e => String(e.Categoria_Mas_Deportes || '').trim()).filter(Boolean))];
             const ordenM = window.categoriasMasDeportesOrdenadas || [];
             const masDeportes = [...ordenM.filter(item => usadasEnMasDeportes.includes(item)), ...usadasEnMasDeportes.filter(item => !ordenM.includes(item))];
@@ -1117,8 +1120,8 @@
                 const desktopCont = document.getElementById(desktopId), mobileCont = document.getElementById(mobileId);
                 if (!desktopCont || !mobileCont) return;
                 if (items.length) {
-                    desktopCont.innerHTML = items.map(item => `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block px-4 py-2 text-base text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`).join('');
-                    mobileCont.innerHTML = items.map(item => `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`).join('');
+                    desktopCont.innerHTML = items.map(item => `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block px-4 py-2 text-base font-normal text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`).join('');
+                    mobileCont.innerHTML = items.map(item => `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block px-4 py-2 text-base font-normal text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`).join('');
                 } else {
                     desktopCont.innerHTML = `<span class="block px-4 py-2 text-sm text-gray-500">${emptyMsg}</span>`;
                     mobileCont.innerHTML = `<span class="block text-sm text-gray-500 py-1">${emptyMsg}</span>`;
