@@ -81,6 +81,11 @@
     </style>
 </head>
 <body data-page="album" class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
+    <div id="pantalla-carga" class="fixed inset-0 bg-zinc-950 z-[9999] flex flex-col items-center justify-center">
+        <img src="https://raw.githubusercontent.com/JGFoto/jgfoto/refs/heads/main/assets/LogoWebTuFotoEnFoco.png" alt="TUFOTOENFOCO" class="h-16 md:h-20 w-auto animate-latido mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+        <div class="w-32 h-1 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-brand-accent w-1/3 rounded-full animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] mx-auto"></div></div>
+    </div>
+
     <!-- CONTENEDOR DONDE SE INYECTARÁ EL HEADER -->
     <div id="header-placeholder"></div>
 
@@ -789,7 +794,7 @@
                 window.categoriasDisponibles = data.categorias || [];
                 const gals = (data.galerias || []).filter(g => String(g.ID_Evento || '').trim() !== '');
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
-                if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
+                if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') await renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
                 
                 const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const dest = gals.filter(g => checkIsTrue(g.Destacadas) || checkIsTrue(g['Categorías destacadas']) || checkIsTrue(g.N));
@@ -859,6 +864,7 @@
         }
 
 
+
         async function renderAlbumPage(gals){
             const root=document.getElementById('dynamic-page');
             if(!root)return;
@@ -875,57 +881,74 @@
             const same=gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat));
             const idx=same.findIndex(g=>String(g.ID_Evento)===id);
             const next=same[idx+1];
-            let page=0,selected=0,playTimer=null,isPlaying=false;
+            let page=0,selected=0,playTimer=null,isPlaying=false,playerOpen=false;
             const perPage=16;
             const safe=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
             const linkCompra=String(ev.Link_Compra||'').trim();
+            const free=checkIsTrue(ev.Descarga_Gratis);
             const descripcion=String(ev.Resultados||'').trim()||String(ev.Descripcion_Larga||'').trim();
             const fotosTotal=total||all.length;
+            const nombreFoto=(url,n)=>{try{const p=new URL(url,location.href).pathname.split('/').pop();return decodeURIComponent(p||`${id}_${n+1}`);}catch(e){return `${id}_${n+1}`;}};
+            const metadata=()=>`<div class="album-meta-card rounded-xl border border-zinc-700 bg-zinc-900/95 p-5 shadow-2xl backdrop-blur"><p class="text-brand-accent text-[11px] uppercase tracking-[.2em] font-bold mb-3">Información de la fotografía</p><p id="album-photo-name" class="text-white font-bold break-all">${safe(nombreFoto(all[0],0))}</p><p class="text-white mt-2 font-semibold">${safe(ev.Titulo||'')}</p><div class="mt-3 space-y-2 text-sm text-gray-300"><p><span class="text-brand-accent">Fecha</span> · ${safe(ev.Fecha||'—')}</p><p><span class="text-brand-accent">Lugar</span> · ${safe(ev.Lugar||'—')}</p></div><div class="flex flex-col gap-2 mt-4">${free?'<button id="album-free-download" type="button" class="w-full px-4 py-3 border border-zinc-600 text-white rounded-lg text-xs font-bold uppercase tracking-wider hover:border-brand-accent hover:text-brand-accent">Descargar gratis con marca de agua</button>':''}${/^https?:\/\//i.test(linkCompra)?`<a href="${safe(linkCompra)}" target="_blank" rel="noopener noreferrer" class="block text-center px-4 py-3 bg-brand-accent text-black rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-white">Tu recuerdo sin logotipo</a>`:''}</div></div>`;
             root.innerHTML=`<section class="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-8 py-10 min-h-screen">
-              <nav class="text-sm text-gray-400 mb-5"><a href="galerias.html?tipo=categorias" class="hover:text-brand-accent">Categorías</a><span class="mx-2">/</span><a href="${categoryHref}" class="hover:text-brand-accent">${safe(cat)}</a></nav>
+              <nav class="text-sm mb-5"><a href="galerias.html?tipo=categorias" class="text-brand-accent hover:text-white">Categorías</a><span class="mx-2 text-gray-500">/</span><a href="${categoryHref}" class="text-brand-accent hover:text-white">${safe(cat)}</a></nav>
               <h1 class="text-3xl md:text-5xl font-black text-white">${safe(ev.Titulo||'')}</h1>
-              <div class="text-gray-400 mt-3 flex flex-wrap gap-x-4 gap-y-1"><span>${safe(ev.Fecha||'')}</span><span>${safe(ev.Lugar||'')}</span><span>${fotosTotal} fotografías</span></div>
-              ${descripcion?`<p class="text-gray-300 text-base md:text-lg leading-relaxed mt-5 max-w-5xl whitespace-pre-line">${safe(descripcion)}</p>`:''}
+              <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-semibold text-brand-accent"><span>${safe(ev.Fecha||'')}</span><span class="text-zinc-600">|</span><span>${safe(ev.Lugar||'')}</span><span class="text-zinc-600">|</span><span>${fotosTotal} fotografías</span></div>
+              ${descripcion?`<p class="text-white text-base md:text-lg leading-relaxed mt-5 max-w-5xl whitespace-pre-line">${safe(descripcion)}</p>`:''}
               <div class="mt-7 border-y border-zinc-800 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <p class="text-gray-300 text-sm md:text-base">Gracias por tu apoyo. Me permite seguir capturando momentos y creando recuerdos.</p>
-                ${/^https?:\/\//i.test(linkCompra)?`<a href="${safe(linkCompra)}" target="_blank" rel="noopener noreferrer" class="shrink-0 px-5 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-wider rounded-md hover:bg-white transition-colors">Descarga tu recuerdo sin logotipo</a>`:''}
+                <p class="text-gray-300 text-sm md:text-base">Tu apoyo me permite seguir capturando momentos y creando recuerdos. ¡Gracias!</p>
+                ${/^https?:\/\//i.test(linkCompra)?`<a href="${safe(linkCompra)}" target="_blank" rel="noopener noreferrer" class="shrink-0 px-5 py-3 bg-brand-accent text-black font-bold text-xs uppercase tracking-wider rounded-md hover:bg-white transition-colors">Tu recuerdo sin logotipo · descárgalo aquí</a>`:''}
               </div>
-              <div class="relative mt-8 bg-black rounded-xl overflow-hidden min-h-[300px] md:min-h-[65vh] flex items-center justify-center">
-                <img id="album-main-photo" src="${all[0]}" alt="${safe(ev.Titulo||'Fotografía del álbum')}" class="max-w-full max-h-[78vh] object-contain">
-                <button id="album-photo-prev" type="button" aria-label="Fotografía anterior" class="hidden absolute left-3 top-1/2 -translate-y-1/2 bg-black/70 border border-white/30 text-white rounded-full w-12 h-12 text-2xl hover:bg-brand-accent hover:text-black">‹</button>
-                <button id="album-photo-next" type="button" aria-label="Fotografía siguiente" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/70 border border-white/30 text-white rounded-full w-12 h-12 text-2xl hover:bg-brand-accent hover:text-black">›</button>
+              <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-5 mt-8 items-start">
+                <div class="relative bg-black rounded-xl overflow-hidden min-h-[300px] md:min-h-[65vh] flex items-center justify-center">
+                  <img id="album-main-photo" src="${all[0]}" alt="${safe(ev.Titulo||'Fotografía del álbum')}" class="max-w-full max-h-[78vh] object-contain cursor-pointer transition-opacity duration-500" title="Pulsa para ver los datos de esta fotografía">
+                  <button id="album-photo-prev" type="button" aria-label="Fotografía anterior" class="hidden absolute left-3 top-1/2 -translate-y-1/2 bg-black/70 border border-white/30 text-white rounded-full w-12 h-12 text-2xl hover:bg-brand-accent hover:text-black">‹</button>
+                  <button id="album-photo-next" type="button" aria-label="Fotografía siguiente" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/70 border border-white/30 text-white rounded-full w-12 h-12 text-2xl hover:bg-brand-accent hover:text-black">›</button>
+                </div>
+                <aside class="space-y-4"><div class="flex justify-end"><button id="album-play" type="button" class="px-5 py-3 border border-brand-accent text-brand-accent rounded-lg hover:bg-brand-accent hover:text-black text-xs font-bold uppercase tracking-wider">▶ Reproducir presentación</button></div><div id="album-photo-details" class="hidden">${metadata()}</div></aside>
               </div>
-              <div class="flex flex-wrap items-center justify-between gap-3 mt-4">
-                <div class="flex items-center gap-3"><span id="album-photo-position" class="text-sm text-gray-300">1 / ${all.length}</span><button id="album-play" type="button" class="px-4 py-2 border border-zinc-700 rounded-md text-white hover:border-brand-accent hover:text-brand-accent text-sm">▶ Reproducir</button></div>
-                <p id="album-counter" class="text-sm text-gray-300 font-semibold">${Math.min(perPage,fotosTotal)} de ${fotosTotal} archivos</p>
-              </div>
+              <div class="flex flex-wrap items-center justify-between gap-3 mt-4"><span id="album-photo-position" class="text-sm text-gray-300">1 / ${all.length}</span><p id="album-counter" class="text-sm text-brand-accent font-semibold">${Math.min(perPage,all.length)} de ${fotosTotal} archivos</p></div>
               <div id="album-thumbs" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-5"></div>
               <div class="flex flex-wrap items-center justify-center gap-3 mt-7">
                 <button id="album-prev" type="button" class="px-5 py-3 rounded-md border border-zinc-700 text-white hover:border-brand-accent disabled:opacity-30 disabled:cursor-not-allowed">Atrás</button>
-                <button id="album-next" type="button" class="px-5 py-3 rounded-md bg-brand-accent text-black font-bold hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed">Siguiente</button>
+                <a href="${categoryHref}" class="px-5 py-3 rounded-md border border-zinc-700 text-white hover:border-brand-accent">Volver a la categoría</a>
+                ${next?`<a href="album.html?id=${encodeURIComponent(next.ID_Evento)}" class="px-5 py-3 rounded-md border border-zinc-700 text-white hover:border-brand-accent">Siguiente evento</a>`:'<span class="px-5 py-3 rounded-md border border-zinc-800 text-zinc-600 cursor-not-allowed" aria-disabled="true">Siguiente evento</span>'}
+                <button id="album-next" type="button" class="px-5 py-3 rounded-md border border-zinc-700 text-white hover:border-brand-accent disabled:opacity-30 disabled:cursor-not-allowed">Siguiente</button>
               </div>
-              <div class="flex flex-wrap justify-between gap-3 mt-10 border-t border-zinc-800 pt-6">
-                <a href="${categoryHref}" class="px-5 py-3 border border-zinc-700 rounded-md text-white hover:border-brand-accent">Volver a la categoría</a>
-                ${next?`<a href="album.html?id=${encodeURIComponent(next.ID_Evento)}" class="px-5 py-3 bg-brand-accent text-black font-bold rounded-md hover:bg-white">Siguiente evento</a>`:'<span></span>'}
+            </section>
+            <div id="album-player-overlay" class="fixed inset-0 z-[300] hidden items-center justify-center bg-black/95 backdrop-blur-lg p-4 opacity-0 transition-opacity duration-500">
+              <div class="relative w-full max-w-[1500px] h-[92vh] bg-zinc-950 border border-zinc-800 rounded-2xl overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between px-5 py-4 border-b border-zinc-800"><div><p class="text-brand-accent text-xs uppercase tracking-[.2em] font-bold">Presentación del álbum</p><p id="player-position" class="text-gray-400 text-xs mt-1"></p></div><button id="player-close" class="px-4 py-2 border border-zinc-700 rounded-lg text-white hover:border-brand-accent">Cerrar ×</button></div>
+                <div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-4 p-4">
+                  <div class="relative flex items-center justify-center min-h-0 bg-black rounded-xl overflow-hidden"><img id="player-photo" src="" class="max-w-full max-h-full object-contain opacity-100 transition-opacity duration-700"><button id="player-prev" class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/70 border border-white/30 text-white w-11 h-11 text-2xl">‹</button><button id="player-next" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/70 border border-white/30 text-white w-11 h-11 text-2xl">›</button></div>
+                  <aside id="player-info" class="flex flex-col justify-center"></aside>
+                </div>
+                <div class="px-5 py-3 border-t border-zinc-800 flex justify-center"><button id="player-pause" class="px-6 py-2 bg-brand-accent text-black rounded-lg font-bold text-xs uppercase tracking-wider">Ⅱ Pausar</button></div>
               </div>
-            </section>`;
+            </div>`;
             const main=document.getElementById('album-main-photo');
-            const stopPlay=()=>{if(playTimer){clearInterval(playTimer);playTimer=null;}isPlaying=false;const b=document.getElementById('album-play');if(b)b.textContent='▶ Reproducir';};
-            const updateMain=()=>{main.src=all[selected];document.getElementById('album-photo-position').textContent=`${selected+1} / ${all.length}`;document.getElementById('album-photo-prev').classList.toggle('hidden',selected===0);document.getElementById('album-photo-next').classList.toggle('hidden',selected===all.length-1);};
-            const draw=()=>{
-                const start=page*perPage,end=Math.min(start+perPage,all.length);
-                document.getElementById('album-counter').textContent=`${Math.min((page+1)*perPage,fotosTotal)} de ${fotosTotal} archivos`;
-                document.getElementById('album-thumbs').innerHTML=all.slice(start,end).map((url,i)=>`<button type="button" class="aspect-square rounded-lg overflow-hidden border-2 ${start+i===selected?'border-brand-accent':'border-transparent'} bg-zinc-800" data-photo="${start+i}" aria-label="Ver fotografía ${start+i+1}"><img src="${url}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${placeholderImagen}'"></button>`).join('');
-                document.getElementById('album-prev').disabled=page===0;
-                document.getElementById('album-next').disabled=end>=all.length;
-                document.querySelectorAll('#album-thumbs button').forEach(b=>b.addEventListener('click',()=>{stopPlay();selected=Number(b.dataset.photo);page=Math.floor(selected/perPage);updateMain();draw();}));
-            };
+            const details=document.getElementById('album-photo-details');
+            const stopPlay=()=>{if(playTimer){clearInterval(playTimer);playTimer=null;}isPlaying=false;const b=document.getElementById('player-pause');if(b)b.textContent='▶ Reanudar';};
+            const photoInfoHtml=()=>`<div class="rounded-xl border border-zinc-700 bg-zinc-900/95 p-5"><p class="text-brand-accent text-[11px] uppercase tracking-[.2em] font-bold mb-3">Información de la fotografía</p><p class="text-white font-bold break-all">${safe(nombreFoto(all[selected],selected))}</p><p class="text-white mt-2 font-semibold">${safe(ev.Titulo||'')}</p><div class="mt-3 space-y-2 text-sm text-gray-300"><p><span class="text-brand-accent">Fecha</span> · ${safe(ev.Fecha||'—')}</p><p><span class="text-brand-accent">Lugar</span> · ${safe(ev.Lugar||'—')}</p></div><div class="flex flex-col gap-2 mt-4">${free?'<button type="button" id="player-free-download" class="w-full px-4 py-3 border border-zinc-600 text-white rounded-lg text-xs font-bold uppercase">Descargar gratis con marca de agua</button>':''}${/^https?:\/\//i.test(linkCompra)?`<a href="${safe(linkCompra)}" target="_blank" rel="noopener noreferrer" class="block text-center px-4 py-3 bg-brand-accent text-black rounded-lg text-xs font-bold uppercase">Tu recuerdo sin logotipo</a>`:''}</div></div>`;
+            const downloadSelected=async()=>{const url=all[selected];try{const r=await fetch(url);if(!r.ok)throw Error();const blob=await r.blob(),obj=URL.createObjectURL(blob),a=document.createElement('a');a.href=obj;a.download=nombreFoto(url,selected);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(obj),1500);}catch(e){window.open(url,'_blank','noopener');}};
+            const updateDetails=()=>{document.getElementById('album-photo-details').innerHTML=photoInfoHtml();document.getElementById('album-photo-details').classList.remove('hidden');document.getElementById('album-free-download')?.addEventListener('click',downloadSelected);};
+            const updateMain=()=>{main.style.opacity='0.25';const url=all[selected];const preload=new Image();preload.onload=()=>{main.src=url;main.style.opacity='1';};preload.onerror=()=>{main.src=placeholderImagen;main.style.opacity='1';};preload.src=url;document.getElementById('album-photo-position').textContent=`${selected+1} / ${all.length}`;document.getElementById('album-photo-prev').classList.toggle('hidden',selected===0);document.getElementById('album-photo-next').classList.toggle('hidden',selected===all.length-1);if(!details.classList.contains('hidden'))updateDetails();};
+            const draw=()=>{const start=page*perPage,end=Math.min(start+perPage,all.length);document.getElementById('album-counter').textContent=`${end} de ${fotosTotal} archivos`;document.getElementById('album-thumbs').innerHTML=all.slice(start,end).map((url,i)=>`<button type="button" class="aspect-square rounded-lg overflow-hidden border-2 ${start+i===selected?'border-brand-accent':'border-transparent'} bg-zinc-800" data-photo="${start+i}" aria-label="Ver fotografía ${start+i+1}"><img src="${url}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${placeholderImagen}'"></button>`).join('');document.getElementById('album-prev').disabled=page===0;document.getElementById('album-next').disabled=end>=all.length;document.querySelectorAll('#album-thumbs button').forEach(b=>b.addEventListener('click',()=>{stopPlay();selected=Number(b.dataset.photo);page=Math.floor(selected/perPage);updateMain();draw();}));};
             const selectPhoto=(n)=>{selected=Math.max(0,Math.min(all.length-1,n));page=Math.floor(selected/perPage);updateMain();draw();};
+            main.addEventListener('click',()=>{updateDetails();});
+            document.getElementById('album-free-download')?.addEventListener('click',downloadSelected);
             document.getElementById('album-photo-prev').addEventListener('click',()=>{stopPlay();selectPhoto(selected-1);});
             document.getElementById('album-photo-next').addEventListener('click',()=>{stopPlay();selectPhoto(selected+1);});
             document.getElementById('album-prev').addEventListener('click',()=>{if(page>0){stopPlay();page--;selected=Math.min(page*perPage,all.length-1);updateMain();draw();}});
             document.getElementById('album-next').addEventListener('click',()=>{if((page+1)*perPage<all.length){stopPlay();page++;selected=page*perPage;updateMain();draw();}});
-            document.getElementById('album-play').addEventListener('click',()=>{if(isPlaying){stopPlay();return;}if(selected>=all.length-1)selectPhoto(0);isPlaying=true;document.getElementById('album-play').textContent='Ⅱ Pausar';playTimer=setInterval(()=>{if(selected>=all.length-1){stopPlay();return;}selectPhoto(selected+1);},2000);});
+            const overlay=document.getElementById('album-player-overlay'),playerPhoto=document.getElementById('player-photo');
+            const updatePlayer=()=>{playerPhoto.style.opacity='0';setTimeout(()=>{playerPhoto.src=all[selected];playerPhoto.style.opacity='1';},250);document.getElementById('player-position').textContent=`${selected+1} / ${all.length}`;document.getElementById('player-info').innerHTML=photoInfoHtml();document.getElementById('player-free-download')?.addEventListener('click',downloadSelected);document.getElementById('player-prev').classList.toggle('hidden',selected===0);document.getElementById('player-next').classList.toggle('hidden',selected===all.length-1);};
+            const closePlayer=()=>{stopPlay();overlay.classList.add('opacity-0');setTimeout(()=>{overlay.classList.add('hidden');overlay.classList.remove('flex');},500);};
+            document.getElementById('album-play').addEventListener('click',()=>{if(selected>=all.length-1){selected=0;page=0;updateMain();draw();}playerOpen=true;overlay.classList.remove('hidden');overlay.classList.add('flex');requestAnimationFrame(()=>overlay.classList.remove('opacity-0'));updatePlayer();isPlaying=true;document.getElementById('player-pause').textContent='Ⅱ Pausar';playTimer=setInterval(()=>{if(selected>=all.length-1){stopPlay();return;}selected++;page=Math.floor(selected/perPage);updateMain();draw();updatePlayer();},2000);});
+            document.getElementById('player-close').addEventListener('click',closePlayer);
+            document.getElementById('player-pause').addEventListener('click',()=>{if(isPlaying){stopPlay();}else{isPlaying=true;document.getElementById('player-pause').textContent='Ⅱ Pausar';playTimer=setInterval(()=>{if(selected>=all.length-1){stopPlay();return;}selected++;page=Math.floor(selected/perPage);updateMain();draw();updatePlayer();},2000);}});
+            document.getElementById('player-prev').addEventListener('click',()=>{if(selected>0){selected--;page=Math.floor(selected/perPage);updateMain();draw();updatePlayer();}});
+            document.getElementById('player-next').addEventListener('click',()=>{if(selected<all.length-1){selected++;page=Math.floor(selected/perPage);updateMain();draw();updatePlayer();}});
             updateMain();draw();
         }
 

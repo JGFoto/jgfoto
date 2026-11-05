@@ -81,6 +81,11 @@
     </style>
 </head>
 <body data-page="cultura" class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
+    <div id="pantalla-carga" class="fixed inset-0 bg-zinc-950 z-[9999] flex flex-col items-center justify-center">
+        <img src="https://raw.githubusercontent.com/JGFoto/jgfoto/refs/heads/main/assets/LogoWebTuFotoEnFoco.png" alt="TUFOTOENFOCO" class="h-16 md:h-20 w-auto animate-latido mb-6 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+        <div class="w-32 h-1 bg-zinc-800 rounded-full overflow-hidden"><div class="h-full bg-brand-accent w-1/3 rounded-full animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite] mx-auto"></div></div>
+    </div>
+
     <!-- CONTENEDOR DONDE SE INYECTARÁ EL HEADER -->
     <div id="header-placeholder"></div>
 
@@ -789,7 +794,7 @@
                 window.categoriasDisponibles = data.categorias || [];
                 const gals = (data.galerias || []).filter(g => String(g.ID_Evento || '').trim() !== '');
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
-                if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
+                if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') await renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
                 
                 const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const dest = gals.filter(g => checkIsTrue(g.Destacadas) || checkIsTrue(g['Categorías destacadas']) || checkIsTrue(g.N));
