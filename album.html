@@ -83,6 +83,15 @@
         .carrusel-principal { scroll-padding-inline: 50%; }
         .carrusel-principal > article { scroll-snap-align: center; }
         @media (max-width: 767px) {
+            #modal-contacto { align-items:flex-start !important; padding:12px !important; }
+            #modal-contacto > div { width:100% !important; max-height:calc(100dvh - 24px) !important; overflow-y:auto !important; margin:0 auto !important; padding:20px 16px !important; }
+            #modal-contacto h3 { font-size:1.65rem !important; padding-right:2rem; }
+            #modal-contacto #form-contacto { gap:14px !important; }
+            #modal-contacto #form-contacto input, #modal-contacto #form-contacto textarea { min-width:0; font-size:16px; }
+            #modal-contacto #form-contacto button { padding-top:13px !important; padding-bottom:13px !important; }
+            #img-seccion-sin-balon,#img-seccion-cultura { width:100% !important; height:100% !important; min-height:100% !important; max-height:none !important; object-fit:cover !important; flex:1 1 100% !important; }
+            div:has(> #img-seccion-sin-balon),div:has(> #img-seccion-cultura) { height: min(72vw, 420px) !important; min-height:260px !important; align-items:stretch !important; }
+
             .carrusel-principal { gap:14px !important; padding-left:9vw !important; padding-right:9vw !important; scroll-snap-type:x mandatory !important; scroll-behavior:smooth; }
             .carrusel-principal > article { flex:0 0 82vw !important; width:82vw !important; max-width:380px; scroll-snap-align:center !important; scroll-snap-stop:always; }
             #prev-main,#next-main,#prev-destacadas,#next-destacadas { display:none !important; }
@@ -120,6 +129,18 @@
             .max-w-\[1600px\], .max-w-\[95\%\] { max-width: 97vw !important; }
         }
     </style>
+
+<style id="responsive-contact-and-section-images-fix">
+@media (max-width:767px) {
+  #modal-contacto { align-items:flex-start !important; justify-content:center !important; padding:12px !important; overflow-y:auto !important; }
+  #modal-contacto > div { box-sizing:border-box; width:100% !important; max-height:calc(100dvh - 24px) !important; overflow-y:auto !important; overscroll-behavior:contain; margin:0 auto !important; padding:20px 16px !important; }
+  #modal-contacto #form-contacto { display:flex; flex-direction:column; gap:14px !important; }
+  #modal-contacto #form-contacto input, #modal-contacto #form-contacto textarea { box-sizing:border-box; width:100%; min-width:0; font-size:16px; }
+  #img-seccion-sin-balon,#img-seccion-cultura { display:block !important; box-sizing:border-box; width:100% !important; height:100% !important; min-height:100% !important; max-height:none !important; object-fit:cover !important; flex:1 1 100% !important; position:static !important; }
+  div:has(> #img-seccion-sin-balon),div:has(> #img-seccion-cultura) { box-sizing:border-box; width:100% !important; height:min(72vw,420px) !important; min-height:260px !important; max-height:none !important; align-items:stretch !important; overflow:hidden !important; }
+}
+</style>
+
 </head>
 <body data-page="album" class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
     <div id="pantalla-carga" class="fixed inset-0 bg-zinc-950 z-[9999] flex flex-col items-center justify-center">
@@ -405,8 +426,8 @@
         <img id="modal-imagen-simple-src" src="" class="max-h-[90vh] max-w-[95vw] object-contain shadow-2xl transform scale-95 transition-transform duration-300">
     </div>
 
-    <div id="modal-contacto" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-brand-base border border-zinc-800 rounded-2xl p-6 sm:p-10 max-w-lg w-full relative transform scale-95 transition-transform duration-300 shadow-2xl">
+    <div id="modal-contacto" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm hidden flex items-start sm:items-center justify-center p-3 sm:p-4 opacity-0 transition-opacity duration-300 overflow-y-auto overscroll-contain">
+        <div class="bg-brand-base border border-zinc-800 rounded-2xl p-5 sm:p-10 max-w-lg w-full max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] overflow-y-auto overscroll-contain relative transform scale-95 transition-transform duration-300 shadow-2xl my-auto">
             <button id="btn-cerrar-contacto" class="absolute top-4 right-4 text-gray-400 hover:text-brand-accent transition-colors focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
