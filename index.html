@@ -49,6 +49,8 @@
         }
 
         .carrusel-miniaturas::-webkit-scrollbar { width: 2px; height: 2px; }
+        .carrusel-miniaturas::-webkit-scrollbar-button { display:none; width:0; height:0; }
+        .carrusel-miniaturas { scroll-behavior:smooth; }
         .carrusel-miniaturas::-webkit-scrollbar-track { background-color: transparent; }
         .carrusel-miniaturas::-webkit-scrollbar-thumb { background-color: #F1E933; border-radius: 2px; }
         .carrusel-miniaturas { scrollbar-width: thin; scrollbar-color: #F1E933 transparent; }
@@ -119,7 +121,7 @@
                 <p class="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl drop-shadow font-light mb-10">
                     El instante pasa, la emoción se queda.
                 </p>
-                <a href="#" class="inline-flex items-center justify-center px-8 py-4 bg-brand-accent text-black text-xs font-bold uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-300 cursor-pointer rounded-sm">
+                <a href="galerias.html?tipo=categorias" class="inline-flex items-center justify-center px-8 py-4 bg-brand-accent text-black text-xs font-bold uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-300 cursor-pointer rounded-sm">
                     Explorar categorías
                 </a>
             </div>
@@ -164,7 +166,7 @@
                 </div>
                 
                 <div class="mt-12 flex justify-center w-full">
-                    <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-8 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
+                    <button id="btn-cargar-mas" onclick="window.location.href='galerias.html?tipo=todas'" style="display: none;" class="inline-flex items-center justify-center px-8 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                         Más galerías
                     </button>
                 </div>
@@ -215,7 +217,7 @@
                                 Los momentos que también forman parte del juego.
                             </p>
                         </div>
-                        <a href="#" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors cursor-pointer rounded-sm">
+                        <a href="sin-balon.html" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-accent hover:text-brand-accent transition-colors cursor-pointer rounded-sm">
                             Descubrir sin balón
                         </a>
                     </div>
@@ -266,7 +268,7 @@
                                 Descubre nuestras galerías de Semana Santa, Carnaval, Almossassa, conciertos, teatro, folklore y Noche en Blanco.
                             </p>
                         </div>
-                        <a href="#" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-highlight hover:text-brand-highlight transition-colors cursor-pointer rounded-sm">
+                        <a href="cultura.html" class="inline-flex items-center justify-center px-8 py-4 bg-transparent border border-zinc-700 text-white text-xs font-bold uppercase tracking-widest hover:border-brand-highlight hover:text-brand-highlight transition-colors cursor-pointer rounded-sm">
                             Explorar cultura
                         </a>
                     </div>
@@ -288,6 +290,8 @@
         </section>
     </main>
 
+    <main id="dynamic-page" class="hidden bg-zinc-950"></main>
+
     <!-- CONTENEDOR DONDE SE INYECTARÁ EL FOOTER -->
     <div id="footer-placeholder"></div>
 
@@ -297,6 +301,7 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <div class="p-6 md:p-8 border-b border-zinc-800 shrink-0 bg-brand-base relative z-40 pr-16">
+                <a id="modal-btn-comprar-top" href="#" target="_blank" rel="noopener noreferrer" class="hidden mb-3 inline-flex items-center justify-center px-4 py-2 bg-brand-accent hover:bg-white text-black text-xs font-bold uppercase tracking-widest rounded-md transition-colors">Tu recuerdo sin logo · descárgalo aquí</a>
                 <h2 id="modal-gal-titulo" class="text-2xl md:text-3xl font-black text-white uppercase tracking-tight"></h2>
                 <p id="modal-gal-desc" class="text-gray-400 text-sm md:text-base mt-2 line-clamp-2 md:line-clamp-none"></p>
             </div>
@@ -323,11 +328,11 @@
                         <div class="flex gap-2 w-full sm:w-auto">
                             <button id="modal-btn-descargar" class="hidden flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-base border border-zinc-700 hover:border-white text-white text-xs font-bold uppercase tracking-widest rounded-md transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                                Descargar
+                                Descarga gratis con logo
                             </button>
                             <a id="modal-btn-comprar" href="#" target="_blank" class="hidden flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-accent hover:bg-white text-black text-xs font-bold uppercase tracking-widest rounded-md transition-colors">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                Comprar Galería
+                                Tu recuerdo sin logo · descárgalo aquí
                             </a>
                         </div>
                     </div>
@@ -335,6 +340,20 @@
                 <div class="w-full lg:w-72 bg-brand-base border-t lg:border-t-0 lg:border-l border-zinc-800 flex-shrink-0 p-3 flex flex-row lg:flex-col overflow-x-auto overflow-y-auto overscroll-contain gap-3 carrusel-miniaturas h-32 lg:h-auto">
                     <div id="modal-gal-thumbs-container" class="flex flex-row lg:flex-col gap-3 w-max lg:w-full"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-descarga-opciones" class="fixed inset-0 z-[140] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-brand-base w-full max-w-xl rounded-2xl border border-zinc-800 shadow-2xl p-7 md:p-10 text-center relative transform scale-95 transition-transform duration-300">
+            <h2 class="text-2xl md:text-3xl font-black text-white mb-3">Tu recuerdo sin logo por <span class="text-brand-accent">3€</span></h2>
+            <p class="text-gray-300 mb-5">Más recuerdos, mejor precio:</p>
+            <div class="space-y-2 text-gray-200 mb-6"><p>2 fotos <span class="text-brand-accent font-bold">→ 10% de descuento</span></p><p>3 fotos <span class="text-brand-accent font-bold">→ 15% de descuento</span></p><p>4 fotos <span class="text-brand-accent font-bold">→ 20% de descuento</span></p><p>5 fotos <span class="text-brand-accent font-bold">→ 25% de descuento</span></p></div>
+            <p class="text-gray-400 mb-7">Gracias por tu apoyo</p>
+            <div class="flex flex-col gap-3">
+                <a id="descarga-opcion-compra" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex justify-center items-center px-5 py-3 bg-brand-accent hover:bg-white text-black text-xs sm:text-sm font-bold uppercase tracking-widest rounded-md transition-colors">Tu recuerdo sin logo · cómpralo aquí</a>
+                <button id="descarga-opcion-gratis" class="inline-flex justify-center items-center px-5 py-3 border border-brand-accent text-brand-accent hover:bg-brand-accent hover:text-black text-xs sm:text-sm font-bold uppercase tracking-widest rounded-md transition-colors">Continuar con la descarga gratis</button>
+                <button id="descarga-opcion-volver" class="self-center px-5 py-2 text-sm text-gray-400 hover:text-white transition-colors">Volver</button>
             </div>
         </div>
     </div>
@@ -527,149 +546,80 @@
             }
         }
 
+        let eventoModalActual = null;
+        let urlCompraActual = '';
         async function fetchFotosDesdeGitHub(idEvento) {
-            const USUARIO_GITHUB = 'JGFoto'; 
-            const REPOSITORIO_GITHUB = 'jgfoto'; 
-            
-            const apiUrl = `https://api.github.com/repos/${USUARIO_GITHUB}/${REPOSITORIO_GITHUB}/contents/galerias/${idEvento}`;
-
+            const apiUrl = `https://api.github.com/repos/JGFoto/jgfoto/contents/galerias/${encodeURIComponent(idEvento)}`;
             try {
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    return null;
-                }
-                
-                const archivos = await response.json();
-                
-                const urlsFotos = archivos
-                    .filter(archivo => archivo.name.match(/\.(jpg|jpeg|png|webp)$/i))
-                    .map(archivo => archivo.download_url);
-                
-                if (urlsFotos.length === 0) return null;
-                
-                return urlsFotos;
-            } catch (error) {
-                return null;
-            }
+                const response = await fetch(apiUrl, {cache:'force-cache'});
+                if(!response.ok) return [];
+                const files = await response.json();
+                return files.filter(f=>/\.(jpg|jpeg|png|webp)$/i.test(f.name))
+                    .sort((x,y)=>Number((x.name.match(/_(\d+)\./)||[])[1]||0)-Number((y.name.match(/_(\d+)\./)||[])[1]||0))
+                    .map(f=>f.download_url);
+            } catch(e) { return []; }
         }
-
+        function obtenerNumerosDestacados(ev) {
+            return String(ev.Fotos_Destacadas ?? ev.Fotos_destacadas ?? ev['Fotos destacadas'] ?? '')
+                .split(',').map(v=>parseInt(v.trim(),10)).filter(Number.isFinite);
+        }
         window.abrirModalGaleria = async function(idEv) {
-            const ev = window.eventosGlobal[idEv];
-            if(!ev) return;
-            
-            document.getElementById('modal-gal-titulo').textContent = ev.Titulo || '';
-            document.getElementById('modal-gal-desc').textContent = ev.Descripcion_Larga || ev.Descripcion_Corta || '';
-            document.getElementById('modal-gal-lugar').textContent = ev.Lugar || '';
-            document.getElementById('modal-gal-fecha').textContent = ev.Fecha || '';
-
-            const habilitarDescarga = checkIsTrue(ev.Descarga) || checkIsTrue(ev['Descarga gratis']) || checkIsTrue(ev.Habilitar_Descarga) || checkIsTrue(ev.O);
-            const habilitarCompra = checkIsTrue(ev.Compra) || checkIsTrue(ev['Activar compra']) || checkIsTrue(ev.Habilitar_Compra) || checkIsTrue(ev.P);
-            
-            const btnDesc = document.getElementById('modal-btn-descargar');
-            const btnComp = document.getElementById('modal-btn-comprar');
-            
-            if(habilitarDescarga) btnDesc.classList.remove('hidden'); else btnDesc.classList.add('hidden');
-            if(habilitarCompra) {
-                btnComp.classList.remove('hidden');
-                btnComp.href = ev.Link_Compra || '#'; 
-            } else {
-                btnComp.classList.add('hidden');
-            }
-
-            const mainPhoto = ev.Foto_Cabecera || 'https://placehold.co/1200x800/18181b/71717a?text=Sin+Imagen';
-            
-            const destacadasRaw = ev.Fotos_destacadas || ev['Fotos destacadas'] || ev.I || '';
-            let destacadasArr = [];
-            if (destacadasRaw) {
-                destacadasArr = String(destacadasRaw).split(',').map(s => s.trim()).filter(s => s !== '');
-            }
-
-            arrayFotosActuales = [mainPhoto];
-            indexFotoActual = 0;
-            
-            actualizarFotoModal();
-            document.getElementById('modal-gal-thumbs-container').innerHTML = '';
-            
-            const modal = document.getElementById('modal-galeria-vista');
-            toggleModal(modal, true);
-
-            try {
-                const idFetch = ev.ID_evento || ev.ID_Evento || ev.ID || idEv;
-                
-                const fotosGithub = await fetchFotosDesdeGitHub(idFetch);
-                
-                if (fotosGithub && fotosGithub.length > 0) {
-                    const getFilename = (u) => u.split('/').pop().split('?')[0].toLowerCase();
-                    const mainFilename = getFilename(mainPhoto);
-                    
-                    let fotosRestantes = fotosGithub.filter(url => getFilename(url) !== mainFilename);
-                    
-                    let featuredUrls = [];
-                    for (let num of destacadasArr) {
-                        const regex = new RegExp(`(^|[^0-9])${num}\\.(jpg|jpeg|png|webp)$`, 'i');
-                        const matchIndex = fotosRestantes.findIndex(url => regex.test(getFilename(url)));
-                        if (matchIndex !== -1) {
-                            featuredUrls.push(fotosRestantes[matchIndex]);
-                            fotosRestantes.splice(matchIndex, 1);
-                        }
-                    }
-
-                    arrayFotosActuales = [mainPhoto, ...featuredUrls, ...fotosRestantes];
-                } else {
-                    arrayFotosActuales = [mainPhoto];
-                }
-            } catch (error) {
-                document.getElementById('modal-gal-thumbs-container').innerHTML = '';
-            }
-
-            indexFotoActual = 0;
-            actualizarFotoModal();
-            dibujarMiniaturasModal();
-        }
-
+            const ev=window.eventosGlobal[idEv]; if(!ev)return;
+            eventoModalActual=ev;
+            document.getElementById('modal-gal-titulo').textContent=ev.Titulo||'';
+            document.getElementById('modal-gal-desc').textContent=ev.Descripcion_Larga||ev.Descripcion_Corta||'';
+            document.getElementById('modal-gal-lugar').textContent=ev.Lugar||'';
+            document.getElementById('modal-gal-fecha').textContent=ev.Fecha||'';
+            const free=checkIsTrue(ev.Descarga_Gratis ?? ev.Descarga ?? ev['Descarga gratis']);
+            urlCompraActual=String(ev.Link_Compra||'').trim();
+            const hasLink=/^https?:\/\//i.test(urlCompraActual);
+            document.getElementById('modal-btn-descargar').classList.toggle('hidden',!free);
+            document.getElementById('modal-btn-comprar').classList.add('hidden');
+            const topBuy=document.getElementById('modal-btn-comprar-top');
+            topBuy.classList.toggle('hidden',!hasLink); if(hasLink)topBuy.href=urlCompraActual;
+            toggleModal(document.getElementById('modal-galeria-vista'),true);
+            const main=document.getElementById('modal-gal-img-principal');
+            main.src=svgCamara; main.alt='Cargando fotografía';
+            arrayFotosActuales=[];indexFotoActual=0;
+            document.getElementById('modal-gal-thumbs-container').innerHTML='';
+            const id=ev.ID_Evento||ev.ID_evento||ev.ID||'';
+            const photos=await fetchFotosDesdeGitHub(id);
+            const nums=obtenerNumerosDestacados(ev);
+            const photoNum=u=>Number(((u.split('/').pop()||'').match(/_(\d+)\./)||[])[1]||0);
+            const featured=nums.map(n=>photos.find(u=>photoNum(u)===n)).filter(Boolean);
+            const featuredSet=new Set(featured);
+            arrayFotosActuales=[...featured,...photos.filter(u=>!featuredSet.has(u))];
+            if(!arrayFotosActuales.length&&ev.Foto_Cabecera)arrayFotosActuales=[ev.Foto_Cabecera];
+            dibujarMiniaturasModal();actualizarFotoModal();
+        };
         function actualizarFotoModal() {
-            const imgEl = document.getElementById('modal-gal-img-principal');
-            imgEl.style.opacity = 0;
-            setTimeout(() => {
-                imgEl.src = arrayFotosActuales[indexFotoActual];
-                imgEl.style.opacity = 1;
-            }, 150);
-            
-            const thumbs = document.querySelectorAll('.gal-thumb');
-            thumbs.forEach((t, i) => {
-                if(i === indexFotoActual) {
-                    t.classList.add('border-brand-accent', 'opacity-100');
-                    t.classList.remove('border-transparent', 'opacity-50');
-                } else {
-                    t.classList.add('border-transparent', 'opacity-50');
-                    t.classList.remove('border-brand-accent', 'opacity-100');
-                }
+            const img=document.getElementById('modal-gal-img-principal'), url=arrayFotosActuales[indexFotoActual];
+            if(!url){img.src=svgCamara;return;}
+            img.style.opacity='.35';
+            const preload=new Image();preload.decoding='async';
+            preload.onload=()=>{img.src=url;img.style.opacity='1';};
+            preload.onerror=()=>{img.src=svgCamara;img.style.opacity='1';};
+            preload.src=url;
+            document.querySelectorAll('.gal-thumb').forEach((el,i)=>{
+                el.classList.toggle('border-brand-accent',i===indexFotoActual);
+                el.classList.toggle('opacity-100',i===indexFotoActual);
+                el.classList.toggle('border-transparent',i!==indexFotoActual);
+                el.classList.toggle('opacity-50',i!==indexFotoActual);
             });
+            const active=document.querySelectorAll('.gal-thumb')[indexFotoActual];
+            if(active)active.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});
         }
-
-        function cambiarFotoModal(direccion) {
-            indexFotoActual += direccion;
-            if(indexFotoActual < 0) indexFotoActual = arrayFotosActuales.length - 1;
-            if(indexFotoActual >= arrayFotosActuales.length) indexFotoActual = 0;
-            actualizarFotoModal();
+        function cambiarFotoModal(d){if(!arrayFotosActuales.length)return;indexFotoActual=(indexFotoActual+d+arrayFotosActuales.length)%arrayFotosActuales.length;actualizarFotoModal();}
+        window.irAFotoModal=i=>{if(i>=0&&i<arrayFotosActuales.length){indexFotoActual=i;actualizarFotoModal();}};
+        function dibujarMiniaturasModal(){
+            document.getElementById('modal-gal-thumbs-container').innerHTML=arrayFotosActuales.map((url,i)=>`
+                <button type="button" onclick="irAFotoModal(${i})" aria-label="Ver fotografía ${i+1}" class="gal-thumb w-24 h-24 lg:w-full lg:h-32 rounded-lg overflow-hidden border-2 ${i===0?'border-brand-accent opacity-100':'border-transparent opacity-50'} cursor-pointer hover:opacity-100 transition-all flex-shrink-0 relative group bg-[#121212]">
+                <img src="${url}" alt="Miniatura ${i+1}" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${svgCamara}'"><span class="absolute inset-0 bg-black/20 group-hover:bg-transparent pointer-events-none"></span></button>`).join('');
         }
-
-        window.irAFotoModal = function(index) { indexFotoActual = index; actualizarFotoModal(); }
-
-        function dibujarMiniaturasModal() {
-            const container = document.getElementById('modal-gal-thumbs-container');
-            let html = '';
-            arrayFotosActuales.forEach((url, i) => {
-                const isSelected = i === 0 ? 'border-brand-accent opacity-100' : 'border-transparent opacity-50';
-                html += `
-                    <div onclick="irAFotoModal(${i})" class="gal-thumb w-24 h-24 lg:w-full lg:h-32 rounded-lg overflow-hidden border-2 ${isSelected} cursor-pointer hover:opacity-100 transition-all flex-shrink-0 relative group bg-[#121212]">
-                        <img src="${url}" class="w-full h-full object-cover" loading="lazy" decoding="async">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
+        async function descargarFotoSeleccionada(){
+            const url=arrayFotosActuales[indexFotoActual];if(!url)return;
+            try{const r=await fetch(url);if(!r.ok)throw Error('download');const blob=await r.blob(),obj=URL.createObjectURL(blob),a=document.createElement('a');a.href=obj;a.download=`${eventoModalActual?.ID_Evento||'fotografia'}_${indexFotoActual+1}.jpg`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(obj),1500);}
+            catch(e){window.open(url,'_blank','noopener');}
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -741,6 +691,14 @@
             
             document.getElementById('modal-gal-prev').addEventListener('click', () => cambiarFotoModal(-1));
             document.getElementById('modal-gal-next').addEventListener('click', () => cambiarFotoModal(1));
+            const opciones = document.getElementById('modal-descarga-opciones');
+            document.getElementById('modal-btn-descargar').addEventListener('click',()=>{
+                const buy=document.getElementById('descarga-opcion-compra');buy.href=urlCompraActual||'#';
+                buy.classList.toggle('hidden',!/^https?:\/\//i.test(urlCompraActual));toggleModal(opciones,true);
+            });
+            document.getElementById('descarga-opcion-volver').addEventListener('click',()=>toggleModal(opciones,false));
+            document.getElementById('descarga-opcion-gratis').addEventListener('click',()=>{toggleModal(opciones,false);descargarFotoSeleccionada();});
+
 
             formContacto.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -827,8 +785,11 @@
                     imgFondoPortada.className = "w-full h-full object-cover opacity-60 transition-opacity duration-1000";
                 }
 
-                const gals = data.galerias || [];
+                window.categoriasDisponibles = data.categorias || [];
+                const gals = (data.galerias || []).filter(g => String(g.ID_Evento || '').trim() !== '');
+                const pageMode = document.body.dataset.page || '';
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
+                if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); renderDynamicPage(pageMode,gals); }
                 
                 const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const dest = gals.filter(g => checkIsTrue(g.Destacadas) || checkIsTrue(g['Categorías destacadas']) || checkIsTrue(g.N));
@@ -884,8 +845,10 @@
                 aplicarFondosAlternos();
 
                 document.getElementById('main-header')?.classList.remove('hidden');
-                document.getElementById('main-content-sections').classList.remove('hidden');
-                document.getElementById('main-content-sections').classList.add('flex');
+                if (!pageMode) {
+                    document.getElementById('main-content-sections').classList.remove('hidden');
+                    document.getElementById('main-content-sections').classList.add('flex');
+                }
                 document.getElementById('main-footer')?.classList.remove('hidden');
                 
                 splash.classList.add('fade-out-splash');
@@ -896,8 +859,23 @@
             }
         }
 
+        function normalizarCategoria(v){return String(v||'').trim().toLocaleLowerCase('es');}
+        function renderDynamicPage(mode,gals){
+            const root=document.getElementById('dynamic-page');if(!root)return;root.classList.remove('hidden');
+            const params=new URLSearchParams(location.search); if(mode==='galerias') mode=params.get('tipo')==='categorias'?'categorias':'todas'; const category=mode==='categoria'?(params.get('cat')||''):'';
+            const cats=[...new Set([...(window.categoriasDisponibles||[]),...gals.map(g=>String(g.Categoria_Header||'').trim())].map(v=>String(v||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+            if(mode==='categorias'){
+                const cards=cats.map(cat=>{const ev=gals.find(g=>normalizarCategoria(g.Categoria_Header)===normalizarCategoria(cat));const img=ev?.Foto_Cabecera||'assets/portada.jpeg';return `<a href="categoria.html?cat=${encodeURIComponent(cat)}" class="group bg-brand-base border border-zinc-800 rounded-2xl overflow-hidden hover:border-brand-accent transition-all"><div class="h-52 overflow-hidden"><img src="${img}" onerror="this.onerror=null;this.src='${svgCamara}'" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div><div class="p-5"><h2 class="text-xl font-bold text-white group-hover:text-brand-accent">${cat}</h2><p class="text-sm text-gray-400 mt-1">${gals.filter(g=>normalizarCategoria(g.Categoria_Header)===normalizarCategoria(cat)).length} galerías</p></div></a>`;}).join('');
+                root.innerHTML=`<section class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]"><div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">Explora las categorías</h1><p class="text-gray-400 mt-3">Encuentra cada historia por deporte y temática</p></div><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">${cards||'<p class="text-gray-400">No hay categorías disponibles.</p>'}</div></section>`;return;
+            }
+            let filtered=mode==='sinbalon'?gals.filter(g=>['sin balón','sin balon'].includes(normalizarCategoria(g.Categoria_Header))):mode==='cultura'?gals.filter(g=>normalizarCategoria(g.Categoria_Header)==='cultura'):mode==='categoria'?gals.filter(g=>normalizarCategoria(g.Categoria_Header)===normalizarCategoria(category)):gals;
+            const hero=mode==='sinbalon'?'<div class="mb-10"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Sin balón</h1><p class="text-xl text-gray-300 mt-4">Porque el juego también sucede lejos del balón</p></div>':mode==='cultura'?'<div class="mb-10"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Cultura</h1><p class="text-xl text-gray-300 mt-4">Historias, tradiciones y emociones que rodean al deporte</p></div>':`<div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">${mode==='categoria'?category:'Todas las galerías'}</h1><p class="text-gray-400 mt-3">Explora los reportajes disponibles</p></div>`;
+            root.innerHTML=`<section class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]">${hero}<div class="max-w-xl mb-8"><label for="buscador-eventos" class="block text-xs uppercase tracking-widest text-gray-400 mb-2">Buscar evento por ID</label><input id="buscador-eventos" type="search" placeholder="Escribe el ID del evento..." class="w-full bg-zinc-900 border border-zinc-700 focus:border-brand-accent text-white rounded-lg px-4 py-3 outline-none"></div><div id="dynamic-gallery-grid" class="flex flex-wrap justify-center lg:justify-start gap-6">${filtered.map(g=>generarTarjetaHTML(g)).join('')||'<p class="text-gray-400 py-8">Todavía no hay galerías en esta sección.</p>'}</div></section>`;
+            document.getElementById('buscador-eventos').addEventListener('input',e=>{const q=e.target.value.trim().toLocaleLowerCase('es');const found=filtered.filter(g=>String(g.ID_Evento||'').toLocaleLowerCase('es').includes(q));document.getElementById('dynamic-gallery-grid').innerHTML=found.map(g=>generarTarjetaHTML(g)).join('')||'<p class="text-gray-400 py-8">No se han encontrado eventos con ese ID.</p>';});
+        }
+
         function actualizarMenusDinamicos(datos) {
-            const categoriasPrincipalesUnicas = new Set();
+            const categoriasPrincipalesUnicas = new Set(window.categoriasDisponibles || []);
             const masDeportesUnicos = new Set();
             datos.forEach(evento => {
                 const catStr = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : '';
@@ -917,8 +895,8 @@
                     if(setDatos.size > 0) {
                         let hDesk = '', hMob = '';
                         Array.from(setDatos).sort().forEach(item => {
-                            hDesk += `<a href="#" class="block px-4 py-2 text-base text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`;
-                            hMob += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`;
+                            hDesk += `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block px-4 py-2 text-base text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`;
+                            hMob += `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`;
                         });
                         desktopCont.innerHTML = hDesk; mobileCont.innerHTML = hMob;
                     } else {
