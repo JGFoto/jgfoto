@@ -629,16 +629,15 @@
             const toggleClass = (el, cls) => el.classList.toggle(cls);
             
             try {
-                const headerRes = await fetch('header.html');
+                const [headerRes, footerRes] = await Promise.all([fetch('header.html'), fetch('footer.html')]);
                 if (headerRes.ok) document.getElementById('header-placeholder').innerHTML = await headerRes.text();
+                if (footerRes.ok) document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
                 const path=location.pathname.split('/').pop()||'index.html';const page=document.body.dataset.page||'';const catMode=page==='categoria'||(page==='galerias'&&new URLSearchParams(location.search).get('tipo')==='categorias');
                 document.querySelectorAll('#nav-links-normal a,#nav-links-normal button,#mobile-nav-links > a').forEach(a=>{a.classList.remove('text-brand-accent','font-bold','bg-brand-accent','text-black');a.classList.add('text-gray-300');});
                 const activeSelector=page==='sinbalon'?'a[href="sin-balon.html"]':page==='cultura'?'a[href="cultura.html"]':catMode?'#desktop-cat-btn':(!page?'#nav-links-normal a[href="index.html"]':null);
                 if(activeSelector){document.querySelectorAll(activeSelector).forEach(a=>{a.classList.remove('text-gray-300');a.classList.add('text-brand-accent','font-bold');});}if(catMode){document.getElementById('mobile-cat-btn')?.classList.add('text-brand-accent','font-bold');}
                 if(page==='sinbalon'||page==='cultura'){const mobile=document.querySelector(`#mobile-nav-links a[href="${page==='sinbalon'?'sin-balon.html':'cultura.html'}"]`);if(mobile){mobile.classList.remove('text-gray-300');mobile.classList.add('text-brand-accent','font-bold');}}
                 
-                const footerRes = await fetch('footer.html');
-                if (footerRes.ok) document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
             } catch (e) {
                 console.error(e);
             }
@@ -742,7 +741,7 @@
 
         async function cargarDatosDesdeSheet() {
             try {
-                const req = await fetch(APPS_SCRIPT_URL);
+                const req = await fetch(APPS_SCRIPT_URL, { cache: 'no-store' });
                 const data = await req.json();
 
                 const splash = document.getElementById('pantalla-carga');
@@ -753,39 +752,37 @@
                 const isMantenimiento = checkIsTrue(gWeb.mantenimiento);
                 const isMantenimientoTotal = checkIsTrue(gWeb.mantenimientoTotal);
 
-                if ((isConstruccion || isMantenimiento || isMantenimientoTotal) && !pageMode) {
-                    document.getElementById('estado-mensaje').classList.remove('hidden');
-                    document.getElementById('estado-mensaje').classList.add('flex');
-                    
+                if (isConstruccion || isMantenimiento || isMantenimientoTotal) {
+                    const estado = document.getElementById('estado-mensaje');
+                    estado.classList.remove('hidden');
+                    estado.classList.add('flex');
+                    document.getElementById('main-content-sections')?.classList.add('hidden');
+                    document.getElementById('dynamic-page')?.classList.add('hidden');
+                    document.getElementById('main-header')?.classList.remove('hidden');
+                    document.getElementById('main-footer')?.classList.remove('hidden');
                     if (isConstruccion) {
                         document.getElementById('estado-titulo').textContent = 'Próximamente';
                         document.getElementById('estado-desc').innerHTML = 'Estamos creando una nueva experiencia web.<br>Vuelve pronto para descubrirla.';
-                        document.getElementById('main-footer')?.classList.remove('hidden');
-                        document.getElementById('footer-redes').style.display = 'none';
-                        document.getElementById('estado-mensaje').classList.add('min-h-[calc(100vh-200px)]');
+                        document.getElementById('footer-redes')?.style && (document.getElementById('footer-redes').style.display = 'none');
+                        document.getElementById('nav-links-container')?.style && (document.getElementById('nav-links-container').style.display = 'none');
+                        document.getElementById('mobile-menu-btn-container')?.style && (document.getElementById('mobile-menu-btn-container').style.display = 'none');
+                        estado.classList.add('min-h-[calc(100vh-200px)]');
                     } else if (isMantenimientoTotal) {
                         document.getElementById('estado-titulo').textContent = 'En Mantenimiento';
                         document.getElementById('estado-desc').innerHTML = 'Estamos realizando mejoras técnicas en la web.<br>Disculpa las molestias.';
-                        document.getElementById('main-header')?.classList.remove('hidden');
-                        document.getElementById('main-footer')?.classList.remove('hidden');
-                        document.getElementById('nav-links-container').style.display = 'none';
-                        document.getElementById('mobile-menu-btn-container').style.display = 'none';
-                        document.querySelectorAll('.abrir-contacto').forEach(l => l.style.display = 'none');
-                    } else if (isMantenimiento) {
+                        document.getElementById('nav-links-container')?.style && (document.getElementById('nav-links-container').style.display = 'none');
+                        document.getElementById('mobile-menu-btn-container')?.style && (document.getElementById('mobile-menu-btn-container').style.display = 'none');
+                        document.querySelectorAll('.abrir-contacto').forEach(el => el.style.display = 'none');
+                    } else {
                         document.getElementById('estado-titulo').textContent = 'En Mantenimiento';
-                        document.getElementById('estado-desc').innerHTML = 'Estamos actualizando las galerías, pero puedes contactarme si lo necesitas.';
-                        document.getElementById('main-header')?.classList.remove('hidden');
-                        document.getElementById('main-footer')?.classList.remove('hidden');
-                        document.getElementById('nav-links-normal').style.display = 'none';
-                        document.getElementById('mobile-nav-links').querySelectorAll('a, div').forEach(el => {
-                            if(el.id !== 'mobile-nav-contacto' && !el.classList.contains('border-t')) {
-                                el.style.display = 'none';
-                            }
+                        document.getElementById('estado-desc').innerHTML = 'Estamos actualizando las galerías.<br>Puedes contactarme si lo necesitas.';
+                        document.getElementById('nav-links-normal')?.style && (document.getElementById('nav-links-normal').style.display = 'none');
+                        document.getElementById('mobile-nav-links')?.querySelectorAll('a, div').forEach(el => {
+                            if (el.id !== 'mobile-nav-contacto' && !el.classList.contains('border-t')) el.style.display = 'none';
                         });
                     }
-                    
-                    if(splash){splash.classList.add('fade-out-splash');setTimeout(() => splash.style.display = 'none', 600);}
-                    return; 
+                    if (splash) { splash.classList.add('fade-out-splash'); setTimeout(() => splash.style.display = 'none', 300); }
+                    return;
                 }
 
                 const imgFondoPortada = document.getElementById('img-hero-fondo');
