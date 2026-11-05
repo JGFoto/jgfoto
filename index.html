@@ -34,13 +34,20 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Personalización de barra de desplazamiento fina */
+        /* Personalización de barra de desplazamiento fina (3px) y centrada */
         .carrusel-scroll::-webkit-scrollbar { 
             height: 3px; 
         }
         .carrusel-scroll::-webkit-scrollbar-track { 
             background-color: #18181b; 
             border-radius: 2px;
+        }
+        /* Solo en pantallas grandes acortamos el raíl para que mida aprox 3 tarjetas (900px) */
+        @media (min-width: 1024px) {
+            .carrusel-scroll::-webkit-scrollbar-track { 
+                margin-left: calc(50vw - 450px);
+                margin-right: calc(50vw - 450px);
+            }
         }
         .carrusel-scroll::-webkit-scrollbar-thumb { 
             background-color: #F1E933; 
@@ -337,8 +344,8 @@
 
         <section class="alternating-section py-16 flex justify-center items-center overflow-hidden transition-colors duration-300">
             <div class="bg-brand-highlight px-8 sm:px-12 py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 w-full max-w-5xl flex justify-center items-center">
-                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-[0.1em] sm:tracking-[0.2em] m-0 leading-none text-center whitespace-nowrap">
-                    BADAJOZ ES DEPORTE &nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp; BADAJOZ ES MÁS
+                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-widest m-0 leading-none text-center whitespace-nowrap">
+                    BADAJOZ &nbsp;ES &nbsp;DEPORTE &nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp; BADAJOZ &nbsp;ES &nbsp;MÁS
                 </h3>
             </div>
         </section>
@@ -535,18 +542,15 @@
                 slider.classList.remove('justify-center');
                 slider.classList.add('justify-start');
 
-                // Si estamos pegados a la izquierda (con margen de 1px por redondeos de navegadores)
-                if(slider.scrollLeft <= 1) {
-                    if(prevBtn) prevBtn.style.display = 'none';
-                } else {
-                    if(prevBtn) prevBtn.style.display = 'flex';
-                }
+                // Margen de tolerancia de 10px para dispositivos móviles y resoluciones fraccionadas
+                const isAtStart = slider.scrollLeft <= 10;
+                const isAtEnd = Math.ceil(slider.scrollLeft + slider.clientWidth) >= slider.scrollWidth - 10;
 
-                // Si estamos pegados a la derecha
-                if(slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 1) {
-                    if(nextBtn) nextBtn.style.display = 'none';
-                } else {
-                    if(nextBtn) nextBtn.style.display = 'flex';
+                if(prevBtn) {
+                    prevBtn.style.display = isAtStart ? 'none' : 'flex';
+                }
+                if(nextBtn) {
+                    nextBtn.style.display = isAtEnd ? 'none' : 'flex';
                 }
             } else {
                 // No hay overflow, se centran las tarjetas y no hay botones
