@@ -739,7 +739,11 @@
         async function cargarDatosDesdeSheet() {
             try {
                 const req = await fetch(APPS_SCRIPT_URL, { cache: 'no-store' });
+                if (!req.ok) throw new Error('No se pudo conectar con Apps Script');
                 const data = await req.json();
+                if (!data || typeof data !== 'object' || !Array.isArray(data.galerias) || !data.gestionWeb) {
+                    throw new Error('Respuesta no válida de Apps Script');
+                }
 
                 const splash = document.getElementById('pantalla-carga');
                 const pageMode = document.body.dataset.page || '';

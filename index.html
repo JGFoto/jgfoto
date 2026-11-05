@@ -742,7 +742,11 @@
         async function cargarDatosDesdeSheet() {
             try {
                 const req = await fetch(APPS_SCRIPT_URL, { cache: 'no-store' });
+                if (!req.ok) throw new Error('No se pudo conectar con Apps Script');
                 const data = await req.json();
+                if (!data || typeof data !== 'object' || !Array.isArray(data.galerias) || !data.gestionWeb) {
+                    throw new Error('Respuesta no válida de Apps Script');
+                }
 
                 const splash = document.getElementById('pantalla-carga');
                 const pageMode = document.body.dataset.page || '';
@@ -809,7 +813,7 @@
                     contPr.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
                 } else {
                     contPr.className = cCar; 
-                    contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
+                    contPr.innerHTML = pr.map((galeria, indice) => generarTarjetaHTML(galeria, indice === pr.length - 1)).join('');
                 }
                 inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
 
@@ -958,7 +962,7 @@
             renderLinks(masDeportes, 'desktop-mas-deportes-menu', 'mobile-mas-deportes-menu', 'Próximamente');
         }
 
-        function generarTarjetaHTML(evento) {
+        function generarTarjetaHTML(evento, esGaleriaMasReciente = false) {
             const cat = String(evento.Categoria_Mas_Deportes || evento.Categoria_Header || 'General').trim();
             let cColor = "bg-black/80 text-white", bColor = "border-zinc-800", catMost = cat;
 
@@ -972,7 +976,7 @@
             const fec = `${evento.Fecha || ''} ${(evento.Fecha && evento.Lugar) ? '•' : ''} ${evento.Lugar || ''}`.trim();
 
             return `
-                <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(241,233,51,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer relative z-10 ${bColor} hover:border-brand-accent">
+                <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(241,233,51,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer relative z-10 ${esGaleriaMasReciente ? 'border-2 border-brand-accent shadow-[0_0_0_1px_rgba(241,233,51,0.35),0_0_18px_rgba(241,233,51,0.18)]' : bColor} hover:border-brand-accent">
                     <div class="tarjeta-interior h-full flex flex-col">
                         <div class="relative h-64 overflow-hidden flex-shrink-0 group">
                             <img src="${fot}" onerror="this.onerror=null;this.src='${placeholderImagen}'" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" draggable="false">
