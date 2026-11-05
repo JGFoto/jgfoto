@@ -33,10 +33,41 @@
 
     <style>
         html { scroll-behavior: smooth; }
-        .carrusel-scroll::-webkit-scrollbar { height: 4px; width: 4px; }
-        .carrusel-scroll::-webkit-scrollbar-track { background: #18181b; border-radius: 2px; }
-        .carrusel-scroll::-webkit-scrollbar-thumb { background: #F1E933; border-radius: 2px; }
-        .carrusel-scroll::-webkit-scrollbar-thumb:hover { background: #F1E933; }
+        
+        /* Personalización de barra de desplazamiento fina y central */
+        .carrusel-scroll::-webkit-scrollbar { 
+            height: 3px; 
+        }
+        .carrusel-scroll::-webkit-scrollbar-track { 
+            background-color: #18181b; 
+            border-radius: 2px;
+            background-clip: padding-box;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb { 
+            background-color: #F1E933; 
+            border-radius: 2px;
+            background-clip: padding-box;
+        }
+        .carrusel-scroll::-webkit-scrollbar-thumb:hover { 
+            background-color: #d4cc20; 
+        }
+
+        /* Hack para acortar la barra en pantallas grandes simulando márgenes laterales */
+        @media (min-width: 768px) {
+            .carrusel-scroll::-webkit-scrollbar-track,
+            .carrusel-scroll::-webkit-scrollbar-thumb {
+                border-left: 20vw solid transparent;
+                border-right: 20vw solid transparent;
+            }
+        }
+        @media (min-width: 1280px) {
+            .carrusel-scroll::-webkit-scrollbar-track,
+            .carrusel-scroll::-webkit-scrollbar-thumb {
+                border-left: 30vw solid transparent;
+                border-right: 30vw solid transparent;
+            }
+        }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .bullet-yellow li::before {
@@ -142,7 +173,6 @@
 
     <section class="relative bg-black overflow-hidden border-b border-zinc-800 min-h-[calc(100vh-96px)] flex">
         <div class="absolute inset-0">
-            <!-- Imagen en blanco (pixel transparente) inicial para que no carguen textos extraños -->
             <img id="img-hero-fondo" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" class="w-full h-full object-cover opacity-60 transition-opacity duration-1000">
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-black/50 to-transparent"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent"></div>
@@ -194,16 +224,16 @@
                 </div>
 
                 <div class="relative w-full group">
-                    <button id="prev-main" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-50 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
+                    <button id="prev-main" style="display: none;" class="absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-50 flex items-center justify-center bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start px-2 min-h-[350px]">
+                    <div id="contenedor-galerias" class="flex overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full px-2 min-h-[350px] transition-all duration-300">
                         <p id="mensaje-carga-main" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
                     </div>
 
-                    <button id="next-main" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-50 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg>
+                    <button id="next-main" style="display: none;" class="absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-50 flex items-center justify-center bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg>
                     </button>
                 </div>
                 
@@ -225,14 +255,14 @@
                 </div>
 
                 <div class="relative w-full group">
-                    <button id="prev-destacadas" class="hidden absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-50 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
+                    <button id="prev-destacadas" style="display: none;" class="absolute left-0 md:-left-3 top-1/2 -translate-y-1/2 z-50 flex items-center justify-center bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start px-2 min-h-[350px]"></div>
+                    <div id="contenedor-destacadas" class="flex overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full px-2 min-h-[350px] transition-all duration-300"></div>
 
-                    <button id="next-destacadas" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-50 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg>
+                    <button id="next-destacadas" style="display: none;" class="absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-50 flex items-center justify-center bg-brand-dark border-2 border-brand-accent text-brand-accent p-2 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M8.25 4.5l7.5 7.5-7.5 7.5"></path></svg>
                     </button>
                 </div>
             </div>
@@ -324,9 +354,9 @@
         </section>
 
         <section class="alternating-section py-16 flex justify-center items-center overflow-hidden transition-colors duration-300">
-            <div class="bg-brand-highlight px-8 sm:px-12 py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 text-center">
-                <h3 class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-black uppercase tracking-tighter m-0 leading-none">
-                    * BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
+            <div class="bg-brand-highlight px-8 sm:px-12 py-8 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 w-full max-w-5xl flex justify-center items-center">
+                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-[0.1em] sm:tracking-[0.2em] m-0 leading-none text-center whitespace-nowrap">
+                    BADAJOZ ES DEPORTE &nbsp;&nbsp;&nbsp;*&nbsp;&nbsp;&nbsp; BADAJOZ ES MÁS
                 </h3>
             </div>
         </section>
@@ -508,19 +538,29 @@
             toggleModal(modal, true);
         }
 
+        // Lógica de desbordamiento, botones y alineación dinámica
         function checkCarouselOverflow(sliderId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(sliderId);
             const prevBtn = document.getElementById(prevBtnId);
             const nextBtn = document.getElementById(nextBtnId);
-            if(!slider || !prevBtn || !nextBtn) return;
+            if(!slider) return;
             
-            // Si el contenido interno (scrollWidth) es mayor que el ancho visible (clientWidth), activamos botones
+            // Garantizar que tenga las clases base de flexbox correctas
+            slider.classList.add('flex', 'flex-nowrap');
+
+            // Si el contenido interno desborda el contenedor
             if(slider.scrollWidth > slider.clientWidth) {
-                prevBtn.classList.remove('hidden');
-                nextBtn.classList.remove('hidden');
+                if(prevBtn) prevBtn.style.display = 'flex';
+                if(nextBtn) nextBtn.style.display = 'flex';
+                // Alinear a la izquierda para poder scrollear todo
+                slider.classList.remove('justify-center');
+                slider.classList.add('justify-start');
             } else {
-                prevBtn.classList.add('hidden');
-                nextBtn.classList.add('hidden');
+                if(prevBtn) prevBtn.style.display = 'none';
+                if(nextBtn) nextBtn.style.display = 'none';
+                // Centrar automáticamente cuando caben las tarjetas
+                slider.classList.remove('justify-start');
+                slider.classList.add('justify-center');
             }
         }
 
@@ -533,8 +573,6 @@
 
             let isDown = false, startX, scrollLeft, isDragging = false;
             
-            // Validación de overflow inicial y tras rezise
-            checkCarouselOverflow(contenedorId, prevBtnId, nextBtnId);
             window.addEventListener('resize', () => checkCarouselOverflow(contenedorId, prevBtnId, nextBtnId));
 
             if(slider.dataset.init === 'true') return;
@@ -798,26 +836,34 @@
                 const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const dest = gals.filter(g => checkIsTrue(g.Destacadas));
                 
-                const cGrid = 'flex flex-wrap justify-center gap-6 w-full pb-4';
-                const cCar = 'flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start px-2 min-h-[350px]';
+                const cCar = 'flex overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full px-2 min-h-[350px] transition-all duration-300';
 
                 const contPr = document.getElementById('contenedor-galerias');
                 if (pr.length === 0) {
-                    contPr.className = cGrid; contPr.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
+                    contPr.className = 'flex flex-wrap justify-center gap-6 w-full pb-4';
+                    contPr.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
                 } else {
-                    contPr.className = cCar; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
+                    contPr.className = cCar; 
+                    contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
                 }
                 inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
 
                 const contDest = document.getElementById('contenedor-destacadas');
                 if (dest.length > 0) {
                     document.getElementById('seccion-destacadas').style.display = 'block';
-                    contDest.className = cCar; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
+                    contDest.className = cCar; 
+                    contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
                     inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
                 } else {
                     document.getElementById('seccion-destacadas').style.display = 'none';
                 }
                 
+                // Comprobamos el scroll unos milisegundos después de inyectar el HTML
+                setTimeout(() => {
+                    checkCarouselOverflow('contenedor-galerias', 'prev-main', 'next-main');
+                    checkCarouselOverflow('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
+                }, 150);
+
                 document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 
                 const setImagenSeccion = (idImg, srcDato) => {
