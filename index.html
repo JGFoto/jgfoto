@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tufotoenfoco | Fotografía Deportiva en Badajoz</title>
     
-    <!-- Optimización de carga de fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://script.google.com">
@@ -59,7 +58,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-24">
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <img src="https://i.imgur.com/pWjGPQl.png" alt="tufotoenfoco" class="h-10 md:h-14 w-auto">
+                    <img src="https://i.imgur.com/jCOEEj0.png" alt="tufotoenfoco" class="h-10 md:h-14 w-auto">
                 </div>
 
                 <nav class="hidden md:flex space-x-2 lg:space-x-4 items-center">
@@ -93,7 +92,6 @@
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div>
                     <a href="#" class="abrir-contacto px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-brand-accent transition-colors">Contacto</a>
                     
-                    <!-- Redes sociales cabecera -->
                     <div class="h-6 w-px bg-zinc-700 mx-1"></div>
                     <div class="flex items-center gap-4 px-2">
                         <a href="https://www.instagram.com/tufotoenfoco/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-brand-accent transition-colors" title="Instagram">
@@ -170,17 +168,17 @@
     <!-- SECCIÓN PRINCIPAL DE GALERÍAS -->
     <main class="flex-grow w-full overflow-hidden">
         
-        <!-- === NUEVA SECCIÓN INFO (CAJA CON BORDE AMARILLO) === -->
-        <section class="bg-zinc-950 pt-16">
+        <!-- === SECCIÓN INFO (CAJA CON BORDE AMARILLO) === -->
+        <section class="bg-[#121212] py-16 lg:py-24 border-b border-zinc-800">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="border border-brand-highlight p-8 sm:p-12 text-base sm:text-lg text-gray-200 leading-relaxed rounded-sm">
+                <div class="border border-brand-highlight p-8 sm:p-12 text-base sm:text-lg text-gray-200 leading-relaxed rounded-2xl shadow-[0_0_30px_rgba(250,204,21,0.05)] bg-black/20">
                     <ul class="pl-4 bullet-yellow space-y-4">
-                        <li>En TUFOTO<span class="text-brand-highlight font-bold">ENFOCO</span> documento cada evento para crear recuerdos.</li>
-                        <li>Búscate en las galerías, encuéntrate y revive lo vivido.</li>
-                        <li>En ocasiones habilito descargas gratuitas con logo.</li>
-                        <li>Otras veces habilito el botón de descarga sin logo, donde <span class="border-b border-brand-highlight pb-0.5">podrás comprar</span> la foto si te gustó.</li>
-                        <li>Tu compra me ayuda a seguir capturando momentos y a mantener esta web.</li>
-                        <li>Gracias por apoyar y valorar mi trabajo.</li>
+                        <li>En TUFOTO<span class="text-brand-highlight font-bold">ENFOCO</span> documento la pasión del deporte para transformarla en recuerdos imborrables.</li>
+                        <li>Explora las galerías, encuéntrate en la acción y vuelve a sentir la emoción de cada instante.</li>
+                        <li>En eventos seleccionados, ofrezco descargas gratuitas optimizadas (con marca de agua).</li>
+                        <li>En galerías habilitadas, tienes la opción de <span class="border-b border-brand-highlight pb-0.5">adquirir tus fotografías en alta resolución</span> y libres de logotipos.</li>
+                        <li>Tu compra es el motor que me permite mantener esta plataforma y seguir a pie de pista.</li>
+                        <li>Gracias por valorar, respetar y apoyar mi trabajo fotográfico.</li>
                     </ul>
                 </div>
             </div>
@@ -498,7 +496,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT LÓGICO -->
+    <!-- SCRIPT LÓGICO Y CONTROL DE GALERÍA -->
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
         const svgCamara = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233f3f46' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E";
@@ -509,13 +507,55 @@
 
         function checkIsTrue(val) { return val === true || String(val).trim().toUpperCase() === 'TRUE'; }
 
+        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL ---
+        function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
+            const slider = document.getElementById(contenedorId);
+            const prevBtn = document.getElementById(prevBtnId);
+            const nextBtn = document.getElementById(nextBtnId);
+            
+            if(!slider) return;
+
+            let isDown = false, startX, scrollLeft, hasDragged = false;
+            if(slider.dataset.init === 'true') return;
+            slider.dataset.init = 'true';
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true; hasDragged = false;
+                slider.style.cursor = 'grabbing';
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'pointer'; });
+            slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'pointer'; });
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2; 
+                if (Math.abs(walk) > 10) hasDragged = true; 
+                slider.scrollLeft = scrollLeft - walk;
+            });
+            // Evitar click si se ha arrastrado
+            slider.addEventListener('click', (e) => { if (hasDragged) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+            if(prevBtn) prevBtn.addEventListener('click', () => {
+                const t = slider.querySelector('article');
+                if(t) slider.scrollBy({ left: -(t.offsetWidth + 24), behavior: 'smooth' });
+            });
+            if(nextBtn) nextBtn.addEventListener('click', () => {
+                const t = slider.querySelector('article');
+                if(t) slider.scrollBy({ left: t.offsetWidth + 24, behavior: 'smooth' });
+            });
+        }
+
+        // Utilidad común para abrir/cerrar modales
         function toggleModal(modal, show) {
             if (show) {
                 modal.classList.remove('hidden');
-                void modal.offsetWidth; 
+                void modal.offsetWidth; // forzar repintado
                 modal.classList.remove('opacity-0');
                 modal.querySelector('div').classList.remove('scale-95');
-                document.body.style.overflow = 'hidden'; 
+                document.body.style.overflow = 'hidden'; // evitar scroll en fondo
             } else {
                 modal.classList.add('opacity-0');
                 modal.querySelector('div').classList.add('scale-95');
@@ -526,26 +566,128 @@
             }
         }
 
-        // SIMULADOR: Aquí conectarás con la API real de Backblaze en el futuro
-        async function fetchFotosDesdeBackblaze(idEvento) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    // Para que veas como funciona, clono 3 veces la imagen principal en este caso
-                    // En el futuro tu API devolverá un array: ['url1.jpg', 'url2.jpg', 'url3.jpg']
-                    resolve(null); // Retornamos null para que la logica de abajo sepa que tiene que clonar
-                }, 600);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Eventos Menús Móvil/Desktop
+            const toggleClass = (el, cls) => el.classList.toggle(cls);
+            
+            document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu');
+                toggleClass(menu, 'hidden');
+                document.getElementById('menu-icon').setAttribute('d', menu.classList.contains('hidden') ? 'M4 6h16M4 12h16M4 18h16' : 'M6 18L18 6M6 6l12 12');
             });
-        }
 
+            const bindMenu = (btnId, menuId, iconId) => {
+                const btn = document.getElementById(btnId);
+                const menu = document.getElementById(menuId);
+                const icon = iconId ? document.getElementById(iconId) : null;
+                if(btn && menu) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault(); e.stopPropagation();
+                        toggleClass(menu, 'hidden');
+                        if(icon) toggleClass(icon, 'rotate-180');
+                    });
+                    menu.addEventListener('click', e => e.stopPropagation());
+                }
+                return menu;
+            };
+
+            const menus = [
+                bindMenu('desktop-cat-btn', 'desktop-cat-menu'),
+                bindMenu('desktop-mas-deportes-btn', 'desktop-mas-deportes-menu'),
+                bindMenu('mobile-cat-btn', 'mobile-cat-menu', 'mobile-cat-icon'),
+                bindMenu('mobile-mas-deportes-btn', 'mobile-mas-deportes-menu', 'mobile-mas-deportes-icon')
+            ];
+
+            document.addEventListener('click', () => {
+                menus.forEach(m => { if(m && !m.classList.contains('hidden') && m.id.includes('desktop')) m.classList.add('hidden'); });
+            });
+
+            // LÓGICA MODALES CONTACTO
+            const modalContacto = document.getElementById('modal-contacto');
+            const modalExito = document.getElementById('modal-exito');
+            const modalError = document.getElementById('modal-error');
+            const formContacto = document.getElementById('form-contacto');
+            
+            document.querySelectorAll('.abrir-contacto').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleModal(modalContacto, true);
+                    if(!document.getElementById('mobile-menu').classList.contains('hidden')) {
+                        document.getElementById('mobile-menu').classList.add('hidden');
+                        document.getElementById('menu-icon').setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+                    }
+                });
+            });
+
+            document.getElementById('btn-cerrar-contacto').addEventListener('click', () => toggleModal(modalContacto, false));
+            document.getElementById('btn-cerrar-exito').addEventListener('click', () => toggleModal(modalExito, false));
+            document.getElementById('btn-cerrar-error').addEventListener('click', () => toggleModal(modalError, false));
+            
+            [modalContacto, modalExito, modalError].forEach(m => {
+                m.addEventListener('click', (e) => { if (e.target === m) toggleModal(m, false); });
+            });
+
+            formContacto.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btnEnviar = document.getElementById('btn-enviar-contacto');
+                const btnText = btnEnviar.querySelector('span');
+                
+                btnText.textContent = 'Enviando...';
+                btnEnviar.disabled = true;
+                btnEnviar.classList.add('opacity-75', 'cursor-not-allowed');
+
+                const formData = new URLSearchParams();
+                formData.append('nombre', document.getElementById('form-nombre').value);
+                formData.append('email', document.getElementById('form-email').value);
+                formData.append('asunto', document.getElementById('form-asunto').value);
+                formData.append('mensaje', document.getElementById('form-mensaje').value);
+
+                try {
+                    const request = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
+                    const result = await request.json();
+                    
+                    if (result.status === "ok") {
+                        toggleModal(modalContacto, false);
+                        formContacto.reset();
+                        setTimeout(() => toggleModal(modalExito, true), 300);
+                    } else throw new Error(result.message);
+                } catch (error) {
+                    toggleModal(modalContacto, false);
+                    setTimeout(() => toggleModal(modalError, true), 300);
+                } finally {
+                    btnText.textContent = 'Enviar mensaje';
+                    btnEnviar.disabled = false;
+                    btnEnviar.classList.remove('opacity-75', 'cursor-not-allowed');
+                }
+            });
+
+            // LÓGICA MODAL GALERÍA
+            const modalGaleria = document.getElementById('modal-galeria-vista');
+            document.getElementById('btn-cerrar-galeria').addEventListener('click', () => toggleModal(modalGaleria, false));
+            modalGaleria.addEventListener('click', (e) => { if(e.target === modalGaleria) toggleModal(modalGaleria, false); });
+            
+            // Controles carrusel interno modal
+            document.getElementById('modal-gal-prev').addEventListener('click', () => cambiarFotoModal(-1));
+            document.getElementById('modal-gal-next').addEventListener('click', () => cambiarFotoModal(1));
+
+            inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
+            inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
+            cargarDatosDesdeSheet();
+        });
+
+        // --- FUNCIONES DEL MODAL DE GALERÍA ---
         window.abrirModalGaleria = async function(idEv) {
             const ev = window.eventosGlobal[idEv];
             if(!ev) return;
             
+            // 1. Textos
             document.getElementById('modal-gal-titulo').textContent = ev.Titulo || 'Álbum sin título';
             document.getElementById('modal-gal-desc').textContent = ev.Descripcion_Larga || ev.Descripcion_Corta || 'Sin descripción adicional.';
             document.getElementById('modal-gal-lugar').textContent = ev.Lugar || 'Lugar sin especificar';
             document.getElementById('modal-gal-fecha').textContent = ev.Fecha || '';
 
+            // 2. Botones de interacción (Mirando columnas N y O según tu descripción)
+            // Soporta variantes de nombre por si acaso (Descarga, Habilitar_Descarga, etc.)
             const habilitarDescarga = checkIsTrue(ev.Descarga) || checkIsTrue(ev.Habilitar_Descarga) || checkIsTrue(ev['Habilitar descarga']) || checkIsTrue(ev.N); // columna N
             const habilitarCompra = checkIsTrue(ev.Compra) || checkIsTrue(ev.Habilitar_Compra) || checkIsTrue(ev['Habilitar compra']) || checkIsTrue(ev.O); // columna O
             
@@ -555,11 +697,13 @@
             if(habilitarDescarga) btnDesc.classList.remove('hidden'); else btnDesc.classList.add('hidden');
             if(habilitarCompra) {
                 btnComp.classList.remove('hidden');
+                // Aquí va el link real de compra, si lo hubiera (por ahora un #)
                 btnComp.href = ev.Link_Compra || '#'; 
             } else {
                 btnComp.classList.add('hidden');
             }
 
+            // 3. Sistema de Fotos inicial
             const mainPhoto = ev.Foto_Cabecera || 'https://placehold.co/1200x800/18181b/71717a?text=Sin+Imagen';
             arrayFotosActuales = [mainPhoto];
             indexFotoActual = 0;
@@ -567,13 +711,16 @@
             actualizarFotoModal();
             document.getElementById('modal-gal-thumbs-container').innerHTML = '<p class="text-xs text-brand-accent animate-pulse p-4">Conectando con Backblaze...</p>';
             
+            // Abrir el modal instantáneamente
             const modal = document.getElementById('modal-galeria-vista');
             toggleModal(modal, true);
 
-            // Fetch a Backblaze (con ID_evento si existe)
+            // Fetch a Backblaze (simulado por ahora, hasta que conectes la API)
             try {
                 const idFetch = ev.ID_evento || ev.ID_Evento || ev.ID || idEv;
-                const fotosBackblaze = await fetchFotosDesdeBackblaze(idFetch);
+                const fotosBackblaze = await new Promise(resolve => {
+                    setTimeout(() => resolve(null), 600); // Simulador
+                });
                 
                 if (fotosBackblaze && fotosBackblaze.length > 0) {
                     arrayFotosActuales = fotosBackblaze; 
@@ -593,12 +740,14 @@
 
         function actualizarFotoModal() {
             const imgEl = document.getElementById('modal-gal-img-principal');
+            // Efecto suave de transición
             imgEl.style.opacity = 0;
             setTimeout(() => {
                 imgEl.src = arrayFotosActuales[indexFotoActual];
                 imgEl.style.opacity = 1;
             }, 150);
             
+            // Resaltar miniatura activa
             const thumbs = document.querySelectorAll('.gal-thumb');
             thumbs.forEach((t, i) => {
                 if(i === indexFotoActual) {
@@ -638,103 +787,127 @@
             container.innerHTML = html;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Modales Contacto
-            const modalContacto = document.getElementById('modal-contacto');
-            const formContacto = document.getElementById('form-contacto');
-            
-            document.querySelectorAll('.abrir-contacto').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault(); toggleModal(modalContacto, true);
-                });
-            });
-
-            document.getElementById('btn-cerrar-contacto').addEventListener('click', () => toggleModal(modalContacto, false));
-            document.getElementById('btn-cerrar-exito').addEventListener('click', () => toggleModal(document.getElementById('modal-exito'), false));
-            document.getElementById('btn-cerrar-error').addEventListener('click', () => toggleModal(document.getElementById('modal-error'), false));
-            
-            // Envío formulario
-            formContacto.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const btnEnviar = document.getElementById('btn-enviar-contacto');
-                btnEnviar.querySelector('span').textContent = 'Enviando...';
-                btnEnviar.disabled = true;
-
-                const formData = new URLSearchParams();
-                formData.append('nombre', document.getElementById('form-nombre').value);
-                formData.append('email', document.getElementById('form-email').value);
-                formData.append('asunto', document.getElementById('form-asunto').value);
-                formData.append('mensaje', document.getElementById('form-mensaje').value);
-
-                try {
-                    const req = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: formData });
-                    const res = await req.json();
-                    if (res.status === "ok") {
-                        toggleModal(modalContacto, false); formContacto.reset();
-                        setTimeout(() => toggleModal(document.getElementById('modal-exito'), true), 300);
-                    } else throw new Error();
-                } catch (e) {
-                    toggleModal(modalContacto, false);
-                    setTimeout(() => toggleModal(document.getElementById('modal-error'), true), 300);
-                } finally {
-                    btnEnviar.querySelector('span').textContent = 'Enviar mensaje';
-                    btnEnviar.disabled = false;
-                }
-            });
-
-            // Controles galería modal
-            document.getElementById('btn-cerrar-galeria').addEventListener('click', () => toggleModal(document.getElementById('modal-galeria-vista'), false));
-            document.getElementById('modal-galeria-vista').addEventListener('click', (e) => { if(e.target === document.getElementById('modal-galeria-vista')) toggleModal(document.getElementById('modal-galeria-vista'), false); });
-            document.getElementById('modal-gal-prev').addEventListener('click', () => cambiarFotoModal(-1));
-            document.getElementById('modal-gal-next').addEventListener('click', () => cambiarFotoModal(1));
-
-            cargarDatosDesdeSheet();
-        });
-
-        // Funciones de carga
+        // --- CARGA Y GENERACIÓN ---
         async function cargarDatosDesdeSheet() {
             try {
-                const req = await fetch(APPS_SCRIPT_URL);
-                const data = await req.json();
+                const respuesta = await fetch(APPS_SCRIPT_URL);
+                const datosCompletos = await respuesta.json();
                 
-                const gals = data.galerias || [];
-                gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
+                const todasLasGalerias = datosCompletos.galerias || [];
                 
-                const pr = gals.filter(g => checkIsTrue(g.Ultimas_galerias));
-                const dest = gals.filter(g => checkIsTrue(g.Destacadas));
+                // Mapear eventos globales con un ID único basado en su posición para que el modal sepa cuál abrir
+                todasLasGalerias.forEach((ev, idx) => {
+                    ev._id = idx;
+                    window.eventosGlobal[idx] = ev;
+                });
                 
-                const cGrid = 'flex flex-wrap justify-center gap-6 w-full pb-4';
-                const cCar = 'flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]';
+                actualizarMenusDinamicos(todasLasGalerias);
+                
+                const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
+                const galeriasDestacadas = todasLasGalerias.filter(g => checkIsTrue(g.Destacadas));
+                
+                const claseGrid = 'flex flex-wrap justify-center gap-6 w-full pb-4';
+                const claseCarrusel = 'flex flex-nowrap overflow-x-auto gap-6 lg:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]';
 
-                const contPr = document.getElementById('contenedor-galerias');
-                if (pr.length === 0) {
-                    contPr.className = cGrid; contPr.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
-                    document.getElementById('prev-main').classList.add('hidden'); document.getElementById('next-main').classList.add('hidden');
-                } else if (pr.length <= 4) {
-                    contPr.className = cGrid; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
-                    document.getElementById('prev-main').classList.add('hidden'); document.getElementById('next-main').classList.add('hidden');
+                // 1. Renderizar Últimas Galerías
+                const contPrincipal = document.getElementById('contenedor-galerias');
+                const prevMain = document.getElementById('prev-main');
+                const nextMain = document.getElementById('next-main');
+
+                if (galeriasPrincipales.length === 0) {
+                    contPrincipal.className = claseGrid;
+                    contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
+                    prevMain.classList.add('hidden'); nextMain.classList.add('hidden');
+                } else if (galeriasPrincipales.length <= 4) {
+                    contPrincipal.className = claseGrid;
+                    contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
+                    prevMain.classList.add('hidden'); nextMain.classList.add('hidden');
                 } else {
-                    contPr.className = cCar; contPr.innerHTML = pr.map(generarTarjetaHTML).join('');
-                    document.getElementById('prev-main').classList.remove('hidden'); document.getElementById('next-main').classList.remove('hidden');
+                    contPrincipal.className = claseCarrusel;
+                    contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
+                    prevMain.classList.remove('hidden'); nextMain.classList.remove('hidden');
                 }
 
-                const contDest = document.getElementById('contenedor-destacadas');
-                if (dest.length > 0) {
-                    document.getElementById('seccion-destacadas').style.display = 'block';
-                    if (dest.length <= 4) {
-                        contDest.className = cGrid; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
-                        document.getElementById('prev-destacadas').classList.add('hidden'); document.getElementById('next-destacadas').classList.add('hidden');
+                // 2. Renderizar Galerías Destacadas
+                const contDestacadas = document.getElementById('contenedor-destacadas');
+                const prevDestacadas = document.getElementById('prev-destacadas');
+                const nextDestacadas = document.getElementById('next-destacadas');
+                const seccionDestacadas = document.getElementById('seccion-destacadas');
+
+                if (galeriasDestacadas.length > 0) {
+                    seccionDestacadas.style.display = 'block';
+                    if (galeriasDestacadas.length <= 4) {
+                        contDestacadas.className = claseGrid;
+                        contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
+                        prevDestacadas.classList.add('hidden'); nextDestacadas.classList.add('hidden');
                     } else {
-                        contDest.className = cCar; contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
-                        document.getElementById('prev-destacadas').classList.remove('hidden'); document.getElementById('next-destacadas').classList.remove('hidden');
+                        contDestacadas.className = claseCarrusel;
+                        contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
+                        prevDestacadas.classList.remove('hidden'); nextDestacadas.classList.remove('hidden');
                     }
                 } else {
-                    document.getElementById('seccion-destacadas').style.display = 'none';
+                    seccionDestacadas.style.display = 'none';
                 }
                 
-            } catch (e) {
-                console.error(e);
+                document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
+                
+                // 3 & 4. Cargar Imágenes Fijas
+                const setImagenSeccion = (idImg, srcDato) => {
+                    const imgEl = document.getElementById(idImg);
+                    if (imgEl) {
+                        imgEl.classList.remove('opacity-0');
+                        if (srcDato && String(srcDato).trim() !== '') {
+                            imgEl.src = srcDato;
+                            imgEl.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105";
+                        } else {
+                            imgEl.src = svgCamara;
+                            imgEl.className = "w-24 h-24 object-contain opacity-30 grayscale transition-transform duration-700 group-hover:scale-110";
+                        }
+                    }
+                };
+                
+                setImagenSeccion('img-seccion-sin-balon', datosCompletos.imgSinBalon);
+                setImagenSeccion('img-seccion-cultura', datosCompletos.imgCultura);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 w-full text-center py-10">Error de conexión con el servidor.</p>';
             }
+        }
+
+        function actualizarMenusDinamicos(datos) {
+            const categoriasPrincipalesUnicas = new Set();
+            const masDeportesUnicos = new Set();
+            datos.forEach(evento => {
+                const catStr = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : '';
+                if (catStr !== '') {
+                    const catLower = catStr.toLowerCase();
+                    if (catLower !== 'más deportes' && catLower !== 'mas deportes' && catLower !== 'sin balón' && catLower !== 'sin balon' && catLower !== 'cultura') {
+                        categoriasPrincipalesUnicas.add(catStr);
+                    }
+                }
+                if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
+            });
+
+            const renderLinks = (setDatos, desktopId, mobileId, emptyMsg) => {
+                const desktopCont = document.getElementById(desktopId);
+                const mobileCont = document.getElementById(mobileId);
+                if(desktopCont && mobileCont) {
+                    if(setDatos.size > 0) {
+                        let hDesk = '', hMob = '';
+                        Array.from(setDatos).sort().forEach(item => {
+                            hDesk += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${item}</a>`;
+                            hMob += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`;
+                        });
+                        desktopCont.innerHTML = hDesk; mobileCont.innerHTML = hMob;
+                    } else {
+                        desktopCont.innerHTML = `<span class="block px-4 py-2 text-sm text-gray-500">${emptyMsg}</span>`;
+                        mobileCont.innerHTML = `<span class="block text-sm text-gray-500 py-1">${emptyMsg}</span>`;
+                    }
+                }
+            };
+            renderLinks(categoriasPrincipalesUnicas, 'desktop-dynamic-cats', 'mobile-dynamic-cats', 'Sin categorías');
+            renderLinks(masDeportesUnicos, 'desktop-mas-deportes-menu', 'mobile-mas-deportes-menu', 'Próximamente');
         }
 
         function generarTarjetaHTML(evento) {
