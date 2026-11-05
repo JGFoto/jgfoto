@@ -792,6 +792,8 @@
                 }
 
                 window.categoriasDisponibles = data.categorias || [];
+                window.categoriasOrdenadas = data.categoriasOrdenadas || [];
+                window.categoriasMasDeportesOrdenadas = data.categoriasMasDeportesOrdenadas || [];
                 const gals = (data.galerias || []).filter(g => String(g.ID_Evento || '').trim() !== '');
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
                 if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
@@ -877,11 +879,11 @@
         }
 
         function normalizarCategoria(v){return String(v||'').trim().toLocaleLowerCase('es');}
-        function categoriaEfectiva(ev){return checkIsTrue(ev.Es_Mas_Deportes)&&String(ev.Categoria_Mas_Deportes||'').trim()?String(ev.Categoria_Mas_Deportes).trim():String(ev.Categoria_Header||'').trim();}
+        function categoriaEfectiva(ev){return String(ev.Categoria_Mas_Deportes||'').trim()||String(ev.Categoria_Header||'').trim();}
         function renderDynamicPage(mode,gals){
             const root=document.getElementById('dynamic-page');if(!root)return;root.classList.remove('hidden');
             const params=new URLSearchParams(location.search); if(mode==='galerias') mode=params.get('tipo')==='categorias'?'categorias':'todas'; const category=mode==='categoria'?(params.get('cat')||''):'';
-            const cats=[...new Set([...(window.categoriasDisponibles||[]),...gals.map(g=>categoriaEfectiva(g))].map(v=>String(v||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
+            const cats=[...new Set([...(window.categoriasOrdenadas||[]),...(window.categoriasDisponibles||[]),...(window.categoriasMasDeportesOrdenadas||[]),...gals.map(g=>categoriaEfectiva(g))].map(v=>String(v||'').trim()).filter(Boolean))];
             if(mode==='categorias'){
                 const cols=cats.length<=4?Math.max(cats.length,1):(cats.length<=6?3:4);
                 const cards=cats.map(cat=>{const ev=gals.find(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat));const img=ev?.Foto_Cabecera||placeholderImagen;return `<a href="categoria.html?cat=${encodeURIComponent(cat)}" class="group bg-brand-base border border-zinc-800 rounded-2xl overflow-hidden hover:border-brand-accent transition-all"><div class="h-52 overflow-hidden"><img src="${img}" onerror="this.onerror=null;this.src='${placeholderImagen}'" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div><div class="p-5"><h2 class="text-xl font-bold text-white group-hover:text-brand-accent">${cat}</h2><p class="text-sm text-gray-400 mt-1">${gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat)).length} galerías</p></div></a>`;}).join('');
@@ -895,42 +897,27 @@
         }
 
         function actualizarMenusDinamicos(datos) {
-            const categoriasPrincipalesUnicas = new Set(window.categoriasDisponibles || []);
-            const masDeportesUnicos = new Set();
-            datos.forEach(evento => {
-                const catStr = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : '';
-                if (catStr !== '') {
-                    const catLower = catStr.toLowerCase();
-                    if (catLower !== 'más deportes' && catLower !== 'mas deportes' && catLower !== 'sin balón' && catLower !== 'sin balon' && catLower !== 'cultura') {
-                        categoriasPrincipalesUnicas.add(catStr);
-                    }
-                }
-                if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
-            });
-
-            const renderLinks = (setDatos, desktopId, mobileId, emptyMsg) => {
-                const desktopCont = document.getElementById(desktopId);
-                const mobileCont = document.getElementById(mobileId);
-                if(desktopCont && mobileCont) {
-                    if(setDatos.size > 0) {
-                        let hDesk = '', hMob = '';
-                        Array.from(setDatos).sort().forEach(item => {
-                            hDesk += `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block px-4 py-2 text-base text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`;
-                            hMob += `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`;
-                        });
-                        desktopCont.innerHTML = hDesk; mobileCont.innerHTML = hMob;
-                    } else {
-                        desktopCont.innerHTML = `<span class="block px-4 py-2 text-sm text-gray-500">${emptyMsg}</span>`;
-                        mobileCont.innerHTML = `<span class="block text-sm text-gray-500 py-1">${emptyMsg}</span>`;
-                    }
+            const categoriasPrincipales = [...new Set([...(window.categoriasOrdenadas || []), ...(window.categoriasDisponibles || [])].map(v => String(v || '').trim()).filter(Boolean))];
+            const usadasEnMasDeportes = [...new Set(datos.filter(e => checkIsTrue(e.Es_Mas_Deportes)).map(e => String(e.Categoria_Mas_Deportes || '').trim()).filter(Boolean))];
+            const ordenM = window.categoriasMasDeportesOrdenadas || [];
+            const masDeportes = [...ordenM.filter(item => usadasEnMasDeportes.includes(item)), ...usadasEnMasDeportes.filter(item => !ordenM.includes(item))];
+            const renderLinks = (items, desktopId, mobileId, emptyMsg) => {
+                const desktopCont = document.getElementById(desktopId), mobileCont = document.getElementById(mobileId);
+                if (!desktopCont || !mobileCont) return;
+                if (items.length) {
+                    desktopCont.innerHTML = items.map(item => `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block px-4 py-2 text-base text-gray-300 hover:text-brand-accent transition-colors">${item}</a>`).join('');
+                    mobileCont.innerHTML = items.map(item => `<a href="categoria.html?cat=${encodeURIComponent(item)}" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`).join('');
+                } else {
+                    desktopCont.innerHTML = `<span class="block px-4 py-2 text-sm text-gray-500">${emptyMsg}</span>`;
+                    mobileCont.innerHTML = `<span class="block text-sm text-gray-500 py-1">${emptyMsg}</span>`;
                 }
             };
-            renderLinks(categoriasPrincipalesUnicas, 'desktop-dynamic-cats', 'mobile-dynamic-cats', 'Sin categorías');
-            renderLinks(masDeportesUnicos, 'desktop-mas-deportes-menu', 'mobile-mas-deportes-menu', 'Próximamente');
+            renderLinks(categoriasPrincipales, 'desktop-dynamic-cats', 'mobile-dynamic-cats', 'Sin categorías');
+            renderLinks(masDeportes, 'desktop-mas-deportes-menu', 'mobile-mas-deportes-menu', 'Próximamente');
         }
 
         function generarTarjetaHTML(evento) {
-            const cat = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : 'General';
+            const cat = String(evento.Categoria_Mas_Deportes || evento.Categoria_Header || 'General').trim();
             let cColor = "bg-black/80 text-white", bColor = "border-zinc-800", catMost = cat;
 
             if (cat.toLowerCase() === 'más deportes' || cat.toLowerCase() === 'mas deportes') {
@@ -948,7 +935,7 @@
                         <div class="relative h-64 overflow-hidden flex-shrink-0 group">
                             <img src="${fot}" onerror="this.onerror=null;this.src='${placeholderImagen}'" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" draggable="false">
                             <div class="absolute top-3 left-3 flex gap-2">
-                                <span class="${cColor} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${catMost}</span>
+                                <a href="categoria.html?cat=${encodeURIComponent(catMost)}" onclick="event.stopPropagation()" class="${cColor} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm hover:border-brand-accent">${catMost}</a>
                             </div>
                         </div>
                         <div class="p-5 flex flex-col flex-grow group">
