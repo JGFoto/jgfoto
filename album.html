@@ -343,7 +343,7 @@
         </div>
     </div>
 
-    <div id="modal-descarga-opciones" class="fixed inset-0 z-[140] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+    <div id="modal-descarga-opciones" class="fixed inset-0 z-[400] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
         <div class="bg-brand-base w-full max-w-xl rounded-2xl border border-zinc-800 shadow-2xl p-7 md:p-10 text-center relative transform scale-95 transition-transform duration-300">
             <h2 class="text-2xl md:text-3xl font-black text-white mb-3">Tu recuerdo sin logo por <span class="text-brand-accent">3€</span></h2>
             <p class="text-gray-300 mb-5">Más recuerdos, mejor precio:</p>
@@ -882,7 +882,7 @@
             const perPage=16;
             const safe=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
             const linkCompra=String(ev.Link_Compra||'').trim();
-            const free=checkIsTrue(ev.Descarga_Gratis);
+            const free=checkIsTrue(ev.Descarga_Gratis ?? ev.Descarga ?? ev['Descarga gratis']);
             const descripcion=String(ev.Resultados||'').trim()||String(ev.Descripcion_Larga||'').trim();
             const fotosTotal=total||all.length;
             const nombreFoto=(url,n)=>{try{const p=new URL(url,location.href).pathname.split('/').pop();return decodeURIComponent(p||`${id}_${n+1}`);}catch(e){return `${id}_${n+1}`;}};
@@ -898,7 +898,7 @@
               </div>
               <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_300px] gap-5 mt-8 items-start">
                 <div>
-                  <div class="relative bg-black rounded-xl overflow-hidden min-h-[300px] md:min-h-[65vh] flex items-center justify-center border border-brand-accent/70 shadow-[0_0_12px_rgba(241,233,51,0.10)]">
+                  <div class="relative bg-black rounded-xl overflow-hidden min-h-[300px] md:min-h-[65vh] flex items-center justify-center border border-zinc-800 shadow-none">
                     <img id="album-main-photo" src="${all[0]}" alt="${safe(ev.Titulo||'Fotografía del álbum')}" class="max-w-full max-h-[78vh] object-contain cursor-pointer transition-opacity duration-500" title="Pulsa para ver los datos de esta fotografía">
                     <button id="album-photo-prev" type="button" aria-label="Fotografía anterior" class="hidden absolute left-3 top-1/2 -translate-y-1/2 bg-black/70 border border-white/30 text-white rounded-full w-12 h-12 text-2xl hover:bg-brand-accent hover:text-black">‹</button>
                     <button id="album-photo-next" type="button" aria-label="Fotografía siguiente" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/70 border border-white/30 text-white rounded-full w-12 h-12 text-2xl hover:bg-brand-accent hover:text-black">›</button>
@@ -908,7 +908,7 @@
                 <aside class="space-y-4"><div id="album-photo-details" class="hidden">${metadata()}</div></aside>
               </div>
               <div id="album-thumbs" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mt-5"></div>
-              <div class="flex justify-start mt-3"><p id="album-counter" class="text-sm text-brand-accent font-semibold">${Math.min(perPage,all.length)} de ${fotosTotal} archivos</p></div>
+              <div class="flex justify-start mt-3"><p id="album-counter" class="text-sm text-brand-accent font-semibold">${Math.min(perPage,all.length)} de ${fotosTotal} fotografías</p></div>
               <div class="flex flex-wrap items-center justify-center gap-3 mt-7">
                 <button id="album-prev" type="button" class="px-5 py-3 rounded-md border border-zinc-700 text-white hover:border-brand-accent disabled:opacity-30 disabled:cursor-not-allowed">Atrás</button>
                 <a href="${categoryHref}" class="px-5 py-3 rounded-md border border-zinc-700 text-white hover:border-brand-accent">Volver a la categoría</a>
@@ -931,6 +931,7 @@
             const stopPlay=()=>{if(playTimer){clearInterval(playTimer);playTimer=null;}isPlaying=false;const b=document.getElementById('player-pause');if(b)b.textContent='▶ Reanudar';};
             const photoInfoHtml=()=>`<div class="rounded-xl border border-zinc-700 bg-zinc-900/95 p-5"><p class="text-brand-accent text-[11px] uppercase tracking-[.2em] font-bold mb-3">Información de la fotografía</p><p class="text-white font-bold break-all">${safe(nombreFoto(all[selected],selected))}</p><p class="text-white mt-2 font-semibold">${safe(ev.Titulo||'')}</p><div class="mt-3 space-y-2 text-sm text-gray-300"><p><span class="text-brand-accent">Fecha</span> · ${safe(ev.Fecha||'—')}</p><p><span class="text-brand-accent">Lugar</span> · ${safe(ev.Lugar||'—')}</p></div><div class="flex flex-col gap-2 mt-4">${free?'<button type="button" id="player-free-download" class="w-full px-4 py-3 border border-zinc-600 text-white rounded-lg text-xs font-bold uppercase">Descargar gratis con marca de agua</button>':''}${/^https?:\/\//i.test(linkCompra)?`<a href="${safe(linkCompra)}" target="_blank" rel="noopener noreferrer" class="block text-center px-4 py-3 bg-brand-accent text-black rounded-lg text-xs font-bold uppercase">Tu recuerdo sin logotipo</a>`:''}</div></div>`;
             const downloadSelected=()=>{
+                if(playerOpen && isPlaying) stopPlay();
                 arrayFotosActuales=all;
                 indexFotoActual=selected;
                 eventoModalActual=ev;
@@ -938,14 +939,16 @@
                 const buy=document.getElementById('descarga-opcion-compra');
                 buy.href=linkCompra||'#';
                 buy.classList.toggle('hidden',!/^https?:\/\//i.test(linkCompra));
-                toggleModal(document.getElementById('modal-descarga-opciones'),true);
+                const options=document.getElementById('modal-descarga-opciones');
+                options.style.zIndex='400';
+                toggleModal(options,true);
             };
             const updateDetails=()=>{document.getElementById('album-photo-details').innerHTML=photoInfoHtml();document.getElementById('album-photo-details').classList.remove('hidden');};
             const updateMain=()=>{main.style.opacity='0.25';const url=all[selected];const preload=new Image();preload.onload=()=>{main.src=url;main.style.opacity='1';};preload.onerror=()=>{main.src=placeholderImagen;main.style.opacity='1';};preload.src=url;document.getElementById('album-photo-position').textContent=`${selected+1} / ${all.length}`;document.getElementById('album-photo-prev').classList.toggle('hidden',selected===0);document.getElementById('album-photo-next').classList.toggle('hidden',selected===all.length-1);if(!details.classList.contains('hidden'))updateDetails();};
             const draw=()=>{const start=page*perPage,end=Math.min(start+perPage,all.length),holder=document.getElementById('album-thumbs');
-                document.getElementById('album-counter').textContent=`${end} de ${fotosTotal} archivos`;
-                if(Number(holder.dataset.page)!==page){holder.dataset.page=String(page);holder.innerHTML=all.slice(start,end).map((url,i)=>`<button type="button" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent bg-zinc-800" data-photo="${start+i}" aria-label="Ver fotografía ${start+i+1}"><img src="${url}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${placeholderImagen}'"></button>`).join('');}
-                holder.querySelectorAll('button').forEach(b=>b.classList.toggle('border-brand-accent',Number(b.dataset.photo)===selected));
+                document.getElementById('album-counter').textContent=`${end} de ${fotosTotal} fotografías`;
+                if(Number(holder.dataset.page)!==page){holder.dataset.page=String(page);holder.innerHTML=all.slice(start,end).map((url,i)=>`<button type="button" class="aspect-square rounded-lg overflow-hidden border-2 border-transparent bg-zinc-800 transition-all" data-photo="${start+i}" aria-label="Ver fotografía ${start+i+1}"><img src="${url}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='${placeholderImagen}'"></button>`).join('');}
+                holder.querySelectorAll('button').forEach(b=>{const active=Number(b.dataset.photo)===selected;b.classList.toggle('border-brand-accent',active);b.classList.toggle('shadow-[0_0_10px_rgba(241,233,51,0.22)]',active);});
                 document.getElementById('album-prev').disabled=page===0;document.getElementById('album-next').disabled=end>=all.length;
             };
             const selectPhoto=(n)=>{selected=Math.max(0,Math.min(all.length-1,n));page=Math.floor(selected/perPage);updateMain();draw();};
