@@ -34,38 +34,20 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Personalización de barra de desplazamiento fina y central */
+        /* Personalización de barra de desplazamiento fina */
         .carrusel-scroll::-webkit-scrollbar { 
             height: 3px; 
         }
         .carrusel-scroll::-webkit-scrollbar-track { 
             background-color: #18181b; 
             border-radius: 2px;
-            background-clip: padding-box;
         }
         .carrusel-scroll::-webkit-scrollbar-thumb { 
             background-color: #F1E933; 
             border-radius: 2px;
-            background-clip: padding-box;
         }
         .carrusel-scroll::-webkit-scrollbar-thumb:hover { 
             background-color: #d4cc20; 
-        }
-
-        /* Hack para acortar la barra en pantallas grandes simulando márgenes laterales */
-        @media (min-width: 768px) {
-            .carrusel-scroll::-webkit-scrollbar-track,
-            .carrusel-scroll::-webkit-scrollbar-thumb {
-                border-left: 20vw solid transparent;
-                border-right: 20vw solid transparent;
-            }
-        }
-        @media (min-width: 1280px) {
-            .carrusel-scroll::-webkit-scrollbar-track,
-            .carrusel-scroll::-webkit-scrollbar-thumb {
-                border-left: 30vw solid transparent;
-                border-right: 30vw solid transparent;
-            }
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -538,27 +520,38 @@
             toggleModal(modal, true);
         }
 
-        // Lógica de desbordamiento, botones y alineación dinámica
-        function checkCarouselOverflow(sliderId, prevBtnId, nextBtnId) {
+        // Lógica actualizada para visibilidad dinámica de botones y desbordamiento
+        function updateCarouselButtons(sliderId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(sliderId);
             const prevBtn = document.getElementById(prevBtnId);
             const nextBtn = document.getElementById(nextBtnId);
             if(!slider) return;
-            
-            // Garantizar que tenga las clases base de flexbox correctas
+
             slider.classList.add('flex', 'flex-nowrap');
 
-            // Si el contenido interno desborda el contenedor
+            // Comprobar si realmente hay desbordamiento (overflow)
             if(slider.scrollWidth > slider.clientWidth) {
-                if(prevBtn) prevBtn.style.display = 'flex';
-                if(nextBtn) nextBtn.style.display = 'flex';
-                // Alinear a la izquierda para poder scrollear todo
+                // Alinear a la izquierda para el scroll
                 slider.classList.remove('justify-center');
                 slider.classList.add('justify-start');
+
+                // Si estamos pegados a la izquierda (con margen de 1px por redondeos de navegadores)
+                if(slider.scrollLeft <= 1) {
+                    if(prevBtn) prevBtn.style.display = 'none';
+                } else {
+                    if(prevBtn) prevBtn.style.display = 'flex';
+                }
+
+                // Si estamos pegados a la derecha
+                if(slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 1) {
+                    if(nextBtn) nextBtn.style.display = 'none';
+                } else {
+                    if(nextBtn) nextBtn.style.display = 'flex';
+                }
             } else {
+                // No hay overflow, se centran las tarjetas y no hay botones
                 if(prevBtn) prevBtn.style.display = 'none';
                 if(nextBtn) nextBtn.style.display = 'none';
-                // Centrar automáticamente cuando caben las tarjetas
                 slider.classList.remove('justify-start');
                 slider.classList.add('justify-center');
             }
@@ -573,7 +566,12 @@
 
             let isDown = false, startX, scrollLeft, isDragging = false;
             
-            window.addEventListener('resize', () => checkCarouselOverflow(contenedorId, prevBtnId, nextBtnId));
+            window.addEventListener('resize', () => updateCarouselButtons(contenedorId, prevBtnId, nextBtnId));
+            
+            // Escuchar el evento de scroll real para que los botones desaparezcan automáticamente
+            slider.addEventListener('scroll', () => {
+                updateCarouselButtons(contenedorId, prevBtnId, nextBtnId);
+            });
 
             if(slider.dataset.init === 'true') return;
             slider.dataset.init = 'true';
@@ -858,10 +856,10 @@
                     document.getElementById('seccion-destacadas').style.display = 'none';
                 }
                 
-                // Comprobamos el scroll unos milisegundos después de inyectar el HTML
+                // Comprobamos el estado inicial de los botones tras inyectar el HTML
                 setTimeout(() => {
-                    checkCarouselOverflow('contenedor-galerias', 'prev-main', 'next-main');
-                    checkCarouselOverflow('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
+                    updateCarouselButtons('contenedor-galerias', 'prev-main', 'next-main');
+                    updateCarouselButtons('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
                 }, 150);
 
                 document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
