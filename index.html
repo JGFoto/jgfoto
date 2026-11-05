@@ -426,6 +426,7 @@
 
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby8mylASNDJZjSrcN_rayfjN38bWFixXghqU5sP86QVUDbGWHSK_0gL0-RBlFezr07X/exec';
+        const placeholderImagen = "data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20600%20400%27%3E%3Crect%20width%3D%27600%27%20height%3D%27400%27%20fill%3D%27%2352525b%27%2F%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23a1a1aa%27%20stroke-width%3D%2712%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%20transform%3D%27translate%28210%20125%29%27%3E%3Cpath%20d%3D%27M160%20150H20a18%2018%200%200%201-18-18V45a18%2018%200%200%201%2018-18h34L76%202h52l22%2025h10a18%2018%200%200%201%2018%2018v87a18%2018%200%200%201-18%2018Z%27%2F%3E%3Ccircle%20cx%3D%2790%27%20cy%3D%2788%27%20r%3D%2735%27%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E";
         const svgCamara = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233f3f46' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E";
 
         window.eventosGlobal = {};
@@ -616,7 +617,7 @@
         function dibujarMiniaturasModal(){
             document.getElementById('modal-gal-thumbs-container').innerHTML=arrayFotosActuales.map((url,i)=>`
                 <button type="button" onclick="irAFotoModal(${i})" aria-label="Ver fotografía ${i+1}" class="gal-thumb w-24 h-24 lg:w-full lg:h-32 rounded-lg overflow-hidden border-2 ${i===0?'border-brand-accent opacity-100':'border-transparent opacity-50'} cursor-pointer hover:opacity-100 transition-all flex-shrink-0 relative group bg-[#121212]">
-                <img src="${url}" alt="Miniatura ${i+1}" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${svgCamara}'"><span class="absolute inset-0 bg-black/20 group-hover:bg-transparent pointer-events-none"></span></button>`).join('');
+                <img src="${url}" alt="Miniatura ${i+1}" class="w-full h-full object-cover" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${placeholderImagen}'"><span class="absolute inset-0 bg-black/20 group-hover:bg-transparent pointer-events-none"></span></button>`).join('');
         }
         async function descargarFotoSeleccionada(){
             const url=arrayFotosActuales[indexFotoActual];if(!url)return;
@@ -630,7 +631,7 @@
             try {
                 const headerRes = await fetch('header.html');
                 if (headerRes.ok) document.getElementById('header-placeholder').innerHTML = await headerRes.text();
-                const path=location.pathname.split('/').pop()||'index.html';const page=document.body.dataset.page||'';const catMode=page==='categoria'||page==='album'||(page==='galerias'&&new URLSearchParams(location.search).get('tipo')==='categorias');
+                const path=location.pathname.split('/').pop()||'index.html';const page=document.body.dataset.page||'';const catMode=page==='categoria'||(page==='galerias'&&new URLSearchParams(location.search).get('tipo')==='categorias');
                 document.querySelectorAll('#nav-links-normal a,#nav-links-normal button,#mobile-nav-links > a').forEach(a=>{a.classList.remove('text-brand-accent','font-bold','bg-brand-accent','text-black');a.classList.add('text-gray-300');});
                 const activeSelector=page==='sinbalon'?'a[href="sin-balon.html"]':page==='cultura'?'a[href="cultura.html"]':catMode?'#desktop-cat-btn':(!page?'#nav-links-normal a[href="index.html"]':null);
                 if(activeSelector){document.querySelectorAll(activeSelector).forEach(a=>{a.classList.remove('text-gray-300');a.classList.add('text-brand-accent','font-bold');});}if(catMode){document.getElementById('mobile-cat-btn')?.classList.add('text-brand-accent','font-bold');}
@@ -745,13 +746,14 @@
                 const data = await req.json();
 
                 const splash = document.getElementById('pantalla-carga');
+                const pageMode = document.body.dataset.page || '';
 
                 const gWeb = data.gestionWeb || {};
                 const isConstruccion = checkIsTrue(gWeb.construccion);
                 const isMantenimiento = checkIsTrue(gWeb.mantenimiento);
                 const isMantenimientoTotal = checkIsTrue(gWeb.mantenimientoTotal);
 
-                if (isConstruccion || isMantenimiento || isMantenimientoTotal) {
+                if ((isConstruccion || isMantenimiento || isMantenimientoTotal) && !pageMode) {
                     document.getElementById('estado-mensaje').classList.remove('hidden');
                     document.getElementById('estado-mensaje').classList.add('flex');
                     
@@ -782,20 +784,18 @@
                         });
                     }
                     
-                    splash.classList.add('fade-out-splash');
-                    setTimeout(() => splash.style.display = 'none', 600);
+                    if(splash){splash.classList.add('fade-out-splash');setTimeout(() => splash.style.display = 'none', 600);}
                     return; 
                 }
 
                 const imgFondoPortada = document.getElementById('img-hero-fondo');
-                if(data.imgPortada && String(data.imgPortada).trim() !== '') {
+                if(imgFondoPortada && data.imgPortada && String(data.imgPortada).trim() !== '') {
                     imgFondoPortada.src = data.imgPortada;
                     imgFondoPortada.className = "w-full h-full object-cover opacity-60 transition-opacity duration-1000";
                 }
 
                 window.categoriasDisponibles = data.categorias || [];
                 const gals = (data.galerias || []).filter(g => String(g.ID_Evento || '').trim() !== '');
-                const pageMode = document.body.dataset.page || '';
                 gals.forEach((ev, idx) => { ev._id = idx; window.eventosGlobal[idx] = ev; });
                 if (pageMode) { document.getElementById('main-content-sections')?.classList.add('hidden'); if(pageMode==='album') renderAlbumPage(gals); else renderDynamicPage(pageMode,gals); }
                 
@@ -839,7 +839,7 @@
                             imgEl.src = srcDato;
                             imgEl.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105 cursor-pointer";
                         } else {
-                            imgEl.src = svgCamara;
+                            imgEl.src = placeholderImagen;
                             imgEl.className = "w-24 h-24 object-contain opacity-30 grayscale transition-transform duration-700 group-hover:scale-110";
                             imgEl.onclick = null; 
                         }
@@ -859,11 +859,10 @@
                 }
                 document.getElementById('main-footer')?.classList.remove('hidden');
                 
-                splash.classList.add('fade-out-splash');
-                setTimeout(() => splash.style.display = 'none', 600);
+                if(splash){splash.classList.add('fade-out-splash');setTimeout(() => splash.style.display = 'none', 600);}
                 
             } catch (e) {
-                document.getElementById('pantalla-carga').innerHTML = '<p class="text-red-500 font-bold">Error de conexión. Recarga la página.</p>';
+                const splashError=document.getElementById('pantalla-carga');if(splashError)splashError.innerHTML = '<p class="text-red-500 font-bold">Error de conexión. Recarga la página.</p>'; 
             }
         }
 
@@ -888,11 +887,11 @@
             const cats=[...new Set([...(window.categoriasDisponibles||[]),...gals.map(g=>categoriaEfectiva(g))].map(v=>String(v||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'es'));
             if(mode==='categorias'){
                 const cols=cats.length<=4?Math.max(cats.length,1):(cats.length<=6?3:4);
-                const cards=cats.map(cat=>{const ev=gals.find(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat));const img=ev?.Foto_Cabecera||'assets/portada.jpeg';return `<a href="categoria.html?cat=${encodeURIComponent(cat)}" class="group bg-brand-base border border-zinc-800 rounded-2xl overflow-hidden hover:border-brand-accent transition-all"><div class="h-52 overflow-hidden"><img src="${img}" onerror="this.onerror=null;this.src='${svgCamara}'" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div><div class="p-5"><h2 class="text-xl font-bold text-white group-hover:text-brand-accent">${cat}</h2><p class="text-sm text-gray-400 mt-1">${gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat)).length} galerías</p></div></a>`;}).join('');
+                const cards=cats.map(cat=>{const ev=gals.find(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat));const img=ev?.Foto_Cabecera||placeholderImagen;return `<a href="categoria.html?cat=${encodeURIComponent(cat)}" class="group bg-brand-base border border-zinc-800 rounded-2xl overflow-hidden hover:border-brand-accent transition-all"><div class="h-52 overflow-hidden"><img src="${img}" onerror="this.onerror=null;this.src='${placeholderImagen}'" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div><div class="p-5"><h2 class="text-xl font-bold text-white group-hover:text-brand-accent">${cat}</h2><p class="text-sm text-gray-400 mt-1">${gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat)).length} galerías</p></div></a>`;}).join('');
                 root.innerHTML=`<section class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]"><div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">Explora las categorías</h1><p class="text-gray-400 mt-3">Encuentra cada historia por deporte y temática</p></div><div class="grid gap-6" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">${cards||'<p class="text-gray-400">No hay categorías disponibles.</p>'}</div><style>@media(max-width:767px){#dynamic-page .grid[style*=grid-template-columns]{grid-template-columns:repeat(1,minmax(0,1fr))!important}}@media(min-width:768px) and (max-width:1023px){#dynamic-page .grid[style*=grid-template-columns]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}</style></section>`;return;
             }
             let filtered=mode==='sinbalon'?gals.filter(g=>['sin balón','sin balon'].includes(normalizarCategoria(g.Categoria_Header))):mode==='cultura'?gals.filter(g=>normalizarCategoria(g.Categoria_Header)==='cultura'):mode==='categoria'?gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(category)):gals;
-            const hero=mode==='sinbalon'?'<div class="mb-10 text-center w-full"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Sin balón</h1><p class="text-xl text-gray-300 mt-4">Porque el juego también sucede lejos del balón</p></div>':mode==='cultura'?'<div class="mb-10 text-center w-full"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Cultura</h1><p class="text-xl text-gray-300 mt-4">Tradiciones, arte y momentos que forman parte de nuestra historia.</p></div>':`<div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">${mode==='categoria'?category:'Todas las galerías'}</h1><p class="text-gray-400 mt-3">Explora los reportajes disponibles</p></div>`;
+            const hero=mode==='sinbalon'?'<div class="mb-10 text-left w-full"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Sin balón</h1><p class="text-xl text-gray-300 mt-4">Porque el juego también sucede lejos del balón</p></div>':mode==='cultura'?'<div class="mb-10 text-left w-full"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Cultura</h1><p class="text-xl text-gray-300 mt-4">Tradiciones, arte y momentos que forman parte de nuestra historia.</p></div>':`<div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">${mode==='categoria'?category:'Todas las galerías'}</h1><p class="text-gray-400 mt-3">Explora los reportajes disponibles</p></div>`;
             root.innerHTML=`<section class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]"><div class="w-full">${hero}</div><div class="max-w-xl mb-8 flex gap-2"><input id="buscador-eventos" type="search" placeholder="Buscar evento" aria-label="Buscar evento" class="min-w-0 flex-1 bg-zinc-900 border border-zinc-700 focus:border-brand-accent text-white rounded-lg px-4 py-3 outline-none"><button id="btn-buscar-evento" type="button" class="px-6 py-3 bg-brand-accent text-black font-bold rounded-lg hover:bg-white transition-colors">Buscar</button></div><style>#dynamic-gallery-grid article{width:100%;min-width:0}</style><div id="dynamic-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">${filtered.map(g=>generarTarjetaHTML(g)).join('')||'<p class="text-gray-400 py-8">Todavía no hay galerías en esta sección.</p>'}</div></section>`;
             const input=document.getElementById('buscador-eventos');const runSearch=()=>{const q=input.value.trim().toLocaleLowerCase('es');const found=filtered.filter(g=>String(g.ID_Evento||'').toLocaleLowerCase('es').includes(q)||String(g.Titulo||'').toLocaleLowerCase('es').includes(q));document.getElementById('dynamic-gallery-grid').innerHTML=found.map(g=>generarTarjetaHTML(g)).join('')||'<p class="text-gray-400 py-8">No se han encontrado eventos.</p>';};
             document.getElementById('btn-buscar-evento').addEventListener('click',runSearch);input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();runSearch();}});
@@ -943,14 +942,14 @@
                 }
             }
             
-            const fot = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
+            const fot = evento.Foto_Cabecera || placeholderImagen;
             const fec = `${evento.Fecha || ''} ${(evento.Fecha && evento.Lugar) ? '•' : ''} ${evento.Lugar || ''}`.trim();
 
             return `
                 <article onclick="abrirModalGaleria(${evento._id})" class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(241,233,51,0.15)] w-[280px] flex-shrink-0 snap-start select-none flex flex-col min-h-[420px] cursor-pointer relative z-10 ${bColor} hover:border-brand-accent">
                     <div class="tarjeta-interior h-full flex flex-col">
                         <div class="relative h-64 overflow-hidden flex-shrink-0 group">
-                            <img src="${fot}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" draggable="false">
+                            <img src="${fot}" onerror="this.onerror=null;this.src='${placeholderImagen}'" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" draggable="false">
                             <div class="absolute top-3 left-3 flex gap-2">
                                 <span class="${cColor} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">${catMost}</span>
                             </div>
