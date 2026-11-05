@@ -78,6 +78,36 @@
             visibility: hidden;
             transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
         }
+
+        /* Carruseles centrados y navegación por tarjetas */
+        .carrusel-principal { scroll-padding-inline: 50%; }
+        .carrusel-principal > article { scroll-snap-align: center; }
+        @media (max-width: 767px) {
+            .carrusel-principal { gap:14px !important; padding-left:9vw !important; padding-right:9vw !important; scroll-snap-type:x mandatory !important; scroll-behavior:smooth; }
+            .carrusel-principal > article { flex:0 0 82vw !important; width:82vw !important; max-width:380px; scroll-snap-align:center !important; scroll-snap-stop:always; }
+            #prev-main,#next-main,#prev-destacadas,#next-destacadas { display:none !important; }
+            .footer-slogan-band { width:calc(100% - 24px) !important; max-width:100% !important; margin:0 12px !important; padding:14px 12px !important; transform:none !important; }
+            .footer-slogan-band h3 { white-space:normal !important; overflow-wrap:anywhere; line-height:1.25 !important; letter-spacing:.08em !important; font-size:clamp(13px,3.8vw,20px) !important; }
+            #img-seccion-sin-balon,#img-seccion-cultura { display:block !important; width:100% !important; height:auto !important; max-height:70vh !important; object-fit:contain !important; position:static !important; opacity:1 !important; filter:none !important; transform:none !important; }
+            div:has(> #img-seccion-sin-balon),div:has(> #img-seccion-cultura) { height:auto !important; min-height:0 !important; align-items:flex-start !important; }
+            div:has(> #img-seccion-sin-balon),div:has(> #img-seccion-cultura) img { flex:none !important; }
+            div:has(> #img-seccion-sin-balon),div:has(> #img-seccion-cultura) { overflow:hidden; }
+        }
+        @media (min-width:768px) and (max-width:1100px) {
+            #header-logo-container { flex:0 1 175px !important; min-width:145px; }
+            #header-logo-container img { width:100%; max-width:175px; height:auto; }
+            #nav-links-container { flex:1 1 auto !important; min-width:0; }
+            #nav-links-normal { gap:.15rem !important; }
+            #nav-links-normal a,#nav-links-normal button { padding-left:.45rem !important; padding-right:.45rem !important; font-size:.82rem !important; white-space:nowrap; }
+            #header-social-container { flex:0 0 auto !important; gap:.45rem !important; padding-left:.25rem !important; padding-right:0 !important; }
+            #header-social-container > span { display:none; }
+            #header-social-container svg { width:17px; height:17px; }
+        }
+        @media (min-width:1101px) {
+            #header-logo-container { flex:0 1 250px; min-width:190px; }
+            #header-logo-container img { max-width:100%; height:auto; }
+            #nav-links-container { flex:1 1 auto; min-width:0; }
+        }
     </style>
 </head>
 <body data-page="sinbalon" class="bg-zinc-950 text-gray-200 font-sans antialiased flex flex-col min-h-screen">
@@ -280,8 +310,8 @@
         </section>
 
         <section class="alternating-section py-16 flex justify-center items-center overflow-hidden transition-colors duration-300">
-            <div class="bg-brand-highlight px-6 sm:px-10 py-4 sm:py-6 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 max-w-max flex justify-center items-center rounded-sm">
-                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-black uppercase m-0 leading-none text-center whitespace-nowrap tracking-widest">
+            <div class="bg-brand-highlight footer-slogan-band px-6 sm:px-10 py-4 sm:py-6 shadow-[0_0_20px_rgba(241,233,51,0.2)] cursor-default mx-4 max-w-max flex justify-center items-center rounded-sm">
+                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-black uppercase m-0 leading-tight text-center tracking-widest">
                     * BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
                 </h3>
             </div>
@@ -482,59 +512,69 @@
             const slider = document.getElementById(contenedorId);
             const prevBtn = document.getElementById(prevBtnId);
             const nextBtn = document.getElementById(nextBtnId);
-            
-            if(!slider) return;
+            if (!slider) return;
 
-            let isDown = false, startX, scrollLeft, isDragging = false;
-            
-            window.addEventListener('resize', () => updateCarouselButtons(contenedorId, prevBtnId, nextBtnId));
-            
-            slider.addEventListener('scroll', () => {
-                updateCarouselButtons(contenedorId, prevBtnId, nextBtnId);
-            });
-
-            if(slider.dataset.init === 'true') return;
-            slider.dataset.init = 'true';
-
-            slider.addEventListener('mousedown', (e) => {
-                isDown = true; 
-                isDragging = false;
-                slider.style.cursor = 'grabbing';
-                startX = e.pageX - slider.offsetLeft;
-                scrollLeft = slider.scrollLeft;
-            });
-            slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'pointer'; });
-            slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'pointer'; });
-            slider.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                const x = e.pageX - slider.offsetLeft;
-                const walk = (x - startX) * 2; 
-                if (Math.abs(walk) > 10) isDragging = true; 
-                e.preventDefault(); 
-                slider.scrollLeft = scrollLeft - walk;
-            });
-
-            slider.addEventListener('click', (e) => { 
-                if (isDragging) { e.preventDefault(); e.stopPropagation(); } 
-            }, true);
-
+            const getCards = () => Array.from(slider.querySelectorAll(':scope > article'));
             const moveCarouselToCenteredCard = (direction) => {
-                const cards = Array.from(slider.querySelectorAll(':scope > article'));
+                const cards = getCards();
                 if (!cards.length) return;
-                const viewportCenter = slider.scrollLeft + slider.clientWidth / 2;
-                let current = 0, best = Infinity;
-                cards.forEach((card, i) => {
-                    const center = card.offsetLeft + card.offsetWidth / 2;
+                const sliderRect = slider.getBoundingClientRect();
+                const viewportCenter = sliderRect.left + slider.clientWidth / 2;
+                let currentIndex = 0;
+                let closestDistance = Infinity;
+                cards.forEach((card, index) => {
+                    const rect = card.getBoundingClientRect();
+                    const center = rect.left + rect.width / 2;
                     const distance = Math.abs(center - viewportCenter);
-                    if (distance < best) { best = distance; current = i; }
+                    if (distance < closestDistance) { closestDistance = distance; currentIndex = index; }
                 });
-                const target = cards[Math.max(0, Math.min(cards.length - 1, current + direction))];
-                if (!target) return;
-                const left = target.offsetLeft - (slider.clientWidth - target.offsetWidth) / 2;
-                slider.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+                const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
+                const target = cards[targetIndex];
+                const targetRect = target.getBoundingClientRect();
+                const delta = (targetRect.left + targetRect.width / 2) - viewportCenter;
+                slider.scrollTo({ left: slider.scrollLeft + delta, behavior: 'smooth' });
             };
-            if(prevBtn) prevBtn.addEventListener('click', () => moveCarouselToCenteredCard(-1));
-            if(nextBtn) nextBtn.addEventListener('click', () => moveCarouselToCenteredCard(1));
+
+            const update = () => {
+                const mobile = window.matchMedia('(max-width: 767px)').matches;
+                const overflow = slider.scrollWidth > slider.clientWidth + 2;
+                if (prevBtn) prevBtn.style.display = (!mobile && overflow && slider.scrollLeft > 10) ? 'flex' : 'none';
+                if (nextBtn) nextBtn.style.display = (!mobile && overflow && Math.ceil(slider.scrollLeft + slider.clientWidth) < slider.scrollWidth - 10) ? 'flex' : 'none';
+                slider.classList.toggle('justify-center', !overflow);
+                slider.classList.toggle('justify-start', overflow);
+            };
+
+            if (slider.dataset.carouselInit !== 'true') {
+                slider.dataset.carouselInit = 'true';
+                let isDown = false, startX = 0, initialScroll = 0, isDragging = false;
+                slider.addEventListener('mousedown', e => {
+                    if (e.button !== 0 || window.matchMedia('(max-width: 767px)').matches) return;
+                    isDown = true; isDragging = false; startX = e.pageX; initialScroll = slider.scrollLeft;
+                    slider.style.cursor = 'grabbing';
+                });
+                window.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = ''; });
+                slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = ''; });
+                slider.addEventListener('mousemove', e => {
+                    if (!isDown) return;
+                    const delta = e.pageX - startX;
+                    if (Math.abs(delta) > 6) isDragging = true;
+                    if (isDragging) { e.preventDefault(); slider.scrollLeft = initialScroll - delta; }
+                });
+                slider.addEventListener('click', e => {
+                    if (isDragging) { e.preventDefault(); e.stopPropagation(); isDragging = false; }
+                }, true);
+                slider.addEventListener('scroll', update, { passive: true });
+                window.addEventListener('resize', update);
+            }
+            if (prevBtn && prevBtn.dataset.bound !== 'true') {
+                prevBtn.dataset.bound = 'true';
+                prevBtn.addEventListener('click', () => moveCarouselToCenteredCard(-1));
+            }
+            if (nextBtn && nextBtn.dataset.bound !== 'true') {
+                nextBtn.dataset.bound = 'true';
+                nextBtn.addEventListener('click', () => moveCarouselToCenteredCard(1));
+            }
+            requestAnimationFrame(update);
         }
 
         function toggleModal(modal, show) {
