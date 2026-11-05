@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tufotoenfoco | Fotografía Deportiva en Badajoz</title>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
+    <!-- Optimización de carga de fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://script.google.com">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     
     <!-- Configuración personalizada de Tailwind -->
@@ -18,9 +19,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         brand: {
                             dark: '#000000',
@@ -36,13 +35,10 @@
 
     <style>
         html { scroll-behavior: smooth; }
-        
-        /* Barra de scroll de los carruseles */
         .carrusel-scroll::-webkit-scrollbar { height: 4px; }
         .carrusel-scroll::-webkit-scrollbar-track { background: #18181b; border-radius: 2px; }
         .carrusel-scroll::-webkit-scrollbar-thumb { background: #eab308; border-radius: 2px; }
         .carrusel-scroll::-webkit-scrollbar-thumb:hover { background: #facc15; }
-        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -54,9 +50,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.scrollTo(0,0)">
-                    <span class="text-2xl font-extrabold tracking-tighter text-white">
-                        tu<span class="text-brand-accent">foto</span>enfoco
-                    </span>
+                    <img src="https://i.imgur.com/pWjGPQl.png" alt="tufotoenfoco" class="h-8 md:h-10 w-auto">
                 </div>
 
                 <nav class="hidden md:flex space-x-2 lg:space-x-4 items-center">
@@ -67,14 +61,11 @@
                             Categorías
                             <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        
                         <div id="desktop-cat-menu" class="hidden absolute top-full left-0 mt-2 w-56 bg-brand-base border border-zinc-800 rounded-md shadow-xl py-2 z-50">
                             <div id="desktop-dynamic-cats" class="py-1">
                                 <span class="block px-4 py-2 text-sm text-gray-500">Cargando...</span>
                             </div>
-                            
                             <div class="border-t border-zinc-700 my-1"></div>
-                            
                             <div class="relative w-full">
                                 <button id="desktop-mas-deportes-btn" class="w-full flex justify-between items-center px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors focus:outline-none">
                                     Más deportes
@@ -129,7 +120,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="border-t border-zinc-700 my-2"></div>
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Sin balón</a>
                 <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:bg-zinc-800 hover:text-brand-accent">Cultura</a>
@@ -175,8 +165,8 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2">
-                        <p id="mensaje-carga" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
+                    <div id="contenedor-galerias" class="flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
+                        <p id="mensaje-carga-main" class="text-brand-accent text-center py-10 font-bold animate-pulse w-full">Cargando galerías...</p>
                     </div>
 
                     <button id="next-main" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
@@ -184,7 +174,6 @@
                     </button>
                 </div>
                 
-                <!-- Botón Más Galerías -->
                 <div class="mt-12 flex justify-center w-full">
                     <button id="btn-cargar-mas" style="display: none;" class="inline-flex items-center justify-center px-6 py-3 border border-zinc-700 shadow-sm text-base font-medium rounded-full text-white bg-brand-base hover:bg-zinc-800 hover:border-brand-accent hover:text-brand-accent transition-colors focus:outline-none cursor-pointer">
                         Más galerías
@@ -194,8 +183,8 @@
             </div>
         </section>
 
-        <!-- === GALERÍAS DESTACADAS (FONDO GRIS OSCURO ALTERNADO) === -->
-        <section id="seccion-destacadas" class="bg-[#121212] py-16 border-t border-zinc-800" style="display: none;">
+        <!-- === GALERÍAS DESTACADAS (FONDO GRIS OSCURO ALTERNADO - COPIA EXACTA DE LA ANTERIOR) === -->
+        <section id="seccion-destacadas" class="bg-[#121212] pt-16 pb-8 border-t border-zinc-800" style="display: none;">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-end mb-10 border-b border-zinc-800 pb-4">
                     <div>
@@ -209,7 +198,8 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15.75 19.5L8.25 12l7.5-7.5"></path></svg>
                     </button>
                     
-                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2">
+                    <div id="contenedor-destacadas" class="flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]">
+                        <!-- Se llena mediante JS -->
                     </div>
 
                     <button id="next-destacadas" class="hidden absolute right-0 md:-right-3 top-1/2 -translate-y-1/2 z-10 bg-brand-dark border-2 border-brand-accent text-brand-accent p-1.5 rounded-full shadow-[0_0_15px_rgba(0,0,0,0.8)] hover:bg-brand-accent hover:text-black transition-all focus:outline-none">
@@ -224,7 +214,6 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                     
-                    <!-- Columna Izquierda: Textos (flex-col para centrar) -->
                     <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
@@ -236,7 +225,6 @@
                             </h2>
                         </div>
 
-                        <!-- Textos centrados verticalmente y más pequeños -->
                         <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
                             <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
                                 La tensión en el banquillo. La voz de la grada. Un abrazo al final.
@@ -251,14 +239,11 @@
                         </a>
                     </div>
                     
-                    <!-- Columna Derecha: Imagen fija con bordes, horizontal (aspect-video) -->
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
-                            <!-- La imagen (o SVG) se inyectará aquí desde JS -->
                             <img id="img-seccion-sin-balon" src="" alt="Momento Sin Balón" class="opacity-0">
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
@@ -267,19 +252,16 @@
         <section class="bg-[#121212] py-16 lg:py-24 border-t border-zinc-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
-                    
                     <div class="w-full lg:w-1/2">
                         <h2 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white uppercase tracking-tighter leading-none">
                             TU ESFUERZO. TU HISTORIA. TU FOTO.
                         </h2>
                     </div>
-                    
                     <div class="w-full lg:w-1/2">
                         <p class="text-base sm:text-lg text-gray-400 leading-relaxed max-w-xl">
                             El gol, la última zancada, esa mirada antes de salir. Hay momentos que merecen quedarse contigo.
                         </p>
                     </div>
-                    
                 </div>
             </div>
         </section>
@@ -289,7 +271,6 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20">
                     
-                    <!-- Columna Izquierda: Textos (flex-col para centrar) -->
                     <div class="w-full lg:w-1/2 flex flex-col justify-between items-start min-h-[300px]">
                         <div>
                             <div class="flex items-center gap-4 mb-3">
@@ -301,7 +282,6 @@
                             </h2>
                         </div>
 
-                        <!-- Textos centrados verticalmente y más pequeños -->
                         <div class="flex flex-col justify-center flex-grow py-8 gap-3 w-full max-w-lg">
                             <p class="text-xl sm:text-2xl text-gray-200 font-bold leading-tight">
                                 Tradiciones, arte y momentos que forman parte de nuestra historia.
@@ -316,10 +296,8 @@
                         </a>
                     </div>
                     
-                    <!-- Columna Derecha: Imagen fija con bordes, horizontal (aspect-video) -->
                     <div class="w-full lg:w-1/2 flex items-center">
                         <div class="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-zinc-800 bg-[#121212] flex items-center justify-center group cursor-crosshair">
-                            <!-- La imagen (o SVG) se inyectará aquí desde JS -->
                             <img id="img-seccion-cultura" src="" alt="Nuestra Cultura" class="opacity-0">
                         </div>
                     </div>
@@ -328,10 +306,12 @@
             </div>
         </section>
 
-        <!-- === BANNER IMAGEN BADAJOZ ES DEPORTE === -->
+        <!-- === BANNER BADAJOZ ES DEPORTE (CÓDIGO PURO, SIN IMAGEN) === -->
         <section class="bg-zinc-950 py-16 flex justify-center items-center overflow-hidden border-t border-zinc-800">
-            <div class="max-w-4xl w-full px-4 flex justify-center group cursor-crosshair">
-                <img src="image_c54129.png" alt="Badajoz es deporte, Badajoz es más" class="max-w-full h-auto object-contain transition-transform duration-700 ease-out group-hover:scale-105">
+            <div class="bg-brand-highlight px-6 sm:px-10 py-5 transform transition-transform duration-700 hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.2)] cursor-default mx-4 text-center">
+                <h3 class="text-2xl sm:text-4xl md:text-5xl font-black text-black uppercase tracking-tighter m-0 leading-none">
+                    * BADAJOZ ES DEPORTE * BADAJOZ ES MÁS
+                </h3>
             </div>
         </section>
 
@@ -342,13 +322,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row justify-between items-center lg:items-center gap-8 mb-10">
                 
-                <!-- Parte Izquierda: Logo y slogan -->
                 <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-                    <img src="logo tufotoenfoco.png" alt="TUFOTOENFOCO" class="h-10 sm:h-12 w-auto">
+                    <img src="https://i.imgur.com/pWjGPQl.png" alt="TUFOTOENFOCO" class="h-10 sm:h-12 w-auto">
                     <p class="text-gray-400 text-sm md:text-base font-light">El instante pasa, la emoción se queda.</p>
                 </div>
 
-                <!-- Parte Derecha: Enlaces y Botones Sociales -->
                 <div class="flex flex-col sm:flex-row items-center gap-6">
                     <a href="#" class="text-sm font-medium hover:text-brand-accent transition-colors flex items-center gap-1">
                         Contacto ↗
@@ -358,15 +336,11 @@
                     
                     <div class="flex items-center gap-3">
                         <a href="https://www.instagram.com/tufotoenfoco/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2 border border-brand-accent text-white text-sm font-bold rounded-full hover:bg-brand-accent hover:text-black transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-                                <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.487.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.036 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.487.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
                             Instagram
                         </a>
                         <a href="https://www.facebook.com/share/1C9KxgBYbg/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2 border border-brand-accent text-white text-sm font-bold rounded-full hover:bg-brand-accent hover:text-black transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
-                                <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/></svg>
                             Facebook
                         </a>
                     </div>
@@ -374,25 +348,23 @@
                 
             </div>
             
-            <!-- Parte Inferior: Copyright -->
             <div class="text-center lg:text-left text-xs text-gray-500 border-t border-zinc-900 pt-6">
                 © 2026 TUFOTOENFOCO · Fotografía deportiva · Badajoz · Extremadura
             </div>
         </div>
     </footer>
 
-    <!-- SCRIPT LÓGICO -->
+    <!-- SCRIPT LÓGICO OPTIMIZADO -->
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFKQ8v-tBzI1_Z8NePMyTgl2C0m8hfdbiZIukggTBYIOLPBEyRB1N7yxPnxtgFaJQw/exec';
 
-        // SVG minimalista por defecto (cámara simplificada)
+        // SVG minimalista por defecto
         const svgCamara = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233f3f46' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z'/%3E%3Ccircle cx='12' cy='13' r='4'/%3E%3C/svg%3E";
 
         function checkIsTrue(val) {
             return val === true || String(val).trim().toUpperCase() === 'TRUE';
         }
 
-        // --- SISTEMA ARRASTRE Y BOTONES DE CARRUSEL ---
         function inicializarCarruselInteractivos(contenedorId, prevBtnId, nextBtnId) {
             const slider = document.getElementById(contenedorId);
             const prevBtn = document.getElementById(prevBtnId);
@@ -416,24 +388,15 @@
                 scrollLeft = slider.scrollLeft;
             });
             
-            slider.addEventListener('mouseleave', () => {
-                isDown = false;
-                slider.style.cursor = 'pointer';
-            });
-            
-            slider.addEventListener('mouseup', () => {
-                isDown = false;
-                slider.style.cursor = 'pointer';
-            });
+            slider.addEventListener('mouseleave', () => { isDown = false; slider.style.cursor = 'pointer'; });
+            slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'pointer'; });
             
             slider.addEventListener('mousemove', (e) => {
                 if (!isDown) return;
                 e.preventDefault();
                 const x = e.pageX - slider.offsetLeft;
                 const walk = (x - startX) * 2; 
-                if (Math.abs(walk) > 10) {
-                    hasDragged = true; 
-                }
+                if (Math.abs(walk) > 10) hasDragged = true; 
                 slider.scrollLeft = scrollLeft - walk;
             });
 
@@ -460,102 +423,88 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Eventos del menú general
-            const btnMobileMenu = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const iconPathMenu = document.getElementById('menu-icon');
-            if(btnMobileMenu) {
-                btnMobileMenu.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                    iconPathMenu.setAttribute('d', mobileMenu.classList.contains('hidden') ? 'M4 6h16M4 12h16M4 18h16' : 'M6 18L18 6M6 6l12 12');
-                });
-            }
+            // Eventos Menús Móvil/Desktop (Optimizado)
+            const toggleClass = (el, cls) => el.classList.toggle(cls);
+            
+            document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+                const menu = document.getElementById('mobile-menu');
+                toggleClass(menu, 'hidden');
+                document.getElementById('menu-icon').setAttribute('d', menu.classList.contains('hidden') ? 'M4 6h16M4 12h16M4 18h16' : 'M6 18L18 6M6 6l12 12');
+            });
 
-            const desktopCatBtn = document.getElementById('desktop-cat-btn');
-            const desktopCatMenu = document.getElementById('desktop-cat-menu');
-            if(desktopCatBtn) desktopCatBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); desktopCatMenu.classList.toggle('hidden'); });
+            const bindMenu = (btnId, menuId, iconId) => {
+                const btn = document.getElementById(btnId);
+                const menu = document.getElementById(menuId);
+                const icon = iconId ? document.getElementById(iconId) : null;
+                if(btn && menu) {
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault(); e.stopPropagation();
+                        toggleClass(menu, 'hidden');
+                        if(icon) toggleClass(icon, 'rotate-180');
+                    });
+                    menu.addEventListener('click', e => e.stopPropagation());
+                }
+                return menu;
+            };
 
-            const mobileCatBtn = document.getElementById('mobile-cat-btn');
-            const mobileCatMenu = document.getElementById('mobile-cat-menu');
-            const mobileCatIcon = document.getElementById('mobile-cat-icon');
-            if(mobileCatBtn) mobileCatBtn.addEventListener('click', (e) => { e.preventDefault(); mobileCatMenu.classList.toggle('hidden'); mobileCatIcon.classList.toggle('rotate-180'); });
-
-            const desktopMasDeportesBtn = document.getElementById('desktop-mas-deportes-btn');
-            const desktopMasDeportesMenu = document.getElementById('desktop-mas-deportes-menu');
-            if(desktopMasDeportesBtn) desktopMasDeportesBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); desktopMasDeportesMenu.classList.toggle('hidden'); });
-
-            const mobileMasDeportesBtn = document.getElementById('mobile-mas-deportes-btn');
-            const mobileMasDeportesMenu = document.getElementById('mobile-mas-deportes-menu');
-            const mobileMasDeportesIcon = document.getElementById('mobile-mas-deportes-icon');
-            if(mobileMasDeportesBtn) mobileMasDeportesBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); mobileMasDeportesMenu.classList.toggle('hidden'); mobileMasDeportesIcon.classList.toggle('rotate-180'); });
+            const menus = [
+                bindMenu('desktop-cat-btn', 'desktop-cat-menu'),
+                bindMenu('desktop-mas-deportes-btn', 'desktop-mas-deportes-menu'),
+                bindMenu('mobile-cat-btn', 'mobile-cat-menu', 'mobile-cat-icon'),
+                bindMenu('mobile-mas-deportes-btn', 'mobile-mas-deportes-menu', 'mobile-mas-deportes-icon')
+            ];
 
             document.addEventListener('click', () => {
-                if (desktopCatMenu && !desktopCatMenu.classList.contains('hidden')) desktopCatMenu.classList.add('hidden');
-                if (desktopMasDeportesMenu && !desktopMasDeportesMenu.classList.contains('hidden')) desktopMasDeportesMenu.classList.add('hidden');
+                menus.forEach(m => { if(m && !m.classList.contains('hidden') && m.id.includes('desktop')) m.classList.add('hidden'); });
             });
-            if(desktopCatMenu) desktopCatMenu.addEventListener('click', (e) => e.stopPropagation());
-            if(desktopMasDeportesMenu) desktopMasDeportesMenu.addEventListener('click', (e) => e.stopPropagation());
 
-            // Inicializar interacción en los carruseles
             inicializarCarruselInteractivos('contenedor-galerias', 'prev-main', 'next-main');
             inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
 
             cargarDatosDesdeSheet();
-            
-            const btnCargarMas = document.getElementById('btn-cargar-mas');
-            if(btnCargarMas) {
-                btnCargarMas.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log('Botón Más Galerías - Clickeado');
-                });
-            }
         });
 
-        // --- Carga y Gestión de Datos desde Google Sheets ---
+        // --- Carga y Gestión de Datos Optimizada ---
         async function cargarDatosDesdeSheet() {
             try {
                 const respuesta = await fetch(APPS_SCRIPT_URL);
                 const datosCompletos = await respuesta.json();
                 
                 const todasLasGalerias = datosCompletos.galerias || [];
-                
                 actualizarMenusDinamicos(todasLasGalerias);
                 
                 const galeriasPrincipales = todasLasGalerias.filter(g => checkIsTrue(g.Ultimas_galerias));
                 const galeriasDestacadas = todasLasGalerias.filter(g => checkIsTrue(g.Destacadas));
                 
-                const claseContenedorCarrusel = 'flex flex-nowrap overflow-x-auto gap-6 sm:gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2';
+                const claseContenedorCarrusel = 'flex flex-nowrap overflow-x-auto gap-8 snap-x snap-mandatory carrusel-scroll py-4 w-full justify-start cursor-pointer px-2 min-h-[350px]';
 
-                // 1. Renderizar Últimas Galerías
+                // 1. Renderizar Últimas Galerías (Inyección rápida usando map.join)
                 const contPrincipal = document.getElementById('contenedor-galerias');
                 const prevMain = document.getElementById('prev-main');
                 const nextMain = document.getElementById('next-main');
-                contPrincipal.innerHTML = ''; 
 
                 if (galeriasPrincipales.length === 0) {
                     contPrincipal.className = 'flex flex-wrap justify-center gap-8 w-full pb-4';
-                    contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-4">No hay galerías fijadas.</p>';
+                    contPrincipal.innerHTML = '<p class="w-full text-center text-gray-500 py-10">No hay galerías fijadas.</p>';
                     prevMain.classList.add('hidden');
                     nextMain.classList.add('hidden');
                 } else {
                     contPrincipal.className = claseContenedorCarrusel;
-                    galeriasPrincipales.forEach(evento => contPrincipal.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
+                    contPrincipal.innerHTML = galeriasPrincipales.map(generarTarjetaHTML).join('');
                     prevMain.classList.remove('hidden');
                     nextMain.classList.remove('hidden');
                 }
 
-                // 2. Renderizar Galerías Destacadas
+                // 2. Renderizar Galerías Destacadas (Inyección exacta a Últimas)
                 const contDestacadas = document.getElementById('contenedor-destacadas');
                 const prevDestacadas = document.getElementById('prev-destacadas');
                 const nextDestacadas = document.getElementById('next-destacadas');
                 const seccionDestacadas = document.getElementById('seccion-destacadas');
-                
-                contDestacadas.innerHTML = '';
 
                 if (galeriasDestacadas.length > 0) {
                     seccionDestacadas.style.display = 'block';
                     contDestacadas.className = claseContenedorCarrusel;
-                    galeriasDestacadas.forEach(evento => contDestacadas.insertAdjacentHTML('beforeend', generarTarjetaHTML(evento)));
+                    contDestacadas.innerHTML = galeriasDestacadas.map(generarTarjetaHTML).join('');
                     prevDestacadas.classList.remove('hidden');
                     nextDestacadas.classList.remove('hidden');
                 } else {
@@ -564,35 +513,27 @@
                 
                 document.getElementById('btn-cargar-mas').style.display = 'inline-flex';
                 
-                // 3. Cargar Imagen de la sección "SIN BALÓN"
-                const imgSeccion = document.getElementById('img-seccion-sin-balon');
-                if (imgSeccion) {
-                    imgSeccion.classList.remove('opacity-0');
-                    if (datosCompletos.imgSinBalon && String(datosCompletos.imgSinBalon).trim() !== '') {
-                        imgSeccion.src = datosCompletos.imgSinBalon;
-                        imgSeccion.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105";
-                    } else {
-                        imgSeccion.src = svgCamara;
-                        imgSeccion.className = "w-24 h-24 object-contain opacity-30 grayscale transition-transform duration-700 group-hover:scale-110";
+                // 3 & 4. Cargar Imágenes Fijas
+                const setImagenSeccion = (idImg, srcDato) => {
+                    const imgEl = document.getElementById(idImg);
+                    if (imgEl) {
+                        imgEl.classList.remove('opacity-0');
+                        if (srcDato && String(srcDato).trim() !== '') {
+                            imgEl.src = srcDato;
+                            imgEl.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105";
+                        } else {
+                            imgEl.src = svgCamara;
+                            imgEl.className = "w-24 h-24 object-contain opacity-30 grayscale transition-transform duration-700 group-hover:scale-110";
+                        }
                     }
-                }
+                };
                 
-                // 4. Cargar Imagen de la sección "NUESTRA CULTURA"
-                const imgCultura = document.getElementById('img-seccion-cultura');
-                if (imgCultura) {
-                    imgCultura.classList.remove('opacity-0');
-                    if (datosCompletos.imgCultura && String(datosCompletos.imgCultura).trim() !== '') {
-                        imgCultura.src = datosCompletos.imgCultura;
-                        imgCultura.className = "w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105";
-                    } else {
-                        imgCultura.src = svgCamara;
-                        imgCultura.className = "w-24 h-24 object-contain opacity-30 grayscale transition-transform duration-700 group-hover:scale-110";
-                    }
-                }
+                setImagenSeccion('img-seccion-sin-balon', datosCompletos.imgSinBalon);
+                setImagenSeccion('img-seccion-cultura', datosCompletos.imgCultura);
                 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 w-full text-center py-10">Error al cargar datos. Verifica los permisos del Script.</p>';
+                document.getElementById('contenedor-galerias').innerHTML = '<p class="text-red-500 w-full text-center py-10">Error al cargar datos. Verifica la conexión.</p>';
             }
         }
 
@@ -611,50 +552,35 @@
                         categoriasPrincipalesUnicas.add(catStr);
                     }
                 }
-                
                 if (checkIsTrue(evento.Es_Mas_Deportes) && evento.Categoria_Mas_Deportes) {
                     masDeportesUnicos.add(evento.Categoria_Mas_Deportes.trim());
                 }
             });
 
-            const desktopCatContainer = document.getElementById('desktop-dynamic-cats');
-            const mobileCatContainer = document.getElementById('mobile-dynamic-cats');
-
-            if (desktopCatContainer && mobileCatContainer) {
-                if (categoriasPrincipalesUnicas.size > 0) {
-                    let htmlCatDesktop = '';
-                    let htmlCatMobile = '';
-                    Array.from(categoriasPrincipalesUnicas).sort().forEach(cat => {
-                        htmlCatDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${cat}</a>`;
-                        htmlCatMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${cat}</a>`;
-                    });
-                    desktopCatContainer.innerHTML = htmlCatDesktop;
-                    mobileCatContainer.innerHTML = htmlCatMobile;
-                } else {
-                    desktopCatContainer.innerHTML = '<span class="block px-4 py-2 text-sm text-gray-500">Sin categorías</span>';
-                    mobileCatContainer.innerHTML = '<span class="block text-sm text-gray-500 py-1">Sin categorías</span>';
+            const renderLinks = (setDatos, desktopId, mobileId, emptyMsg) => {
+                const desktopCont = document.getElementById(desktopId);
+                const mobileCont = document.getElementById(mobileId);
+                if(desktopCont && mobileCont) {
+                    if(setDatos.size > 0) {
+                        let hDesk = '', hMob = '';
+                        Array.from(setDatos).sort().forEach(item => {
+                            hDesk += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${item}</a>`;
+                            hMob += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${item}</a>`;
+                        });
+                        desktopCont.innerHTML = hDesk;
+                        mobileCont.innerHTML = hMob;
+                    } else {
+                        desktopCont.innerHTML = `<span class="block px-4 py-2 text-sm text-gray-500">${emptyMsg}</span>`;
+                        mobileCont.innerHTML = `<span class="block text-sm text-gray-500 py-1">${emptyMsg}</span>`;
+                    }
                 }
-            }
+            };
 
-            const desktopMasMenu = document.getElementById('desktop-mas-deportes-menu');
-            const mobileMasMenu = document.getElementById('mobile-mas-deportes-menu');
-
-            if (masDeportesUnicos.size > 0) {
-                let htmlMasDesktop = '';
-                let htmlMasMobile = '';
-                Array.from(masDeportesUnicos).sort().forEach(deporte => {
-                    htmlMasDesktop += `<a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-zinc-800 hover:text-brand-accent transition-colors">${deporte}</a>`;
-                    htmlMasMobile += `<a href="#" class="block text-sm font-medium text-gray-400 hover:text-brand-accent py-1">${deporte}</a>`;
-                });
-                desktopMasMenu.innerHTML = htmlMasDesktop;
-                mobileMasMenu.innerHTML = htmlMasMobile;
-            } else {
-                desktopMasMenu.innerHTML = '<span class="block px-4 py-2 text-sm text-gray-500">Próximamente</span>';
-                mobileMasMenu.innerHTML = '<span class="block text-sm text-gray-500 py-1">Próximamente</span>';
-            }
+            renderLinks(categoriasPrincipalesUnicas, 'desktop-dynamic-cats', 'mobile-dynamic-cats', 'Sin categorías');
+            renderLinks(masDeportesUnicos, 'desktop-mas-deportes-menu', 'mobile-mas-deportes-menu', 'Próximamente');
         }
 
-        // Generador de Tarjetas (Unificado para ser exacto en ambos carruseles)
+        // Generador de Tarjetas Unificado
         function generarTarjetaHTML(evento) {
             const catHeaderOriginal = evento.Categoria_Header ? String(evento.Categoria_Header).trim() : 'General';
             
@@ -672,22 +598,20 @@
                 iconColor = "text-brand-highlight";
             }
 
-            const esMasDeportesColJ = catHeaderOriginal.toLowerCase() === 'más deportes' || catHeaderOriginal.toLowerCase() === 'mas deportes';
-            if (esMasDeportesColJ) {
+            if (catHeaderOriginal.toLowerCase() === 'más deportes' || catHeaderOriginal.toLowerCase() === 'mas deportes') {
                 categoriaMostrar = evento.Categoria_Mas_Deportes && evento.Categoria_Mas_Deportes.trim() !== '' 
-                    ? evento.Categoria_Mas_Deportes.trim() 
-                    : 'Más deportes';
+                    ? evento.Categoria_Mas_Deportes.trim() : 'Más deportes';
             }
 
             const fotoSegura = evento.Foto_Cabecera || 'https://placehold.co/600x400/27272a/71717a?text=Falta+Imagen';
             const fechaLugarSegura = `${evento.Fecha || ''} ${evento.Fecha && evento.Lugar ? '•' : ''} ${evento.Lugar || ''}`;
 
-            const claseAnchoFijo = "w-full sm:w-[300px] lg:w-[280px] xl:w-[280px] flex-shrink-0 snap-start select-none flex flex-col";
+            const claseAnchoFijo = "w-[280px] sm:w-[300px] flex-shrink-0 snap-start select-none flex flex-col";
 
             return `
                 <article class="bg-brand-base rounded-2xl overflow-hidden transition-all duration-300 group ${borderColor} transform hover:-translate-y-1 hover:shadow-[0_0_15px_rgba(234,179,8,0.15)] ${claseAnchoFijo}">
                     <div class="relative h-56 overflow-hidden flex-shrink-0">
-                        <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none">
+                        <img src="${fotoSegura}" alt="${evento.Titulo || 'Evento'}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out pointer-events-none" loading="lazy">
                         <div class="absolute top-3 left-3 flex gap-2">
                             <span class="${catColorClass} border border-zinc-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm pointer-events-none">${categoriaMostrar}</span>
                         </div>
