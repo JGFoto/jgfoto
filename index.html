@@ -83,7 +83,7 @@
         .carrusel-principal { scroll-padding-inline: 50%; }
         .carrusel-principal > article { scroll-snap-align: center; }
         @media (max-width: 767px) {
-            .carrusel-principal { gap:14px !important; padding-left:9vw !important; padding-right:9vw !important; scroll-snap-type:x mandatory !important; scroll-behavior:smooth; }
+            .carrusel-principal { gap:14px !important; padding-left:9vw !important; padding-right:9vw !important; scroll-padding-inline:0 !important; scroll-snap-type:x mandatory !important; scroll-behavior:smooth; overscroll-behavior-x:contain; }
             .carrusel-principal > article { flex:0 0 82vw !important; width:82vw !important; max-width:380px; scroll-snap-align:center !important; scroll-snap-stop:always; }
             #prev-main,#next-main,#prev-destacadas,#next-destacadas { display:none !important; }
             .footer-slogan-band { width:calc(100% - 24px) !important; max-width:100% !important; margin:0 12px !important; padding:14px 12px !important; transform:none !important; }
@@ -518,26 +518,31 @@
             if (!slider) return;
 
             const getCards = () => Array.from(slider.querySelectorAll(':scope > article'));
-            const moveCarouselToCenteredCard = (direction) => {
+            const nearestCardIndex = () => {
+                const cards = getCards();
+                if (!cards.length) return -1;
+                const sr = slider.getBoundingClientRect();
+                const center = sr.left + sr.width / 2;
+                let best = 0, distance = Infinity;
+                cards.forEach((card, i) => {
+                    const r = card.getBoundingClientRect();
+                    const d = Math.abs((r.left + r.width / 2) - center);
+                    if (d < distance) { distance = d; best = i; }
+                });
+                return best;
+            };
+            const centerCard = (index, behavior='smooth') => {
                 const cards = getCards();
                 if (!cards.length) return;
-                const sliderRect = slider.getBoundingClientRect();
-                const viewportCenter = sliderRect.left + slider.clientWidth / 2;
-                let currentIndex = 0;
-                let closestDistance = Infinity;
-                cards.forEach((card, index) => {
-                    const rect = card.getBoundingClientRect();
-                    const center = rect.left + rect.width / 2;
-                    const distance = Math.abs(center - viewportCenter);
-                    if (distance < closestDistance) { closestDistance = distance; currentIndex = index; }
-                });
-                const targetIndex = Math.max(0, Math.min(cards.length - 1, currentIndex + direction));
-                const target = cards[targetIndex];
-                const targetRect = target.getBoundingClientRect();
-                const delta = (targetRect.left + targetRect.width / 2) - viewportCenter;
-                slider.scrollTo({ left: slider.scrollLeft + delta, behavior: 'smooth' });
+                const target = cards[Math.max(0, Math.min(cards.length - 1, index))];
+                const sr = slider.getBoundingClientRect(), tr = target.getBoundingClientRect();
+                const delta = (tr.left + tr.width / 2) - (sr.left + sr.width / 2);
+                slider.scrollTo({ left: slider.scrollLeft + delta, behavior });
             };
-
+            const move = direction => {
+                const index = nearestCardIndex();
+                if (index >= 0) centerCard(index + direction);
+            };
             const update = () => {
                 const mobile = window.matchMedia('(max-width: 767px)').matches;
                 const overflow = slider.scrollWidth > slider.clientWidth + 2;
@@ -550,6 +555,7 @@
             if (slider.dataset.carouselInit !== 'true') {
                 slider.dataset.carouselInit = 'true';
                 let isDown = false, startX = 0, initialScroll = 0, isDragging = false;
+                let snapTimer = null, snapping = false;
                 slider.addEventListener('mousedown', e => {
                     if (e.button !== 0 || window.matchMedia('(max-width: 767px)').matches) return;
                     isDown = true; isDragging = false; startX = e.pageX; initialScroll = slider.scrollLeft;
@@ -566,16 +572,60 @@
                 slider.addEventListener('click', e => {
                     if (isDragging) { e.preventDefault(); e.stopPropagation(); isDragging = false; }
                 }, true);
-                slider.addEventListener('scroll', update, { passive: true });
+                const snapToNearestAfterTouch = () => {
+                    if (!window.matchMedia('(max-width: 767px)').matches || snapping) return;
+                    clearTimeout(snapTimer);
+                    snapTimer = setTimeout(() => {
+                        const idx = nearestCardIndex();
+                        if (idx >= 0) {
+                            snapping = true;
+                            centerCard(idx, 'smooth');
+                            setTimeout(() => { snapping = false; update(); }, 420);
+                        }
+                    }, 240);
+                };
+                slider.addEventListener('scroll', () => { update(); snapToNearestAfterTouch(); }, { passive: true });
+                slider.addEventListener('scrollend', () => {
+                    if (!window.matchMedia('(max-width: 767px)').matches || snapping) return;
+                    clearTimeout(snapTimer);
+                    const idx = nearestCardIndex();
+                    if (idx >= 0) {
+                        snapping = true;
+                        centerCard(idx, 'smooth');
+                        setTimeout(() => { snapping = false; update(); }, 420);
+                    }
+                }, { passive: true });
                 window.addEventListener('resize', update);
             }
             if (prevBtn && prevBtn.dataset.bound !== 'true') {
                 prevBtn.dataset.bound = 'true';
-                prevBtn.addEventListener('click', () => moveCarouselToCenteredCard(-1));
+                prevBtn.addEventListener('click', () => move(-1));
             }
             if (nextBtn && nextBtn.dataset.bound !== 'true') {
                 nextBtn.dataset.bound = 'true';
-                nextBtn.addEventListener('click', () => moveCarouselToCenteredCard(1));
+                nextBtn.addEventListener('click', () => move(1));
+            }
+            slider._tfeMoveCarousel = move;
+            if (!window.__tfeCarouselKeyboardBound) {
+                window.__tfeCarouselKeyboardBound = true;
+                window.addEventListener('keydown', e => {
+                    if (!['ArrowLeft','ArrowRight'].includes(e.key) || e.altKey || e.ctrlKey || e.metaKey) return;
+                    const el = document.activeElement;
+                    if (el && (el.matches('input,textarea,select,[contenteditable="true"]') || el.closest('[contenteditable="true"]'))) return;
+                    const candidates = ['contenedor-galerias','contenedor-destacadas']
+                        .map(id => document.getElementById(id)).filter(Boolean)
+                        .filter(s => { const r=s.getBoundingClientRect(); return r.width>0 && r.height>0 && r.bottom>0 && r.top<window.innerHeight && r.right>0 && r.left<window.innerWidth && s.scrollWidth>s.clientWidth+2; });
+                    if (!candidates.length) return;
+                    const chosen = candidates.sort((a,b) => {
+                        const ar=a.getBoundingClientRect(), br=b.getBoundingClientRect();
+                        const ac=Math.abs((ar.top+ar.height/2)-window.innerHeight/2);
+                        const bc=Math.abs((br.top+br.height/2)-window.innerHeight/2);
+                        return ac-bc;
+                    })[0];
+                    if (typeof chosen._tfeMoveCarousel !== 'function') return;
+                    e.preventDefault();
+                    chosen._tfeMoveCarousel(e.key === 'ArrowRight' ? 1 : -1);
+                });
             }
             requestAnimationFrame(update);
         }
@@ -977,16 +1027,21 @@
 
         function normalizarCategoria(v){return String(v||'').trim().toLocaleLowerCase('es');}
         function categoriaEfectiva(ev){return String(ev.Categoria_Mas_Deportes||'').trim()||String(ev.Categoria_Header||'').trim();}
+        function albumPerteneceCategoria(g, cat) {
+            const target = normalizarCategoria(cat);
+            return target && (normalizarCategoria(g.Categoria_Header) === target || normalizarCategoria(g.Categoria_Mas_Deportes) === target);
+        }
+
         function renderDynamicPage(mode,gals){
             const root=document.getElementById('dynamic-page');if(!root)return;root.classList.remove('hidden');
             const params=new URLSearchParams(location.search); if(mode==='galerias') mode=params.get('tipo')==='categorias'?'categorias':'todas'; const category=mode==='categoria'?(params.get('cat')||''):'';
-            const cats=[...new Set([...(window.categoriasOrdenadas||[]),...(window.categoriasDisponibles||[]),...(window.categoriasMasDeportesOrdenadas||[]),...gals.map(g=>categoriaEfectiva(g))].map(v=>String(v||'').trim()).filter(Boolean))];
+            const cats=[...new Set([...(window.categoriasOrdenadas||[]),...(window.categoriasDisponibles||[]),...(window.categoriasMasDeportesOrdenadas||[]),...gals.flatMap(g=>[g.Categoria_Header,g.Categoria_Mas_Deportes])].map(v=>String(v||'').trim()).filter(Boolean))].filter(cat=>gals.some(g=>albumPerteneceCategoria(g,cat)));
             if(mode==='categorias'){
                 const cols=cats.length<=4?Math.max(cats.length,1):(cats.length<=6?3:4);
-                const cards=cats.map(cat=>{const ev=gals.find(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat));const img=ev?.Foto_Cabecera||placeholderImagen;return `<a href="categoria.html?cat=${encodeURIComponent(cat)}" class="group bg-brand-base border border-zinc-800 rounded-2xl overflow-hidden hover:border-brand-accent transition-all"><div class="h-52 overflow-hidden"><img src="${img}" onerror="this.onerror=null;this.src='${placeholderImagen}'" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div><div class="p-5"><h2 class="text-xl font-bold text-white group-hover:text-brand-accent">${cat}</h2><p class="text-sm text-gray-400 mt-1">${gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(cat)).length} galerías</p></div></a>`;}).join('');
+                const cards=cats.map(cat=>{const ev=gals.find(g=>albumPerteneceCategoria(g,cat));const img=ev?.Foto_Cabecera||placeholderImagen;return `<a href="categoria.html?cat=${encodeURIComponent(cat)}" class="group bg-brand-base border border-zinc-800 rounded-2xl overflow-hidden hover:border-brand-accent transition-all"><div class="h-52 overflow-hidden"><img src="${img}" onerror="this.onerror=null;this.src='${placeholderImagen}'" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"></div><div class="p-5"><h2 class="text-xl font-bold text-white group-hover:text-brand-accent">${cat}</h2><p class="text-sm text-gray-400 mt-1">${gals.filter(g=>albumPerteneceCategoria(g,cat)).length} galerías</p></div></a>`;}).join('');
                 root.innerHTML=`<section class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]"><div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">Explora las categorías</h1><p class="text-gray-400 mt-3">Encuentra cada historia por deporte y temática</p></div><div class="grid gap-6" style="grid-template-columns:repeat(${cols},minmax(0,1fr))">${cards||'<p class="text-gray-400">No hay categorías disponibles.</p>'}</div><style>@media(max-width:767px){#dynamic-page .grid[style*=grid-template-columns]{grid-template-columns:repeat(1,minmax(0,1fr))!important}}@media(min-width:768px) and (max-width:1023px){#dynamic-page .grid[style*=grid-template-columns]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}</style></section>`;return;
             }
-            let filtered=mode==='sinbalon'?gals.filter(g=>['sin balón','sin balon'].includes(normalizarCategoria(g.Categoria_Header))):mode==='cultura'?gals.filter(g=>normalizarCategoria(g.Categoria_Header)==='cultura'):mode==='categoria'?gals.filter(g=>normalizarCategoria(categoriaEfectiva(g))===normalizarCategoria(category)):gals;
+            let filtered=mode==='sinbalon'?gals.filter(g=>['sin balón','sin balon'].includes(normalizarCategoria(g.Categoria_Header))):mode==='cultura'?gals.filter(g=>normalizarCategoria(g.Categoria_Header)==='cultura'):mode==='categoria'?gals.filter(g=>albumPerteneceCategoria(g,category)):gals;
             const hero=mode==='sinbalon'?'<div class="mb-10 text-left w-full"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Sin balón</h1><p class="text-xl text-gray-300 mt-4">Porque el juego también sucede lejos del balón</p></div>':mode==='cultura'?'<div class="mb-10 text-left w-full"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase">Encuentra tu momento</p><h1 class="text-5xl md:text-7xl font-black text-white mt-2">Cultura</h1><p class="text-xl text-gray-300 mt-4">Tradiciones, arte y momentos que forman parte de nuestra historia.</p></div>':`<div class="mb-10 border-b border-zinc-800 pb-5"><p class="text-brand-accent text-xs font-bold tracking-widest uppercase mb-3">TUFOTOENFOCO</p><h1 class="text-4xl md:text-5xl font-black text-white">${mode==='categoria'?category:'Todas las galerías'}</h1><p class="text-gray-400 mt-3">Explora los reportajes disponibles</p></div>`;
             root.innerHTML=`<section class="max-w-[95%] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16 min-h-[70vh]"><div class="w-full">${hero}</div><div class="max-w-xl mb-8 flex gap-2"><input id="buscador-eventos" type="search" placeholder="Buscar evento" aria-label="Buscar evento" class="min-w-0 flex-1 bg-zinc-900 border border-zinc-700 focus:border-brand-accent text-white rounded-lg px-4 py-3 outline-none"><button id="btn-buscar-evento" type="button" class="px-6 py-3 bg-brand-accent text-black font-bold rounded-lg hover:bg-white transition-colors">Buscar</button></div><style>#dynamic-gallery-grid article{width:100%;min-width:0}</style><div id="dynamic-gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">${filtered.map(g=>generarTarjetaHTML(g)).join('')||'<p class="text-gray-400 py-8">Todavía no hay galerías en esta sección.</p>'}</div></section>`;
             const input=document.getElementById('buscador-eventos');const runSearch=()=>{const q=input.value.trim().toLocaleLowerCase('es');const found=filtered.filter(g=>String(g.ID_Evento||'').toLocaleLowerCase('es').includes(q)||String(g.Titulo||'').toLocaleLowerCase('es').includes(q));document.getElementById('dynamic-gallery-grid').innerHTML=found.map(g=>generarTarjetaHTML(g)).join('')||'<p class="text-gray-400 py-8">No se han encontrado eventos.</p>';};
@@ -994,8 +1049,9 @@
         }
 
         function actualizarMenusDinamicos(datos) {
-            const categoriasPrincipales = [...new Set([...(window.categoriasOrdenadas || []), ...(window.categoriasDisponibles || [])].map(v => String(v || '').trim()).filter(Boolean))];
-            const usadasEnMasDeportes = [...new Set(datos.filter(e => checkIsTrue(e.Es_Mas_Deportes)).map(e => String(e.Categoria_Mas_Deportes || '').trim()).filter(Boolean))];
+            const categoriasConAlbumVisible = new Set(datos.filter(e => e && e.Visible !== false && String(e.Visible).toUpperCase() !== 'FALSE').flatMap(e => [String(e.Categoria_Header || '').trim(), String(e.Categoria_Mas_Deportes || '').trim()]).filter(Boolean));
+            const categoriasPrincipales = [...new Set([...(window.categoriasOrdenadas || []), ...(window.categoriasDisponibles || [])].map(v => String(v || '').trim()).filter(Boolean))].filter(cat => datos.some(e => normalizarCategoria(e.Categoria_Header) === normalizarCategoria(cat)));
+            const usadasEnMasDeportes = [...new Set(datos.filter(e => checkIsTrue(e.Es_Mas_Deportes) && e.Categoria_Mas_Deportes && categoriasConAlbumVisible.has(String(e.Categoria_Mas_Deportes).trim())).map(e => String(e.Categoria_Mas_Deportes || '').trim()).filter(Boolean))];
             const ordenM = window.categoriasMasDeportesOrdenadas || [];
             const masDeportes = [...ordenM.filter(item => usadasEnMasDeportes.includes(item)), ...usadasEnMasDeportes.filter(item => !ordenM.includes(item))];
             const renderLinks = (items, desktopId, mobileId, emptyMsg) => {
