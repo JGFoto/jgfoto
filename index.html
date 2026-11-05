@@ -821,7 +821,7 @@
                 if (dest.length > 0) {
                     document.getElementById('seccion-destacadas').style.display = 'block';
                     contDest.className = cCar; 
-                    contDest.innerHTML = dest.map(generarTarjetaHTML).join('');
+                    contDest.innerHTML = dest.map(galeria => generarTarjetaHTML(galeria, false)).join('');
                     inicializarCarruselInteractivos('contenedor-destacadas', 'prev-destacadas', 'next-destacadas');
                 } else {
                     document.getElementById('seccion-destacadas').style.display = 'none';
